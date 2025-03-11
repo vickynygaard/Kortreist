@@ -1,0 +1,40 @@
+# Generated via Next.js
+.next
+
+# Generated via Node.js
+node_modules
+
+# Generated via next-pwa
+**/public/workbox**
+**/public/sw**
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Build directories
+out/
+build/
+dist/
+
+# Next.js build artifacts
+.next/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# VSCode settings
+.vscode/
