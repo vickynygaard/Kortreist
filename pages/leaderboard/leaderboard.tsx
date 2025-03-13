@@ -1,3 +1,6 @@
+import Button from '@/components/buttons/primaryButton'
+import User from 'lucide-react'
+
 export default function Leaderboard() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-custom">
@@ -13,6 +16,13 @@ export default function Leaderboard() {
             Du er top 3
           </p>
         </main>
+        <Button 
+        
+        title="Registrer reise"
+        description="Samle poeng ved å reise bærekraftig til jobb."
+        icon={<User size={24} />}
+        onClick={() => alert('Går til profil!')}
+        />
       </div>
     );
   }
