@@ -21,9 +21,9 @@ const NavItem = ({ href, icon }: { href: string; icon: React.ReactNode }) => {
 const Navbar = () => (
   <nav className="bg-purple-200 fixed bottom-0 left-0 w-full h-14 p-4 flex justify-around rounded-t-lg">
   <NavItem href="/" icon={<Home size={24} className="text-icon" />} />
-  <NavItem href="/team" icon={<Users size={24} className="text-icon" />} />
-  <NavItem href="/leaderboard" icon={<Trophy size={24} className="text-icon" />} />
-  <NavItem href="/profile" icon={<User size={24} className="text-icon" />} />
+  <NavItem href="/team/team" icon={<Users size={24} className="text-icon" />} />
+  <NavItem href="/leaderboard/leaderboard" icon={<Trophy size={24} className="text-icon" />} />
+  <NavItem href="/profile/profile" icon={<User size={24} className="text-icon" />} />
 </nav>
 );
 
