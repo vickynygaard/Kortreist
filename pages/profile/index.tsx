@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Home, Users, Trophy, User, Coins, Leaf, ArrowLeft, Bus, Bike, Car, Crown, Flame, Globe, Clock, X } from "lucide-react";
+import Link from "next/link";
+import { Home, Users, Trophy, User, Coins, Leaf, ArrowLeft, Bus, Bike, Car, Crown, Flame, Globe, Clock, Settings, X } from "lucide-react";
 
 export default function Profile() {
   const [selectedStat, setSelectedStat] = useState<"co2" | "money">("co2");
@@ -26,13 +27,21 @@ export default function Profile() {
   return (
     <div className="min-h-screen bg-custom flex flex-col items-center">
       
-      {/* Top Section */}
-      <div className="w-full px-4 mt-16">
-        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">Min Profil</h1>
+<div className="w-full px-4 p-8 flex items-center justify-between"> 
+  
+  <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">Min Profil</h1>
 
-        {/* Profile Info Box */}
-        <div className="mt-4 w-full bg-[#FFF8DA] dark:bg-gray-800 p-4 rounded-lg flex flex-col">
-          {/* Profile Picture & Name */}
+  {/* Settings Ikon */}
+  <Link href="/settings" className="text-black hover:text-gray-800 dark:text-gray-300 dark:hover:text-white">
+    <Settings size={28} />
+  </Link>
+</div>
+
+
+        {/* Profile info boks */}
+        <div className="w-full px-4">
+  <div className="w-full bg-[#FFF8DA] dark:bg-gray-800 p-4 rounded-lg flex flex-col shadow-md">
+          {/* Profilbilde og navn */}
           <div className="flex items-center gap-4">
             <img 
               src="https://www.w3schools.com/w3images/avatar2.png" 
@@ -42,7 +51,7 @@ export default function Profile() {
             <h2 className="text-lg font-semibold">Ola Nordmann</h2>
           </div>
 
-          {/* Stats Box */}
+          {/* Stats boks */}
           <div className="flex justify-between w-full bg-[#FFC089] dark:bg-gray-700 rounded-lg p-3 mt-4 text-gray-600 dark:text-gray-300 text-sm">
             <div className="flex-1 text-center">
               <p className="text-lg font-semibold text-black">10 532</p>
@@ -58,10 +67,10 @@ export default function Profile() {
             </div>
           </div>
         </div>
-      </div>
+        </div>
 
-      {/* CO₂ & Money Saved Section */}
-      <div className="w-full flex flex-col items-center mt-10">
+      {/* CO₂ & penger spart */}
+      <div className="w-full flex flex-col items-center mt-10 flex-1 justify-center">
         <div className="relative flex items-center justify-center w-36 h-36">
           <div className="w-full h-full rounded-full border-8 border-[#5573CE]"></div>
           <div className="absolute flex flex-col items-center justify-center">
@@ -70,7 +79,7 @@ export default function Profile() {
           </div>
         </div>
 
-        {/* Toggle Bar - CO₂ & Money */}
+        {/* Velg mellom - CO₂ & penger */}
         <div className="flex w-[75%] max-w-xs justify-between bg-[#FFF8DA] dark:bg-gray-700 rounded-lg mt-4 p-2">
           <button 
             className={`flex-1 py-2 rounded-md flex items-center justify-center ${selectedStat === "co2" ? "bg-[#FFC089] text-white" : "text-gray-700 dark:text-gray-300"}`} 
@@ -88,11 +97,11 @@ export default function Profile() {
         </div>
       </div>
 
-      {/* Badge Section */}
+      {/* Badges */}
       <div className="w-full px-4 mt-6 mb-20">
         <h2 className="text-lg font-semibold mb-3">Badges</h2>
 
-        {/* Badge Grid */}
+        {/* Badge layout */}
         <div className="grid grid-cols-5 gap-3">
         {badges.map((badge) => (
           <button
@@ -109,7 +118,7 @@ export default function Profile() {
         </div>
       </div>
 
-      {/* Popup Modal */}
+      {/* Badge info */}
       {selectedBadge && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg text-center w-80 relative">
