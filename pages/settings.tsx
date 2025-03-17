@@ -19,7 +19,7 @@ export default function Settings() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 p-8 flex flex-col pb-24"> 
+    <div className="min-h-screen bg-[#FDF8F2] p-8 flex flex-col pb-24"> 
       
       {/* Back Arrow & Titel */}
       <div className="flex items-center gap-4 mb-6">
@@ -60,6 +60,10 @@ export default function Settings() {
           onChange={(e) => setName(e.target.value)}
           className="w-full max-w-md flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md"
         />
+      </div>
+       
+      <div className="mt-6 w-full max-w-md flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+      <span className="text-gray-900 dark:text-white text-sm font-semibold">Laginstillinger</span>
       </div>
 
       {/* Varslinger */}

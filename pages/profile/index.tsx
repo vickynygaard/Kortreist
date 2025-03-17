@@ -25,7 +25,7 @@ export default function Profile() {
   ];
 
   return (
-    <div className="min-h-screen bg-custom flex flex-col items-center">
+    <div className="min-h-screen bg-[#FDF8F2] flex flex-col items-center">
       
 <div className="w-full px-4 p-8 flex items-center justify-between"> 
   
