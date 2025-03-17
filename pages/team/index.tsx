@@ -165,22 +165,24 @@ export default function Team() {
           </div>
 
           {selectedPage === "lagstatistikk" && (
-            <div className="mt-6 text-center">
-              <h3 className="text-lg font-semibold text-black">Ukens beste lagspillere</h3>
-              <div className="mt-3 flex gap-4 overflow-x-auto px-4">
-                {topMembers.map((member) => (
-                  <div key={member.id} className="flex flex-col items-center bg-[#FFF8DA] p-4 rounded-lg shadow-md w-32 flex-shrink-0">
-                    <img 
-                      src={member.image} 
-                      alt={member.name} 
-                      className="w-14 h-14 rounded-full object-cover border-4 border-[#1D3E75]"
-                    />
-                    <p className="text-md font-semibold text-black mt-2">{member.name}</p>
-                    <p className="text-lg font-bold text-[#1D3E75]">{member.points} poeng</p>
-                  </div>
-                ))}
+            <div className="mt-3 flex gap-4 overflow-x-auto px-4">
+            {topMembers.map((member) => (
+              <div key={member.id} className="flex flex-col items-center bg-[#FFF8DA] p-4 rounded-lg shadow-md w-32 flex-shrink-0 h-44">
+                <img 
+                  src={member.image} 
+                  alt={member.name} 
+                  className="w-14 h-14 rounded-full object-cover border-4 border-[#1D3E75]"
+                />
+                <p className="text-md font-semibold text-black mt-2 text-center leading-tight h-10 flex items-center justify-center">
+                  {member.name}
+                </p>
+                <div className="mt-auto">
+                  <p className="text-lg font-bold text-[#1D3E75]">{member.points} poeng</p>
+                </div>
               </div>
-            </div>
+            ))}
+          </div>
+        
           )}
         </main>
       )}
