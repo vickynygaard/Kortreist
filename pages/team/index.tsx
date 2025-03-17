@@ -36,7 +36,7 @@ export default function Team() {
             <div className="flex gap-4">
               <button 
                 onClick={() => setStep("create")} 
-                className="flex-1 py-3 bg-blue-500 text-white rounded-md flex items-center justify-center gap-2 hover:bg-blue-600"
+                className="flex-1 py-3 bg-[#1D3E75] text-white rounded-md flex items-center justify-center gap-2"
               >
                 <PlusCircle size={20} />
                 Opprett et lag
@@ -44,7 +44,7 @@ export default function Team() {
 
               <button 
                 onClick={() => setStep("join")} 
-                className="flex-1 py-3 bg-green-500 text-white rounded-md flex items-center justify-center gap-2 hover:bg-green-600"
+                className="flex-1 py-3 bg-[#1D8800] text-white rounded-md flex items-center justify-center gap-2"
               >
                 <LogIn size={20} />
                 Bli med i et lag
@@ -65,7 +65,7 @@ export default function Team() {
                 onClick={() => setHasTeam(true)}
                 disabled={!teamName.trim()}
                 className={`py-3 rounded-md text-white font-medium ${
-                  teamName.trim() ? "bg-blue-500 hover:bg-blue-600" : "bg-gray-400 cursor-not-allowed"
+                  teamName.trim() ? "bg-[#1D3E75]" : "bg-gray-400 cursor-not-allowed"
                 }`}
               >
                 Opprett lag
@@ -95,7 +95,7 @@ export default function Team() {
                 onClick={() => setHasTeam(true)}
                 disabled={!selectedTeam}
                 className={`py-3 rounded-md text-white font-medium ${
-                  selectedTeam ? "bg-green-500 hover:bg-green-600" : "bg-gray-400 cursor-not-allowed"
+                  selectedTeam ? "bg-[#1D8800]" : "bg-gray-400 cursor-not-allowed"
                 }`}
               >
                 Bli med i laget
@@ -146,7 +146,7 @@ export default function Team() {
               </>
             ) : (
               <>
-                <h2 className="text-2xl sm:text-3xl font-semibold text-[#1D3E75]">Medlemmer</h2>
+                <h2 className="text-2xl sm:text-3xl font-semibold text-[#1D3E75]">Lag 2</h2>
                 <br/>
                 <div className="flex flex-col gap-4">
                   {teamMembers.map((member) => (
