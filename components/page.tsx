@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import Appbar from '@/components/appbar'
 import Navbar from './navbar'
 
 interface Props {
@@ -14,8 +13,6 @@ const Page = ({ title, children }: Props) => (
 				<title>Rice Bowl | {title}</title>
 			</Head>
 		) : null}
-
-		<Appbar />
 
 		<main
 			/**
