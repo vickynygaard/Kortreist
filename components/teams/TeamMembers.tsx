@@ -15,7 +15,7 @@ export default function TeamMembers({ teamMembers }: TeamMembersProps) {
   return (
     <div className="flex flex-col gap-4">
       {teamMembers.map((member) => (
-        <div key={member.id} className="flex items-center gap-4 p-3 bg-white rounded-md shadow-md">
+        <div key={member.id} className="flex items-center gap-4 p-3 bg-[#FFF8DA] rounded-md">
           <img
             src={member.image}
             alt={member.name}
