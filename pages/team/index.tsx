@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { PlusCircle, LogIn } from "lucide-react";
+import TeamOptions from "../../components/teams/TeamOptions";
+import CreateTeamForm from "../../components/teams/CreateTeamForm";
+import JoinTeamForm from "../../components/teams/JoinTeamForm";
+import TeamStats from "../../components/teams/TeamStats";
+import TeamMembers from "../../components/teams/TeamMembers";
 
 export default function Team() {
   const [hasTeam, setHasTeam] = useState(false);
@@ -18,8 +22,6 @@ export default function Team() {
     { id: 5, name: "Martin Finne", image: "https://www.w3schools.com/howto/img_avatar2.png", points: 60 },
   ];
 
-  const teamPoints = teamMembers.reduce((total, member) => total + member.points, 0);
-
   const topMembers = [...teamMembers]
     .sort((a, b) => b.points - a.points)
     .slice(0, 3);
@@ -27,164 +29,99 @@ export default function Team() {
   return (
     <div className="flex flex-col items-center min-h-screen p-6 bg-[#FDF8F2]">
       {!hasTeam ? (
-        <main className="w-full max-w-xs sm:max-w-lg flex flex-col gap-4 mt-24 text-center">
+        <main className="w-full max-w-xs sm:max-w-md flex flex-col gap-4 mt-24 text-center">
           <p className="text-lg sm:text-xl font-medium text-black">
             Du er ikke medlem av et lag:
           </p>
-
           {step === "" && (
-            <div className="flex gap-4">
-              <button 
-                onClick={() => setStep("create")} 
-                className="flex-1 py-3 bg-[#1D3E75] text-white rounded-md flex items-center justify-center gap-2"
-              >
-                <PlusCircle size={20} />
-                Opprett et lag
-              </button>
-
-              <button 
-                onClick={() => setStep("join")} 
-                className="flex-1 py-3 bg-[#1D8800] text-white rounded-md flex items-center justify-center gap-2"
-              >
-                <LogIn size={20} />
-                Bli med i et lag
-              </button>
-            </div>
+            <TeamOptions 
+              onCreate={() => setStep("create")}
+              onJoin={() => setStep("join")}
+            />
           )}
-
           {step === "create" && (
-            <div className="flex flex-col gap-4 mt-4">
-              <input 
-                type="text"
-                value={teamName}
-                onChange={(e) => setTeamName(e.target.value)}
-                placeholder="Skriv inn lagnavn..."
-                className="p-2 border border-gray-400 rounded-md"
-              />
-              <button 
-                onClick={() => setHasTeam(true)}
-                disabled={!teamName.trim()}
-                className={`py-3 rounded-md text-white font-medium ${
-                  teamName.trim() ? "bg-[#1D3E75]" : "bg-gray-400 cursor-not-allowed"
-                }`}
-              >
-                Opprett lag
-              </button>
-              <button 
-                onClick={() => setStep("")}
-                className="text-gray-600 hover:text-black"
-              >
-                Tilbake
-              </button>
-            </div>
+            <CreateTeamForm 
+              teamName={teamName}
+              setTeamName={setTeamName}
+              onCreateTeam={() => setHasTeam(true)}
+              onBack={() => setStep("")}
+            />
           )}
-
           {step === "join" && (
-            <div className="flex flex-col gap-4 mt-4">
-              <select 
-                value={selectedTeam}
-                onChange={(e) => setSelectedTeam(e.target.value)}
-                className="p-2 border border-gray-400 rounded-md"
-              >
-                <option value="">Velg et lag...</option>
-                {existingTeams.map((team) => (
-                  <option key={team} value={team}>{team}</option>
-                ))}
-              </select>
-              <button 
-                onClick={() => setHasTeam(true)}
-                disabled={!selectedTeam}
-                className={`py-3 rounded-md text-white font-medium ${
-                  selectedTeam ? "bg-[#1D8800]" : "bg-gray-400 cursor-not-allowed"
-                }`}
-              >
-                Bli med i laget
-              </button>
-              <button 
-                onClick={() => setStep("")}
-                className="text-gray-600 hover:text-black"
-              >
-                Tilbake
-              </button>
-            </div>
+            <JoinTeamForm 
+              selectedTeam={selectedTeam}
+              setSelectedTeam={setSelectedTeam}
+              existingTeams={existingTeams}
+              onJoinTeam={() => setHasTeam(true)}
+              onBack={() => setStep("")}
+            />
           )}
         </main>
       ) : (
-        <main className="w-full max-w-xs sm:max-w-lg flex flex-col gap-6 mt-20 pb-18"> 
-          <div className="fixed top-16 left-1/2 transform -translate-x-1/2 flex items-center border-4 border-[#1D3E75] rounded-full p-1 w-72 mx-auto">
-            <button 
-              className={`w-[50%] px-4 py-3 text-center text-lg font-semibold rounded-full transition-all ${
-                selectedPage === "lagstatistikk" ? "bg-[#1D3E75] text-white" : "text-black"
-              }`}
-              onClick={() => setSelectedPage("lagstatistikk")}
-            >
-              Lagstatistikk
-            </button>
-
-            <button 
-              className={`w-[50%] px-4 py-3 text-center text-lg font-semibold rounded-full transition-all ${
-                selectedPage === "medlemmer" ? "bg-[#1D3E75] text-white" : "text-black"
-              }`}
-              onClick={() => setSelectedPage("medlemmer")}
-            >
-              Medlemmer
-            </button>
+        <div className="w-full max-w-xs sm:max-w-md relative">
+          {/* Sticky toggle bar */}
+          <div className="sticky top-16 z-20 w-72 mx-auto bg-[#FDF8F2]">
+            <div className="flex items-center border-4 border-[#1D3E75] rounded-full p-1">
+              <button
+                className={`w-[50%] px-4 py-3 text-center text-lg font-semibold rounded-full transition-all ${
+                  selectedPage === "lagstatistikk" ? "bg-[#1D3E75] text-white" : "text-black"
+                }`}
+                onClick={() => setSelectedPage("lagstatistikk")}
+              >
+                Lagstatistikk
+              </button>
+              <button
+                className={`w-[50%] px-4 py-3 text-center text-lg font-semibold rounded-full transition-all ${
+                  selectedPage === "medlemmer" ? "bg-[#1D3E75] text-white" : "text-black"
+                }`}
+                onClick={() => setSelectedPage("medlemmer")}
+              >
+                Medlemmer
+              </button>
+            </div>
           </div>
 
-          <div className="mt-20 p-4 bg-[#FFF8DA] dark:bg-gray-800 rounded-lg text-center">
-            {selectedPage === "lagstatistikk" ? (
-              <>
-                <h2 className="text-2xl sm:text-3xl font-semibold text-[#1D3E75]">Lag 2</h2>
-                <br/>
-                <p className="text-xl text-black font-semibold dark:text-gray-300">
-                  Gratulerer, ditt lag har opptjent
-                </p>
-
-                <p className="text-3xl font-bold text-[#1D3E75] mt-2">
-                  {teamPoints} poeng
-                </p>
-              </>
-            ) : (
-              <>
-                <h2 className="text-2xl sm:text-3xl font-semibold text-[#1D3E75]">Lag 2</h2>
-                <br/>
-                <div className="flex flex-col gap-4">
-                  {teamMembers.map((member) => (
-                    <div key={member.id} className="flex items-center gap-4 p-3 bg-white rounded-md shadow-md">
-                      <img 
-                        src={member.image} 
-                        alt={member.name} 
-                        className="w-12 h-12 rounded-full object-cover"
-                      />
-                      <p className="text-lg font-medium text-black">{member.name}</p>
+          {selectedPage === "lagstatistikk" ? (
+            <main className="mt-28 flex flex-col gap-6 pb-18">
+              <div className="p-4 bg-[#FFF8DA] dark:bg-gray-800 rounded-lg text-center">
+                <TeamStats teamMembers={teamMembers} />
+              </div>
+              <p className="text-2xl font-semibold text-[#1D3E75] text-center mt-4">Ukens bærekraftshelter</p>
+              <div className="mt-0 flex gap-4 overflow-x-auto px-4">
+                {topMembers.map((member) => (
+                  <div key={member.id} className="flex flex-col items-center bg-[#FFF8DA] p-4 rounded-lg w-32 flex-shrink-0 h-44">
+                    <img
+                      src={member.image}
+                      alt={member.name}
+                      className="w-14 h-14 rounded-full object-cover border-4 border-[#1D3E75]"
+                    />
+                    <p className="text-md font-semibold text-black mt-2 text-center leading-tight h-10 flex items-center justify-center">
+                      {member.name}
+                    </p>
+                    <div className="mt-auto">
+                      <p className="text-lg font-bold text-[#1D3E75]">{member.points} poeng</p>
                     </div>
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
-
-          {selectedPage === "lagstatistikk" && (
-            <div className="mt-3 flex gap-4 overflow-x-auto px-4">
-            {topMembers.map((member) => (
-              <div key={member.id} className="flex flex-col items-center bg-[#FFF8DA] p-4 rounded-lg shadow-md w-32 flex-shrink-0 h-44">
-                <img 
-                  src={member.image} 
-                  alt={member.name} 
-                  className="w-14 h-14 rounded-full object-cover border-4 border-[#1D3E75]"
-                />
-                <p className="text-md font-semibold text-black mt-2 text-center leading-tight h-10 flex items-center justify-center">
-                  {member.name}
-                </p>
-                <div className="mt-auto">
-                  <p className="text-lg font-bold text-[#1D3E75]">{member.points} poeng</p>
+                  </div>
+                ))}
+              </div>
+            </main>
+          ) : (
+            // "Medlemmer" page: sticky header and scrollable member list
+            <main className="mt-28 pb-18 px-4 sm:max-w-md mx-auto" style={{ height: "calc(100vh - 16rem)" }}>
+              {/* Sticky header for Medlemmer */}
+              <div className="sticky top-20 z-10">
+                <div className="p-4 bg-[#FFF8DA] dark:bg-gray-800 rounded-lg text-center">
+                  <h2 className="text-2xl sm:text-3xl font-semibold text-[#1D3E75]">Lagnavn</h2>
+                  <p className="mt-2 text-xl text-black font-semibold dark:text-gray-300">Dere er {teamMembers.length} medlemmer</p>
                 </div>
               </div>
-            ))}
-          </div>
-        
+              {/* Scrollable members list */}
+              <div className="mt-4 overflow-y-auto" style={{ maxHeight: "calc(100vh - 21rem)" }}>
+                <TeamMembers teamMembers={teamMembers} />
+              </div>
+            </main>
           )}
-        </main>
+        </div>
       )}
     </div>
   );
