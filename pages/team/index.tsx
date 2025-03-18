@@ -29,7 +29,7 @@ export default function Team() {
   return (
     <div className="flex flex-col items-center min-h-screen p-6 bg-[#FDF8F2]">
       {!hasTeam ? (
-        <main className="w-full max-w-xs sm:max-w-lg flex flex-col gap-4 mt-24 text-center">
+        <main className="w-full max-w-xs sm:max-w-md flex flex-col gap-4 mt-24 text-center">
           <p className="text-lg sm:text-xl font-medium text-black">
             Du er ikke medlem av et lag:
           </p>
@@ -58,7 +58,7 @@ export default function Team() {
           )}
         </main>
       ) : (
-        <div className="w-full max-w-xs sm:max-w-lg relative">
+        <div className="w-full max-w-xs sm:max-w-md relative">
           {/* Sticky toggle bar */}
           <div className="sticky top-16 z-20 w-72 mx-auto bg-[#FDF8F2]">
             <div className="flex items-center border-4 border-[#1D3E75] rounded-full p-1">
@@ -86,7 +86,8 @@ export default function Team() {
               <div className="p-4 bg-[#FFF8DA] dark:bg-gray-800 rounded-lg text-center">
                 <TeamStats teamMembers={teamMembers} />
               </div>
-              <div className="mt-3 flex gap-4 overflow-x-auto px-4">
+              <p className="text-2xl font-semibold text-[#1D3E75] text-center mt-4">Ukens bærekraftshelter</p>
+              <div className="mt-0 flex gap-4 overflow-x-auto px-4">
                 {topMembers.map((member) => (
                   <div key={member.id} className="flex flex-col items-center bg-[#FFF8DA] p-4 rounded-lg w-32 flex-shrink-0 h-44">
                     <img
@@ -106,12 +107,12 @@ export default function Team() {
             </main>
           ) : (
             // "Medlemmer" page: sticky header and scrollable member list
-            <main className="mt-28 pb-18 px-4" style={{ height: "calc(100vh - 16rem)" }}>
+            <main className="mt-28 pb-18 px-4 sm:max-w-md mx-auto" style={{ height: "calc(100vh - 16rem)" }}>
               {/* Sticky header for Medlemmer */}
               <div className="sticky top-20 z-10">
                 <div className="p-4 bg-[#FFF8DA] dark:bg-gray-800 rounded-lg text-center">
-                  <h2 className="text-2xl sm:text-3xl font-semibold text-[#1D3E75]">Lag 2</h2>
-                  <p className="mt-2 text-lg">Dere er {teamMembers.length} medlemmer</p>
+                  <h2 className="text-2xl sm:text-3xl font-semibold text-[#1D3E75]">Lagnavn</h2>
+                  <p className="mt-2 text-xl text-black font-semibold dark:text-gray-300">Dere er {teamMembers.length} medlemmer</p>
                 </div>
               </div>
               {/* Scrollable members list */}
