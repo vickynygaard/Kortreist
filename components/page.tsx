@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import Navbar from './navbar'
 
 interface Props {
 	title?: string

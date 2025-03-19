@@ -15,7 +15,7 @@ export default function App({ Component, pageProps }: AppProps) {
 		</Head>
 		
 		<ThemeProvider attribute='class' defaultTheme='system' disableTransitionOnChange>
-			<div className='mx-auto max-w-screen-md pb-14 px-safe sm:pb-0'>
+			<div className='mx-auto max-w-screen-md pb-14 pt-14 px-safe sm:pb-0'>
 			<Component {...pageProps} />
 			</div>
 		</ThemeProvider>
