@@ -1,25 +1,36 @@
 import React, { useState } from "react";
-// import { useMsal } from "@azure/msal-react";
-// import { loginRequest } from "../msalConfig";
+import { useMsal } from "@azure/msal-react"; // Reintroducing authentication
+import { loginRequest } from "../msalConfig"; // Importing authentication config
 import Button from "../components/buttons/primaryButton"; 
 import Image from "next/image";
 
 const LoginButton: React.FC = () => {
+  const { instance, inProgress } = useMsal(); // Authentication instance
   const [isLoading, setIsLoading] = useState(false);
 
-  // Placeholder functions for styling
+  // Handle login with Microsoft Authentication
   const handleSignIn = async () => {
-    console.log("Sign In button clicked");
+    setIsLoading(true);
+    try {
+      await instance.loginRedirect({
+        ...loginRequest,
+        prompt: "login", // Ensures fresh login each time
+      });
+    } catch (error) {
+      console.error("Login error:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
+  // Handle account creation (if different from Microsoft login)
   const handleSignUp = async () => {
     console.log("Create Account button clicked");
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#FDF8F2] relative">
-
-      {/* Ikon Image Above Text */}
+      {/* Logo Image */}
       <Image 
         src="/images/Kortreist.png" 
         alt="Logo" 
@@ -35,17 +46,18 @@ const LoginButton: React.FC = () => {
       <div className="flex flex-col gap-4 mt-12">
         <Button
           onClick={handleSignIn}
-          title={isLoading ? "Signing in..." : "Sign In"}
-          className="border-violet-900 text-violet-900 bg-white hover:bg-violet-100 w-60"
+          title={isLoading || inProgress !== "none" ? "Logger inn..." : "Logg Inn"}
+          className="border-[#311687] text-[#311687] bg-white hover:bg-[#311687] w-60"
+          disabled={isLoading || inProgress !== "none"} // Disables button when loading
         />
         <Button
           onClick={handleSignUp}
-          title={isLoading ? "Creating Account..." : "Create Account"}
-          className="border-violet-900 text-white bg-violet-900 hover:bg-violet-700 w-60"
+          title="Opprett Konto"
+          className="border-[#311687] text-white bg-[#311687] hover:bg-[#311687] w-60"
         />
       </div>
 
-      {/* Image fixed at the bottom */}
+      {/* Bottom Image */}
       <div className="absolute bottom-0 w-full">
         <Image 
           src="/images/Grass.png" 
@@ -55,7 +67,6 @@ const LoginButton: React.FC = () => {
           className="w-full"
         />
       </div>
-
     </div>
   );
 };

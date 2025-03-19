@@ -4,6 +4,12 @@ import Head from 'next/head'
 import Navbar from '@/components/navbar'
 import { useRouter } from 'next/router' // ✅ Import useRouter
 import '@/styles/globals.css'
+import { msalConfig } from "../msalConfig";
+import { PublicClientApplication } from '@azure/msal-browser'
+import { MsalProvider } from '@azure/msal-react'
+
+const msalInstance = new PublicClientApplication(msalConfig);
+
 
 export default function App({ Component, pageProps }: AppProps) {
 	const router = useRouter(); // ✅ Get the current route
@@ -12,6 +18,7 @@ export default function App({ Component, pageProps }: AppProps) {
 	const showNavbar = !hideNavbarRoutes.includes(router.pathname); // ✅ Check if navbar should be shown
 
 	return (
+		<MsalProvider instance={msalInstance}>
 		<>
 			<Head>
 				<title>Kortreist</title>
@@ -27,6 +34,9 @@ export default function App({ Component, pageProps }: AppProps) {
 
 			{/* ✅ Only render the Navbar if showNavbar is true */}
 			{showNavbar && <Navbar />}
+			const msalInstance = new PublicClientApplication(msalConfig);
 		</>
-	);
+		</MsalProvider>
+	)
 }
+

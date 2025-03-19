@@ -4,6 +4,7 @@ interface ButtonProps {
     title: string;
     description?: string;
     className?: string;
+    disabled?: boolean;
   }
 
   const Button: React.FC<ButtonProps> = ({ onClick, icon, title, description, className }) => {
