@@ -1,0 +1,34 @@
+[
+    {
+      "name": "Lag 1",
+      "score": 647
+    },
+    {
+        "name": "Lag 2",
+        "score": 598
+      },
+      {
+        "name": "Lag 3",
+        "score": 554
+      },
+      {
+        "name": "EksempelLangtLagnavn",
+        "score": 427
+      },
+      {
+        "name": "Avdeling 3",
+        "score": 277
+      },
+      {
+        "name": "Avdeling fem",
+        "score": 255
+      },
+      {
+        "name": "Avdeling linje",
+        "score": 247
+      },
+      {
+        "name": "Avdeling 10",
+        "score": 210
+      }
+  ]
