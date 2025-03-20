@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useMsal } from "@azure/msal-react"; // Reintroducing authentication
 import { loginRequest } from "../msalConfig"; // Importing authentication config
-import Button from "../components/buttons/primaryButton"; 
+import Button from "../components/buttons/Button"; 
 import Image from "next/image";
 
 const LoginButton: React.FC = () => {
@@ -12,7 +12,7 @@ const LoginButton: React.FC = () => {
   const handleSignIn = async () => {
     setIsLoading(true);
     try {
-      await instance.loginRedirect({
+      await instance.loginRedirect({  
         ...loginRequest,
         prompt: "login", // Ensures fresh login each time
       });

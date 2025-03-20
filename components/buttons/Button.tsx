@@ -1,36 +1,24 @@
-import React from "react";
-
 interface ButtonProps {
-  onClick: () => void;
-  disabled?: boolean;
-  children: React.ReactNode;
-  variant?: "primary" | "secondary";
+  onClick?: () => void;
+  icon?: React.ReactNode;
+  title: string;
+  description?: string;
   className?: string;
+  disabled?: boolean;
 }
 
-export default function Button({
-  onClick,
-  disabled = false,
-  children,
-  variant = "primary",
-  className = "",
-}: ButtonProps) {
-  const baseStyles = "py-3 rounded-md font-medium flex items-center justify-center gap-2";
-  const variants = {
-    primary: "bg-[#1D3E75] text-white",
-    secondary: "bg-[#1D8800] text-white",
-  };
-  const disabledStyles = "bg-gray-400 cursor-not-allowed";
-
-  const styles = disabled ? disabledStyles : variants[variant] || variants.primary;
-
+const Button: React.FC<ButtonProps> = ({ onClick, icon, title, description, className }) => {
   return (
     <button
       onClick={onClick}
-      disabled={disabled}
-      className={`${baseStyles} ${styles} ${className}`}
+      className={`flex flex-col items-center justify-center border-2 border-violet-900 text-violet-900 px-3 py-2 rounded-md transition ${className}`}
     >
-      {children}
+      {icon && <div className="mb-2">{icon}</div>}
+      <span className="text-lg font-semibold">{title}</span>
+      {description && <p className="text-sm opacity-80">{description}</p>}
+    
     </button>
   );
-}
+};
+
+export default Button;
