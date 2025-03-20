@@ -1,18 +1,24 @@
-export default function Leaderboard() {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-custom">
-        {/* Header */}
-        <header className="w-full max-w-xs sm:max-w-lg bg-white dark:bg-gray-800 shadow-md rounded-xl p-4 text-center">
-          <h1 className="text-lg sm:text-2xl font-bold">Ledertavle</h1>
-        </header>
-  
-        {/* Content */}
-        <main className="w-full max-w-xs sm:max-w-lg flex flex-col gap-4 mt-6">
-          {/* Text */}
-          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 text-center">
-            Du er top 3
-          </p>
-        </main>
+import { useState, useEffect } from 'react'
+import LeaderboardItem from '@/components/leaderboard/leaderboardItem'
+import LeaderboardContainer from '@/components/leaderboard/leaderboardContainer';
+import LeaderboardMenu from '@/components/leaderboard/leaderboardMenu';
+
+const Leaderboard = () => {
+
+  return (
+    <div className='flex flex-col w-full'>
+      
+      {/*Overskrift*/}
+      <div className='w-full text-center text-2xl font-medium pb-4'>
+        <h1>Ledertavle</h1>
       </div>
-    );
-  }
+      <LeaderboardMenu />
+
+      <LeaderboardContainer />
+      
+
+    </div>
+  );
+}
+
+export default Leaderboard;

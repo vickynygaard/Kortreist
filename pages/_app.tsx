@@ -20,21 +20,20 @@ export default function App({ Component, pageProps }: AppProps) {
 	return (
 		<MsalProvider instance={msalInstance}>
 		<>
-			<Head>
-				<title>Kortreist</title>
-				<meta name="description" content="Kortreist hjelper deg å velge en grønnere reise til jobb." />
-				<link rel="manifest" href="/manifest.json" />
-			</Head>
-			
-			<ThemeProvider attribute='class' defaultTheme='system' disableTransitionOnChange>
-				<div className='mx-auto max-w-screen-md pb-14 px-safe sm:pb-0'>
-					<Component {...pageProps} />
-				</div>
-			</ThemeProvider>
-
-			{/* ✅ Only render the Navbar if showNavbar is true */}
+		<Head>
+			<title>Kortreist</title>
+			<meta name="description" content="Kortreist hjelper deg å velge en grønnere reise til jobb." />
+			<link rel="manifest" href="/manifest.json" />
+		</Head>
+		
+		<ThemeProvider attribute='class' defaultTheme='system' disableTransitionOnChange>
+			<div className='mx-auto max-w-screen-md pb-14 pt-14 px-safe sm:pb-0'>
+			<Component {...pageProps} />
+			</div>
+		</ThemeProvider>
+      
+      {/* ✅ Only render the Navbar if showNavbar is true */}
 			{showNavbar && <Navbar />}
-			const msalInstance = new PublicClientApplication(msalConfig);
 		</>
 		</MsalProvider>
 	)
