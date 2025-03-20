@@ -11,7 +11,7 @@ interface ButtonProps {
     return (
       <button
         onClick={onClick}
-        className={`flex flex-col items-center justify-center border-2 border-violet-900 text-violet-900 px-4 py-2 rounded-md transition ${className}`}
+        className={`flex flex-col items-center justify-center border-2 border-violet-900 text-violet-900 px-3 py-2 rounded-md transition ${className}`}
       >
         {icon && <div className="mb-2">{icon}</div>}
         <span className="text-lg font-semibold">{title}</span>
