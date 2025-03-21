@@ -1,9 +1,11 @@
 import Page from '@/components/page'
 import Section from '@/components/section'
+import { AuthenticatedTemplate } from '@azure/msal-react'
 
 const Index = () => (
 	<Page>
 		<Section>
+			<AuthenticatedTemplate>Du er logget inn</AuthenticatedTemplate>
 			<h2 className='text-xl font-semibold text-zinc-800 dark:text-zinc-200'>
 				Kortreist
 			</h2>

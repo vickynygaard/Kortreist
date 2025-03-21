@@ -1,13 +1,74 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Home, Users, Trophy, User, Coins, Leaf, ArrowLeft, Bus, Bike, Car, Crown, Flame, Globe, Clock, Settings, X } from "lucide-react";
+import { useUserAuth } from "@/components/userAuth";
+
+interface User {
+  userId: number;
+  name: string;
+  email: string;
+  nickName: string;
+  address: string;
+  totalScore: number;
+  companyId: number;
+}
 
 export default function Profile() {
   const [selectedStat, setSelectedStat] = useState<"co2" | "money">("co2");
   const [selectedBadge, setSelectedBadge] = useState<{ id: number; name: string; description: string; progress: number; total: number } | null>(null);
 
+  const {userData, loading, error } = useUserAuth();
+  const [fullUser, setFullUser] = useState<User | null>(null);
+  const [totalCo2Savings, setTotalCo2Savings] = useState<number | null>(null);
+  const [totalTravels, setTotalTravels] = useState<number | null>(null);
+
+
+  useEffect(() => {
+    if (!userData?.accessToken) return;
+    const fetchCo2Savings = async () => {
+      try {
+        const response = await fetch("https://bouvetapi-frbah7fhh5cjdpfy.swedencentral-01.azurewebsites.net/api/Profile/totalCo2", {
+          headers: {
+            Authorization: `Bearer ${userData.accessToken}`,
+          },
+        });
+        if (!response.ok) {
+          throw new Error("Error fetching CO₂ savings: " + response.statusText);
+        }
+        const data = await response.json();
+        setTotalCo2Savings(data.totalCo2Savings);
+      } catch (err) {
+        console.error("Failed to fetch CO₂ savings:", err);
+        console.log(userData)
+      }
+    };
+    fetchCo2Savings();
+  }, [userData?.accessToken]);
+
+  useEffect(() => {
+    if (!userData?.accessToken) return;
+    const fetchTravels = async () => {
+      try {
+        const response = await fetch("https://bouvetapi-frbah7fhh5cjdpfy.swedencentral-01.azurewebsites.net/api/Profile/totalTravels", {
+          headers: {
+            Authorization: `Bearer ${userData.accessToken}`,
+          },
+        });
+        if (!response.ok) {
+          throw new Error("Error fetching CO₂ savings: " + response.statusText);
+        }
+        const data = await response.json();
+        setTotalTravels(data.totalTravels);
+      } catch (err) {
+        console.error("Failed to fetch CO₂ savings:", err);
+        console.log(userData)
+      }
+    };
+    fetchTravels();
+  }, [userData?.accessToken]);
+
   const stats = {
-    co2: { value: 45, unit: "kg", label: "CO₂ spart" },
+    co2: { value: totalCo2Savings, unit: "kg", label: "CO₂ spart" },
     money: { value: 1200, unit: "kr", label: "Penger spart" },
   };
 
@@ -62,7 +123,7 @@ export default function Profile() {
               <p>Utfordringer</p>
             </div>
             <div className="flex-1 text-center border-l border-[#FFF8DA]">
-              <p className="text-lg font-semibold text-black">9</p>
+              <p className="text-lg font-semibold text-black">{totalTravels}</p>
               <p>Reiser</p>
             </div>
           </div>
