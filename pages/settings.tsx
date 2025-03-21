@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { ArrowLeft } from "lucide-react";
+import { useMsal } from "@azure/msal-react";
+
 
 export default function Settings() {
   const router = useRouter();
@@ -17,6 +19,14 @@ export default function Settings() {
       setProfilePicture(imageUrl);
     }
   };
+
+  const { instance } = useMsal();
+
+const handleLogout = () => {
+  sessionStorage.removeItem("userUpserted");
+  instance.logoutRedirect();
+};
+
 
   return (
     <div className="min-h-screen bg-[#FDF8F2] p-8 flex flex-col pb-24"> 
@@ -114,7 +124,13 @@ export default function Settings() {
                Fullfør utfordringer og opptjen "badges" for å samle enda flere poeng!
             </div>
         )}
-      </div>
+        </div>
+            <button
+              onClick={handleLogout}
+                  className="mt-10 w-full max-w-md py-3 bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-600 transition self-center"
+               >
+            Logg ut
+          </button>
     </div>
   );
 }
