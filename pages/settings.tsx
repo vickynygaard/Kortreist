@@ -29,16 +29,22 @@ const handleLogout = () => {
 
 
   return (
-    <div className="min-h-screen bg-[#FDF8F2] p-8 flex flex-col pb-24"> 
+    <div className="min-h-screen bg-customYellow2 p-8 flex flex-col pb-24"> 
       
       {/* Back Arrow & Titel */}
-      <div className="flex items-center gap-4 mb-6">
-        {/* Gå tilbake */}
-        <button onClick={() => router.push("/profile")} className="text-black dark:text-white hover:opacity-75">
-          <ArrowLeft size={28} />
-        </button>
-        <h1 className="text-2xl font-bold text-black dark:text-white">Innstillinger</h1>
-      </div>
+      <div className="relative flex items-center justify-center mb-6">
+  {/* Back button on the left */}
+  <button
+    onClick={() => router.push("/profile")}
+    className="absolute left-0 text-black dark:text-white hover:opacity-75"
+  >
+    <ArrowLeft size={28} />
+  </button>
+
+  {/* Centered title */}
+  <h1 className="text-2xl font-bold text-black dark:text-white">Innstillinger</h1>
+</div>
+
 
       {/* Profilbilde opplastning */}
       <div className="flex flex-col items-center gap-3 mt-4">
@@ -48,7 +54,7 @@ const handleLogout = () => {
           className="w-24 h-24 rounded-full object-cover border-2 border-gray-300 dark:border-gray-700"
         />
 
-        <label className="cursor-pointer bg-[#5573CE] text-white px-4 py-2 rounded-md text-sm hover:bg-violet-600 transition">
+        <label className="cursor-pointer bg-customViolet text-white px-4 py-2 rounded-md text-sm hover:bg-violet-600 transition">
           Endre Profilbilde
           <input
             type="file"
@@ -127,7 +133,7 @@ const handleLogout = () => {
         </div>
             <button
               onClick={handleLogout}
-                  className="mt-10 w-full max-w-md py-3 bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-600 transition self-center"
+                  className="mt-20 w-full max-w-md py-3 bg-customRed text-white font-semibold rounded-lg shadow-md hover:bg-red-600 transition self-center"
                >
             Logg ut
           </button>

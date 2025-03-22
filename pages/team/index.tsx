@@ -27,7 +27,7 @@ export default function Team() {
     .slice(0, 3);
 
   return (
-    <div className="flex flex-col items-center min-h-screen p-6 bg-[#FDF8F2]">
+    <div className="flex flex-col items-center min-h-screen p-6 bg-customYellow2">
       {!hasTeam ? (
         <main className="w-full max-w-xs sm:max-w-md flex flex-col gap-4 mt-24 text-center">
           <p className="text-lg sm:text-xl font-medium text-black">
@@ -58,13 +58,13 @@ export default function Team() {
           )}
         </main>
       ) : (
-        <div className="w-full max-w-xs sm:max-w-md relative">
+        <div className="w-full max-w-xs sm:max-w-md relative pt-24">
           {/* Sticky toggle bar */}
-          <div className="sticky top-16 z-20 w-72 mx-auto bg-[#FDF8F2]">
-            <div className="flex items-center border-4 border-[#1D3E75] rounded-full p-1">
+          <div className="sticky top-16 z-20 w-72 mx-auto bg-customYellow2">
+            <div className="flex items-center border-4 border-customViolet rounded-full p-1">
               <button
                 className={`w-[50%] px-4 py-3 text-center text-lg font-semibold rounded-full transition-all ${
-                  selectedPage === "lagstatistikk" ? "bg-[#1D3E75] text-white" : "text-black"
+                  selectedPage === "lagstatistikk" ? "bg-customViolet text-white" : "text-black"
                 }`}
                 onClick={() => setSelectedPage("lagstatistikk")}
               >
@@ -72,7 +72,7 @@ export default function Team() {
               </button>
               <button
                 className={`w-[50%] px-4 py-3 text-center text-lg font-semibold rounded-full transition-all ${
-                  selectedPage === "medlemmer" ? "bg-[#1D3E75] text-white" : "text-black"
+                  selectedPage === "medlemmer" ? "bg-customViolet text-white" : "text-black"
                 }`}
                 onClick={() => setSelectedPage("medlemmer")}
               >
@@ -82,24 +82,24 @@ export default function Team() {
           </div>
 
           {selectedPage === "lagstatistikk" ? (
-            <main className="mt-28 flex flex-col gap-6 pb-18">
-              <div className="p-4 bg-[#FFF8DA] dark:bg-gray-800 rounded-lg text-center">
+            <main className="mt-8 flex flex-col gap-6 pb-18">
+              <div className="p-4 bg-customYellow dark:bg-gray-800 rounded-lg text-center">
                 <TeamStats teamMembers={teamMembers} />
               </div>
-              <p className="text-2xl font-semibold text-[#1D3E75] text-center mt-4">Ukens bærekraftshelter</p>
+              <p className="text-2xl font-semibold text-customViolet text-center mt-4">Ukens bærekraftshelter</p>
               <div className="mt-0 flex gap-4 overflow-x-auto px-4">
                 {topMembers.map((member) => (
-                  <div key={member.id} className="flex flex-col items-center bg-[#FFF8DA] p-4 rounded-lg w-32 flex-shrink-0 h-44">
+                  <div key={member.id} className="flex flex-col items-center bg-customYellow p-4 rounded-lg w-32 flex-shrink-0 h-44">
                     <img
                       src={member.image}
                       alt={member.name}
-                      className="w-14 h-14 rounded-full object-cover border-4 border-[#1D3E75]"
+                      className="w-14 h-14 rounded-full object-cover border-4 border-customViolet"
                     />
                     <p className="text-md font-semibold text-black mt-2 text-center leading-tight h-10 flex items-center justify-center">
                       {member.name}
                     </p>
                     <div className="mt-auto">
-                      <p className="text-lg font-bold text-[#1D3E75]">{member.points} poeng</p>
+                      <p className="text-lg font-bold text-customViolet">{member.points} poeng</p>
                     </div>
                   </div>
                 ))}
@@ -107,16 +107,16 @@ export default function Team() {
             </main>
           ) : (
             // "Medlemmer" page: sticky header and scrollable member list
-            <main className="mt-28 pb-18 px-4 sm:max-w-md mx-auto" style={{ height: "calc(100vh - 16rem)" }}>
+            <main className="mt-8 pb-18 px-4 sm:max-w-md mx-auto" style={{ height: "calc(100vh - 16rem)" }}>
               {/* Sticky header for Medlemmer */}
               <div className="sticky top-20 z-10">
-                <div className="p-4 bg-[#FFF8DA] dark:bg-gray-800 rounded-lg text-center">
-                  <h2 className="text-2xl sm:text-3xl font-semibold text-[#1D3E75]">Lagnavn</h2>
+                <div className="p-4 bg-customYellow dark:bg-gray-800 rounded-lg text-center">
+                  <h2 className="text-2xl sm:text-3xl font-semibold text-customViolet">Lagnavn</h2>
                   <p className="mt-2 text-xl text-black font-semibold dark:text-gray-300">Dere er {teamMembers.length} medlemmer</p>
                 </div>
               </div>
               {/* Scrollable members list */}
-              <div className="mt-4 overflow-y-auto" style={{ maxHeight: "calc(100vh - 21rem)" }}>
+              <div className="mt-4 overflow-y-auto pb-4" style={{ maxHeight: "calc(100vh - 21rem)" }}>
                 <TeamMembers teamMembers={teamMembers} />
               </div>
             </main>

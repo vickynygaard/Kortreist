@@ -20,8 +20,8 @@ const TeamButton: React.FC<TeamButtonProps> = ({
     // ✅ `w-full` makes button stretch on small screens, `sm:w-auto` keeps it adaptable
 
   const variants = {
-    primary: "bg-[#1D3E75] text-white",
-    secondary: "bg-[#1D8800] text-white",
+    primary: "bg-customViolet text-white",
+    secondary: "bg-customGreen text-white",
   };
   const disabledStyles = "bg-gray-400 text-gray-700 cursor-not-allowed";
 

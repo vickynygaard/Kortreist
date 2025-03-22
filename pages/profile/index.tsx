@@ -86,7 +86,7 @@ export default function Profile() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#FDF8F2] flex flex-col items-center">
+    <div className="min-h-screen bg-customYellow2 flex flex-col items-center">
       
 <div className="w-full px-4 p-8 flex items-center justify-between"> 
   
@@ -101,7 +101,7 @@ export default function Profile() {
 
         {/* Profile info boks */}
         <div className="w-full px-4">
-  <div className="w-full bg-[#FFF8DA] dark:bg-gray-800 p-4 rounded-lg flex flex-col shadow-md">
+  <div className="w-full bg-customYellow dark:bg-gray-800 p-4 rounded-lg flex flex-col shadow-md">
           {/* Profilbilde og navn */}
           <div className="flex items-center gap-4">
             <img 
@@ -113,16 +113,16 @@ export default function Profile() {
           </div>
 
           {/* Stats boks */}
-          <div className="flex justify-between w-full bg-[#FFC089] dark:bg-gray-700 rounded-lg p-3 mt-4 text-gray-600 dark:text-gray-300 text-sm">
+          <div className="flex justify-between w-full bg-customOrange dark:bg-gray-700 rounded-lg p-3 mt-4 text-gray-600 dark:text-gray-300 text-sm">
             <div className="flex-1 text-center">
               <p className="text-lg font-semibold text-black">10 532</p>
               <p>Poeng</p>
             </div>
-            <div className="flex-1 text-center border-l border-[#FFF8DA]">
+            <div className="flex-1 text-center border-l border-customYellow">
               <p className="text-lg font-semibold text-black">10</p>
               <p>Utfordringer</p>
             </div>
-            <div className="flex-1 text-center border-l border-[#FFF8DA]">
+            <div className="flex-1 text-center border-l border-customYellow">
               <p className="text-lg font-semibold text-black">{totalTravels}</p>
               <p>Reiser</p>
             </div>
@@ -133,7 +133,7 @@ export default function Profile() {
       {/* CO₂ & penger spart */}
       <div className="w-full flex flex-col items-center mt-10 flex-1 justify-center">
         <div className="relative flex items-center justify-center w-36 h-36">
-          <div className="w-full h-full rounded-full border-8 border-[#5573CE]"></div>
+          <div className="w-full h-full rounded-full border-8 border-customViolet"></div>
           <div className="absolute flex flex-col items-center justify-center">
             <p className="text-xl font-semibold">{stats[selectedStat].value} {stats[selectedStat].unit}</p>
             <p className="text-gray-600 text-sm">{stats[selectedStat].label}</p>
@@ -141,16 +141,16 @@ export default function Profile() {
         </div>
 
         {/* Velg mellom - CO₂ & penger */}
-        <div className="flex w-[75%] max-w-xs justify-between bg-[#FFF8DA] dark:bg-gray-700 rounded-lg mt-4 p-2">
+        <div className="flex w-[75%] max-w-xs justify-between bg-customYellow dark:bg-gray-700 rounded-lg mt-4 p-2">
           <button 
-            className={`flex-1 py-2 rounded-md flex items-center justify-center ${selectedStat === "co2" ? "bg-[#FFC089] text-white" : "text-gray-700 dark:text-gray-300"}`} 
+            className={`flex-1 py-2 rounded-md flex items-center justify-center ${selectedStat === "co2" ? "bg-customOrange text-white" : "text-gray-700 dark:text-gray-300"}`} 
             onClick={() => setSelectedStat("co2")}
           >
             <Leaf size={24} className="block" />
           </button>
 
           <button 
-            className={`flex-1 py-2 rounded-md flex items-center justify-center ${selectedStat === "money" ? "bg-[#FFC089] text-white" : "text-gray-700 dark:text-gray-300"}`} 
+            className={`flex-1 py-2 rounded-md flex items-center justify-center ${selectedStat === "money" ? "bg-customOrange text-white" : "text-gray-700 dark:text-gray-300"}`} 
             onClick={() => setSelectedStat("money")}
           >
             <Coins size={24} className="block" />
@@ -168,7 +168,7 @@ export default function Profile() {
           <button
            key={badge.id}
              className={`w-14 h-14 flex items-center justify-center rounded-lg cursor-pointer ${
-              badge.progress >= badge.total ? "bg-[#5573CE] text-white" : "bg-gray-300 text-gray-600"
+              badge.progress >= badge.total ? "bg-customViolet text-white" : "bg-gray-300 text-gray-600"
               }`}
                onClick={() => setSelectedBadge(badge)}
               >
@@ -189,7 +189,7 @@ export default function Profile() {
             <h3 className="font-semibold text-lg">{selectedBadge.name}</h3>
             <p className="text-gray-600">{selectedBadge.description}</p>
             <div className="w-full bg-gray-300 h-3 rounded-full mt-3">
-              <div className="bg-blue-500 h-3 rounded-full" style={{ width: `${((selectedBadge.progress / selectedBadge.total) * 100)}%` }}></div>
+              <div className="bg-customViolet h-3 rounded-full" style={{ width: `${((selectedBadge.progress / selectedBadge.total) * 100)}%` }}></div>
             </div>
             <p className="text-sm text-gray-700 mt-1">{selectedBadge.progress}/{selectedBadge.total} completed</p>
           </div>

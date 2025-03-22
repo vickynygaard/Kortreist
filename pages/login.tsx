@@ -29,7 +29,7 @@ const LoginButton: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#FDF8F2] relative">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-customYellow2 relative">
       {/* Logo Image */}
       <Image 
         src="/images/Kortreist.png" 
@@ -40,20 +40,20 @@ const LoginButton: React.FC = () => {
       />
       
       {/* Title */}
-      <h1 className="text-4xl font-semibold text-[#311687]">Kortreist</h1>
+      <h1 className="text-4xl font-semibold text-customViolet">Kortreist</h1>
 
       {/* Buttons */}
       <div className="flex flex-col gap-4 mt-12">
         <Button
           onClick={handleSignIn}
           title={isLoading || inProgress !== "none" ? "Logger inn..." : "Logg Inn"}
-          className="border-[#311687] text-[#311687] bg-white hover:bg-[#311687] w-60"
+          className="border-customViolet text-customViolet bg-white hover:bg-customViolet w-60"
           disabled={isLoading || inProgress !== "none"} // Disables button when loading
         />
         <Button
           onClick={handleSignUp}
           title="Opprett Konto"
-          className="border-[#311687] text-white bg-[#311687] hover:bg-[#311687] w-60"
+          className="border-customViolet text-white bg-customViolet hover:bg-customViolet w-60"
         />
       </div>
 
