@@ -31,30 +31,28 @@ const handleLogout = () => {
   return (
     <div className="min-h-screen bg-customYellow2 p-8 flex flex-col pb-24"> 
       
-      {/* Back Arrow & Titel */}
+      {/* Tilbakeknapp og tittel */}
       <div className="relative flex items-center justify-center mb-6">
-  {/* Back button on the left */}
   <button
     onClick={() => router.push("/profile")}
-    className="absolute left-0 text-black dark:text-white hover:opacity-75"
+    className="absolute left-0 text-black"
   >
     <ArrowLeft size={28} />
   </button>
 
-  {/* Centered title */}
-  <h1 className="text-2xl font-bold text-black dark:text-white">Innstillinger</h1>
+  <h1 className="text-2xl font-bold text-black">Innstillinger</h1>
 </div>
 
 
       {/* Profilbilde opplastning */}
-      <div className="flex flex-col items-center gap-3 mt-4">
+      <div className="flex flex-col items-center gap-3 mt-2">
         <img
           src={profilePicture || "https://www.w3schools.com/w3images/avatar2.png"} 
           alt="Profile"
-          className="w-24 h-24 rounded-full object-cover border-2 border-gray-300 dark:border-gray-700"
+          className="w-24 h-24 rounded-full object-cover border-2 border-customViolet"
         />
 
-        <label className="cursor-pointer bg-customViolet text-white px-4 py-2 rounded-md text-sm hover:bg-violet-600 transition">
+        <label className="cursor-pointer bg-customViolet text-white px-4 py-2 rounded-md text-sm transition">
           Endre Profilbilde
           <input
             type="file"
@@ -67,24 +65,24 @@ const handleLogout = () => {
 
       {/* Endre navn */}
       <div className="mt-6 w-full max-w-md">
-        <label className="block text-gray-700 dark:text-gray-300 text-sm font-semibold mb-1">
+        <label className="block text-gray-700 text-sm font-semibold mb-1">
           Endre Navn:
         </label>
         <input
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full max-w-md flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md"
+          className="w-full max-w-md flex items-center justify-between p-4 bg-white rounded-lg shadow-md"
         />
       </div>
        
-      <div className="mt-6 w-full max-w-md flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-      <span className="text-gray-900 dark:text-white text-sm font-semibold">Laginstillinger</span>
+      <div className="mt-6 w-full max-w-md flex items-center justify-between p-4 bg-white rounded-lg shadow-md">
+      <span className="text-gray-900 text-sm font-semibold">Laginstillinger</span>
       </div>
 
       {/* Varslinger */}
-      <div className="mt-6 w-full max-w-md flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-        <span className="text-gray-900 dark:text-white text-sm font-semibold">Varslinger</span>
+      <div className="mt-6 w-full max-w-md flex items-center justify-between p-4 bg-white rounded-lg shadow-md">
+        <span className="text-gray-900 text-sm font-semibold">Varslinger</span>
         <button
           onClick={() => setNotificationsEnabled(!notificationsEnabled)}
           className={`w-12 h-6 flex items-center rounded-full transition ${
@@ -103,14 +101,14 @@ const handleLogout = () => {
       <div className="mt-6 w-full max-w-md">
         <button
           onClick={() => setShowPointsInfo(!showPointsInfo)}
-          className="w-full flex justify-between items-center p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md"
+          className="w-full flex justify-between items-center p-4 bg-white rounded-lg shadow-md"
         >
-          <span className="text-gray-900 dark:text-white text-sm font-semibold">Poengsystem Forklaring</span>
-          <span className="text-gray-500 dark:text-gray-400">{showPointsInfo ? "▲" : "▼"}</span>
+          <span className="text-gray-900 text-sm font-semibold">Poengsystem Forklaring</span>
+          <span className="text-gray-500">{showPointsInfo ? "▲" : "▼"}</span>
         </button>
 
         {showPointsInfo && (
-           <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg mt-2 text-sm text-gray-600 dark:text-gray-300">
+           <div className="p-4 bg-gray-50 rounded-lg mt-2 text-sm text-gray-600">
               Tjen poeng for hvert bærekraftige reisevalg:<br />
               <br />
                - 100 poeng for å gå<br />
@@ -133,7 +131,7 @@ const handleLogout = () => {
         </div>
             <button
               onClick={handleLogout}
-                  className="mt-20 w-full max-w-md py-3 bg-customRed text-white font-semibold rounded-lg shadow-md hover:bg-red-600 transition self-center"
+                  className="mt-20 w-full max-w-md py-3 bg-customRed text-white font-semibold rounded-lg shadow-md transition self-center"
                >
             Logg ut
           </button>

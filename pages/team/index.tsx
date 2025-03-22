@@ -59,7 +59,7 @@ export default function Team() {
         </main>
       ) : (
         <div className="w-full max-w-xs sm:max-w-md relative pt-24">
-          {/* Sticky toggle bar */}
+          {/* Bar mellom medlemmer og stats */}
           <div className="sticky top-16 z-20 w-72 mx-auto bg-customYellow2">
             <div className="flex items-center border-4 border-customViolet rounded-full p-1">
               <button
@@ -83,7 +83,7 @@ export default function Team() {
 
           {selectedPage === "lagstatistikk" ? (
             <main className="mt-8 flex flex-col gap-6 pb-18">
-              <div className="p-4 bg-customYellow dark:bg-gray-800 rounded-lg text-center">
+              <div className="p-4 bg-customYellow rounded-lg text-center">
                 <TeamStats teamMembers={teamMembers} />
               </div>
               <p className="text-2xl font-semibold text-customViolet text-center mt-4">Ukens bærekraftshelter</p>
@@ -93,7 +93,7 @@ export default function Team() {
                     <img
                       src={member.image}
                       alt={member.name}
-                      className="w-14 h-14 rounded-full object-cover border-4 border-customViolet"
+                      className="w-14 h-14 rounded-full object-cover border-2 border-customViolet"
                     />
                     <p className="text-md font-semibold text-black mt-2 text-center leading-tight h-10 flex items-center justify-center">
                       {member.name}
@@ -106,16 +106,16 @@ export default function Team() {
               </div>
             </main>
           ) : (
-            // "Medlemmer" page: sticky header and scrollable member list
+            // "Medlemmer" side
             <main className="mt-8 pb-18 px-4 sm:max-w-md mx-auto" style={{ height: "calc(100vh - 16rem)" }}>
-              {/* Sticky header for Medlemmer */}
+              {/* Overskrift Medlemmer */}
               <div className="sticky top-20 z-10">
-                <div className="p-4 bg-customYellow dark:bg-gray-800 rounded-lg text-center">
+                <div className="p-4 bg-customYellow rounded-lg text-center">
                   <h2 className="text-2xl sm:text-3xl font-semibold text-customViolet">Lagnavn</h2>
-                  <p className="mt-2 text-xl text-black font-semibold dark:text-gray-300">Dere er {teamMembers.length} medlemmer</p>
+                  <p className="mt-2 text-xl text-black font-semibold">Dere er {teamMembers.length} medlemmer</p>
                 </div>
               </div>
-              {/* Scrollable members list */}
+              {/* Liste medlemmer */}
               <div className="mt-4 overflow-y-auto pb-4" style={{ maxHeight: "calc(100vh - 21rem)" }}>
                 <TeamMembers teamMembers={teamMembers} />
               </div>

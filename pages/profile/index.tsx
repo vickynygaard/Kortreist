@@ -88,32 +88,32 @@ export default function Profile() {
   return (
     <div className="min-h-screen bg-customYellow2 flex flex-col items-center">
       
-<div className="w-full px-4 p-8 flex items-center justify-between"> 
+<div className="w-full px-4 p-4 flex items-center justify-between"> 
   
-  <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">Min Profil</h1>
+  <h1 className="text-2xl sm:text-2xl md:text-3xl font-semibold">Min Profil</h1>
 
   {/* Settings Ikon */}
-  <Link href="/settings" className="text-black hover:text-gray-800 dark:text-gray-300 dark:hover:text-white">
-    <Settings size={28} />
+  <Link href="/settings" className="text-black">
+    <Settings size={28} strokeWidth={2}/>
   </Link>
 </div>
 
 
         {/* Profile info boks */}
         <div className="w-full px-4">
-  <div className="w-full bg-customYellow dark:bg-gray-800 p-4 rounded-lg flex flex-col shadow-md">
+  <div className="w-full bg-customYellow p-4 rounded-lg flex flex-col shadow-md">
           {/* Profilbilde og navn */}
           <div className="flex items-center gap-4">
             <img 
               src="https://www.w3schools.com/w3images/avatar2.png" 
               alt="Default Profile" 
-              className="w-16 h-16 rounded-full object-cover"
+              className="w-16 h-16 rounded-full object-cover border-2 border-customViolet"
             />
             <h2 className="text-lg font-semibold">Ola Nordmann</h2>
           </div>
 
           {/* Stats boks */}
-          <div className="flex justify-between w-full bg-customOrange dark:bg-gray-700 rounded-lg p-3 mt-4 text-gray-600 dark:text-gray-300 text-sm">
+          <div className="flex justify-between w-full bg-customOrange rounded-lg p-3 mt-4 text-gray-600 text-sm">
             <div className="flex-1 text-center">
               <p className="text-lg font-semibold text-black">10 532</p>
               <p>Poeng</p>
@@ -141,16 +141,16 @@ export default function Profile() {
         </div>
 
         {/* Velg mellom - CO₂ & penger */}
-        <div className="flex w-[75%] max-w-xs justify-between bg-customYellow dark:bg-gray-700 rounded-lg mt-4 p-2">
+        <div className="flex w-[75%] max-w-xs justify-between bg-customYellow rounded-lg mt-4 p-2">
           <button 
-            className={`flex-1 py-2 rounded-md flex items-center justify-center ${selectedStat === "co2" ? "bg-customOrange text-white" : "text-gray-700 dark:text-gray-300"}`} 
+            className={`flex-1 py-2 rounded-md flex items-center justify-center ${selectedStat === "co2" ? "bg-customOrange text-white" : "text-gray-700"}`} 
             onClick={() => setSelectedStat("co2")}
           >
             <Leaf size={24} className="block" />
           </button>
 
           <button 
-            className={`flex-1 py-2 rounded-md flex items-center justify-center ${selectedStat === "money" ? "bg-customOrange text-white" : "text-gray-700 dark:text-gray-300"}`} 
+            className={`flex-1 py-2 rounded-md flex items-center justify-center ${selectedStat === "money" ? "bg-customOrange text-white" : "text-gray-700"}`} 
             onClick={() => setSelectedStat("money")}
           >
             <Coins size={24} className="block" />
@@ -183,7 +183,7 @@ export default function Profile() {
       {selectedBadge && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg text-center w-80 relative">
-            <button className="absolute top-4 right-4 text-gray-600 hover:text-gray-900" onClick={() => setSelectedBadge(null)}>
+            <button className="absolute top-4 right-4 text-gray-600" onClick={() => setSelectedBadge(null)}>
               <X size={24} />
             </button>
             <h3 className="font-semibold text-lg">{selectedBadge.name}</h3>

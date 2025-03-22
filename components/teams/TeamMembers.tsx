@@ -19,7 +19,7 @@ export default function TeamMembers({ teamMembers }: TeamMembersProps) {
           <img
             src={member.image}
             alt={member.name}
-            className="w-12 h-12 rounded-full object-cover"
+            className="w-12 h-12 rounded-full object-cover border-2 border-customViolet"
           />
           <p className="text-lg font-medium text-black">{member.name}</p>
         </div>
