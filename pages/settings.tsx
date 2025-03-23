@@ -37,10 +37,10 @@ const handleLogout = () => {
     onClick={() => router.push("/profile")}
     className="absolute left-0 text-black"
   >
-    <ArrowLeft size={28} />
+    <ArrowLeft size={28} strokeWidth={2}/>
   </button>
 
-  <h1 className="text-2xl font-bold text-black">Innstillinger</h1>
+  <h1 className="text-2xl font-semibold text-black">Innstillinger</h1>
 </div>
 
 

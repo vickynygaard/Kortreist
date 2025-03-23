@@ -88,7 +88,7 @@ export default function Profile() {
   return (
     <div className="fixed inset-0 overflow-y-auto bg-customYellow2 flex flex-col items-center">
       
-<div className="w-full px-4 p-4 flex items-center justify-between"> 
+<div className="w-full px-4 pt-8 p-4 flex items-center justify-between"> 
   
   <h1 className="text-2xl sm:text-2xl md:text-3xl font-semibold">Min Profil</h1>
 
