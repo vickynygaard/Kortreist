@@ -86,7 +86,7 @@ export default function Profile() {
   ];
 
   return (
-    <div className="min-h-screen bg-customYellow2 flex flex-col items-center">
+    <div className="fixed inset-0 overflow-y-auto bg-customYellow2 flex flex-col items-center">
       
 <div className="w-full px-4 p-4 flex items-center justify-between"> 
   

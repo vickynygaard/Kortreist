@@ -29,7 +29,7 @@ const handleLogout = () => {
 
 
   return (
-    <div className="min-h-screen bg-customYellow2 p-8 flex flex-col pb-24"> 
+    <div className="fixed inset-0 overflow-y-auto bg-customYellow2 p-8 flex flex-col pb-24"> 
       
       {/* Tilbakeknapp og tittel */}
       <div className="relative flex items-center justify-center mb-6">
@@ -130,7 +130,7 @@ const handleLogout = () => {
         </div>
             <button
               onClick={handleLogout}
-                  className="mt-20 w-full max-w-md py-3 bg-customRed text-white font-semibold rounded-lg shadow-md transition self-center"
+                  className="mt-6 w-full max-w-md py-3 bg-customRed text-white font-semibold rounded-lg shadow-md transition self-center"
                >
             Logg ut
           </button>
