@@ -110,7 +110,6 @@ const handleLogout = () => {
         {showPointsInfo && (
            <div className="p-4 bg-gray-50 rounded-lg mt-2 text-sm text-gray-600">
               Tjen poeng for hvert bærekraftige reisevalg:<br />
-              <br />
                - 100 poeng for å gå<br />
                - 80 poeng for å sykle<br />
                - 60 poeng for å ta buss<br />
@@ -118,12 +117,12 @@ const handleLogout = () => {
                - 10 poeng for å kjøre bil<br />
                <br />
                Lengere distanse gir flere poeng:<br />
-               0 - 2 km = 20 poeng<br />
-               2 - 5 km = 50 poeng<br />
-               5 - 10 km = 80 poeng<br />
-               10 - 15 km = 100 poeng<br />
-               15 - 25 km = 150 poeng<br />
-               25 km + = 200 poeng<br />
+               - 0 - 2 km = 20 poeng<br />
+               - 2 - 5 km = 50 poeng<br />
+               - 5 - 10 km = 80 poeng<br />
+               - 10 - 15 km = 100 poeng<br />
+               - 15 - 25 km = 150 poeng<br />
+               - 25 km + = 200 poeng<br />
                <br />
                Fullfør utfordringer og opptjen "badges" for å samle enda flere poeng!
             </div>

@@ -27,9 +27,9 @@ export default function Team() {
     .slice(0, 3);
 
   return (
-    <div className="flex flex-col items-center min-h-screen p-6 bg-customYellow2">
+    <div className="fixed inset-0 bg-customYellow2 flex flex-col items-center px-4 pt-4 pb-24">
       {!hasTeam ? (
-        <main className="w-full max-w-xs sm:max-w-md flex flex-col gap-4 mt-24 text-center">
+        <main className="w-full max-w-xs sm:max-w-md flex flex-col gap-4 mt-16 text-center">
           <p className="text-lg sm:text-xl font-medium text-black">
             Du er ikke medlem av et lag:
           </p>
@@ -58,9 +58,9 @@ export default function Team() {
           )}
         </main>
       ) : (
-        <div className="w-full max-w-xs sm:max-w-md relative pt-24">
+        <div className="w-full max-w-xs sm:max-w-md relative pt-12">
           {/* Bar mellom medlemmer og stats */}
-          <div className="sticky top-16 z-20 w-72 mx-auto bg-customYellow2">
+          <div className="sticky top-4 z-20 w-full bg-customYellow2">
             <div className="flex items-center border-4 border-customViolet rounded-full p-1">
               <button
                 className={`w-[50%] px-4 py-3 text-center text-lg font-semibold rounded-full transition-all ${
@@ -82,14 +82,19 @@ export default function Team() {
           </div>
 
           {selectedPage === "lagstatistikk" ? (
-            <main className="mt-8 flex flex-col gap-6 pb-18">
+            <main className="mt-8 flex flex-col gap-6">
               <div className="p-4 bg-customYellow rounded-lg text-center">
                 <TeamStats teamMembers={teamMembers} />
               </div>
-              <p className="text-2xl font-semibold text-customViolet text-center mt-4">Ukens bærekraftshelter</p>
+              <p className="text-2xl font-semibold text-customViolet text-center mt-4">
+                Ukens bærekraftshelter
+              </p>
               <div className="mt-0 flex gap-4 overflow-x-auto px-4">
                 {topMembers.map((member) => (
-                  <div key={member.id} className="flex flex-col items-center bg-customYellow p-4 rounded-lg w-32 flex-shrink-0 h-44">
+                  <div
+                    key={member.id}
+                    className="flex flex-col items-center bg-customYellow p-4 rounded-lg w-32 flex-shrink-0 h-44"
+                  >
                     <img
                       src={member.image}
                       alt={member.name}
@@ -99,24 +104,27 @@ export default function Team() {
                       {member.name}
                     </p>
                     <div className="mt-auto">
-                      <p className="text-lg font-bold text-customViolet">{member.points} poeng</p>
+                      <p className="text-lg font-bold text-customViolet">
+                        {member.points} poeng
+                      </p>
                     </div>
                   </div>
                 ))}
               </div>
             </main>
           ) : (
-            // "Medlemmer" side
-            <main className="mt-8 pb-18 px-4 sm:max-w-md mx-auto" style={{ height: "calc(100vh - 16rem)" }}>
-              {/* Overskrift Medlemmer */}
-              <div className="sticky top-20 z-10">
-                <div className="p-4 bg-customYellow rounded-lg text-center">
-                  <h2 className="text-2xl sm:text-3xl font-semibold text-customViolet">Lagnavn</h2>
-                  <p className="mt-2 text-xl text-black font-semibold">Dere er {teamMembers.length} medlemmer</p>
-                </div>
+            <main className="mt-8 w-full">
+              <div className="p-4 bg-customYellow rounded-lg text-center">
+                <h2 className="text-2xl sm:text-3xl font-semibold text-customViolet">
+                  Lagnavn
+                </h2>
+                <p className="mt-2 text-xl text-black font-semibold">
+                  Dere er {teamMembers.length} medlemmer
+                </p>
               </div>
+
               {/* Liste medlemmer */}
-              <div className="mt-4 overflow-y-auto pb-4" style={{ maxHeight: "calc(100vh - 21rem)" }}>
+              <div className="mt-4 overflow-y-auto pb-8" style={{ maxHeight: "calc(100vh - 20rem)" }}>
                 <TeamMembers teamMembers={teamMembers} />
               </div>
             </main>

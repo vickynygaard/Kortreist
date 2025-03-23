@@ -42,9 +42,7 @@ const LoginButton: React.FC = () => {
         <div className="flex flex-col gap-4 mt-12">
           <Button
             onClick={handleSignIn}
-            title={
-              isLoading || inProgress !== "none" ? "Logger inn..." : "Logg Inn"
-            }
+            title="Logg Inn"
             className="border-customViolet text-customViolet bg-white w-60"
             disabled={isLoading || inProgress !== "none"}
           />
