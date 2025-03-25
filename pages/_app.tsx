@@ -43,7 +43,7 @@ export default function App({ Component, pageProps }: AppProps) {
 useEffect(() => {
     
     if ("serviceWorker" in navigator) {
-      const swPath = process.env.NODE_ENV === "production" ? "/DartApp/sw.js" : "/sw.js";
+      const swPath = process.env.NODE_ENV === "production" ? "/Kortreist/sw.js" : "/sw.js";
 
       navigator.serviceWorker.getRegistrations().then((registrations) => {
         registrations.forEach((reg) => reg.unregister()); // Remove old SW
