@@ -105,7 +105,7 @@ useEffect(() => {
 		<Head>
 			<title>Kortreist</title>
 			<meta name="description" content="Kortreist hjelper deg å velge en grønnere reise til jobb." />
-			<link rel="manifest" href="/manifest.json" />
+			<link rel='manifest' href={`${process.env.NEXT_PUBLIC_BASE_PATH}/manifest.json`} />
 		</Head>
 		
 		<ThemeProvider
