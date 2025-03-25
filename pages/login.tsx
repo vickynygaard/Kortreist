@@ -1,12 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMsal } from "@azure/msal-react";
 import { loginRequest } from "../msalConfig";
 import Button from "../components/buttons/Button";
 import Image from "next/image";
+import router, { useRouter } from "next/router";
 
 const LoginButton: React.FC = () => {
-  const { instance, inProgress } = useMsal();
+  const { instance, accounts, inProgress } = useMsal(); // ✅ <- include `accounts` here
   const [isLoading, setIsLoading] = useState(false);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (accounts.length > 0 && inProgress === "none") {
+      router.push("/"); // 👈 redirect to your home page
+    }
+  }, [accounts, inProgress, router]);
+
 
   const handleSignIn = async () => {
     setIsLoading(true);
@@ -31,7 +41,7 @@ const LoginButton: React.FC = () => {
       {/* Content area, centered above the grass */}
       <div className="flex-1 flex flex-col items-center justify-center z-10">
         <Image
-          src="/images/Logo.png"
+          src="./images/Logo.png"
           alt="Logo"
           width={120}
           height={120}
@@ -57,7 +67,7 @@ const LoginButton: React.FC = () => {
       {/* Grass image at the bottom */}
       <div className="w-full z-0">
         <Image
-          src="/images/Grass.png"
+          src="./images/Grass.png"
           alt="Scenery Illustration"
           width={850}
           height={303}
