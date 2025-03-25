@@ -8,19 +8,6 @@ interface AddressFieldProps {
   }
 
   const AddressField: React.FC<AddressFieldProps> = ({ userId, address, setAddress }) => {
-    useEffect(() => {
-      const fetchAddress = async () => {
-        try {
-          const res = await fetch(`/api/user/address?userId=${userId}`); //KOBLE TIL USER TOKEN SENERE!!
-          const data = await res.json();
-          setAddress(data.address || "");
-        } catch (error) {
-          console.error("Feil ved henting av adresse", error);
-        }
-      };
-    
-      fetchAddress();
-    }, [userId, setAddress]);
     
   return (
     <div className="w-full">

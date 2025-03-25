@@ -1,49 +1,101 @@
 import { useEffect, useState } from 'react';
 import Podium from './podium';
 import LeaderboardItem from './leaderboardItem';
+import { useUserAuth } from '../userAuth';
+
+interface User {
+  rank: number;
+  userId: number;
+  name: string;
+  totalScore: number;
+}
 
 const LeaderboardContainer = () => {
-  const [topThree, setTopThree] = useState<{ image: string; name: string; score: number }[]>([]);
-  const [restOfBoard, setRestOfBoard] = useState<{ image: string; name: string; score: number}[]>([]);
-  
+  const [topThree, setTopThree] = useState<User[]>([]);
+  const [restOfBoard, setRestOfBoard] = useState<User[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
+  const { userData, loading, error } = useUserAuth();  
+
   useEffect(() => {
-    const fetchData = async () => {
+    if (!userData?.accessToken) return;
+
+    const fetchUsers = async () => {
+      const podiumWithRank: (User & { rank: number })[] = [];
       try {
-        const response = await fetch('/data.json');
+        const response = await fetch("https://bouvetapi-frbah7fhh5cjdpfy.swedencentral-01.azurewebsites.net/api/users/all", {
+          headers: {
+            Authorization: `Bearer ${userData.accessToken}`,
+          },
+        });
+        if (!response.ok) {
+          throw new Error(`Error fetching users: ${response.statusText}`);
+        }
         const data = await response.json();
-        const sortedData = data.sort((a: any, b: any) => b.score - a.score);
+        const sorted = [...data].sort((a, b) => b.totalScore - a.totalScore);
         
-        //Sorter topp tre og resten av ledertavlen
-        setTopThree(sortedData.slice(0, 3));
-        setRestOfBoard(sortedData.slice(3));
-      } catch (error) {
-        console.error('Error fetching leaderboard data:', error);
+        let currentRank = 1;
+
+        for (let i = 0; i < sorted.length && podiumWithRank.length < 3; i++) {
+          if (
+            i > 0 &&
+            sorted[i].totalScore === sorted[i - 1].totalScore
+          ) {
+            // same rank as previous
+            podiumWithRank.push({ ...sorted[i], rank: podiumWithRank[podiumWithRank.length - 1].rank });
+          } else {
+            // new unique rank
+            podiumWithRank.push({ ...sorted[i], rank: currentRank });
+          }
+          currentRank++;
+        }
+
+        setTopThree(podiumWithRank);
+        setRestOfBoard(sorted.slice(podiumWithRank.length));
+        
+        setUsers(data);
+      } catch (err) {
+        console.error("Failed to fetch users:", err);
       }
     };
 
-    fetchData();
-  }, []);
+    fetchUsers();
+  }, [userData?.accessToken]);
+
+  const renderPodium = (rank: number) => {
+    const user = topThree.find((u) => u.rank === rank);
+    if (!user) return null;
+  
+    return (
+      <Podium {...user} score={user.totalScore} />
+    );
+  };
+
 
   return (
     <div className="flex flex-col">
         {/*Pall: 1., 2., 3. plass*/}
         <div className="flex justify-center items-end gap-6 mt-10">
-            <div className="order-2">
-                {topThree[1] && <Podium rank={2} {...topThree[1]} />}
-            </div>
-            <div className="order-1">
-                {topThree[0] && <Podium rank={1} {...topThree[0]} />}
-            </div>
-            <div className="order-3">
-                {topThree[2] && <Podium rank={3} {...topThree[2]} />}
-            </div>
+          {/* Silver - left */}
+          {renderPodium(2)}
+
+          {/* Gold - middle */}
+          {renderPodium(1)}
+
+          {/* Bronze - right */}
+          {renderPodium(3)}
         </div>
-        
+
+
           {/*Resten av ledertavlen*/}
           <div className="w-full max-h-[400px] overflow-y-auto bg-customYellow rounded-t-lg">
-            {restOfBoard.map((name, index) => (
-            <LeaderboardItem key={index} rank={index + 4} {...name} />
-            ))}
+          {restOfBoard.map((user, index) => (
+          <LeaderboardItem
+            key={user.userId}
+            rank={index + topThree.length + 1} // start after podium
+            name={user.name}
+            score={user.totalScore}
+          />
+        ))}
           </div>
     </div>
   );

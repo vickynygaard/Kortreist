@@ -3,6 +3,7 @@ import Image from "next/image";
 interface TransportModeProps {
     icon: string;
     label: string;
+    value: string; 
     selected?: boolean;
     onClick?: () => void;
 
@@ -17,6 +18,7 @@ const TransportModeButton: React.FC<TransportModeProps> = ({icon, label, selecte
 
     return (
             <button 
+            type="button"
             onClick={onClick}
             className={`${baseButton} ${selectedButton}`}
             >

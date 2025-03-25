@@ -1,27 +1,62 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddressField from "@/components/dashboard/adressField";
 import TransportModeButton from "@/components/dashboard/travelButtons";
 import PrimaryButton from "@/components/buttons/primaryButton";
 import ReturnButton from "@/components/buttons/returnButton";
 import { useRouter } from "next/router";
+import { useUserAuth } from "@/components/userAuth";
 
 //Transport-metoder
 const travelOptions = [
-  { label: "Gange", iconSrc: "/images/travelForm/gange.svg" },
-  { label: "Sykkel", iconSrc: "/images/travelForm/sykkel.svg" },
-  { label: "Kollektivtransport", iconSrc: "/images/travelForm/kollektiv.svg" },
-  { label: "Samkjøring", iconSrc: "/images/travelForm/carpool.svg" },
+  { label: "Gange", value: "walking", iconSrc: "/images/travelForm/gange.svg" },
+  { label: "Sykkel", value: "cycling", iconSrc: "/images/travelForm/sykkel.svg" },
+  { label: "Kollektivtransport", value: "bus", iconSrc: "/images/travelForm/kollektiv.svg" },
+  { label: "Samkjøring", value: "car", iconSrc: "/images/travelForm/carpool.svg" },
 ];
 
 export default function TravelForm() {
+  const { userData } = useUserAuth();
     const router = useRouter();
     //Hent og sett adresse
-    const [selected, setSelected] = useState<string | null>(null);
+    const [selected, setSelected] = useState<{ label: string; value: string } | null>(null);
     const [address, setAddress] = useState("");
     //Feilmeldinger
     const [addressError, setAddressError] = useState("");
     const [transportError, setTransportError] = useState("");
 
+    const GetUser = async () => {
+      if (!userData?.accessToken) return;
+    
+      try {
+        const response = await fetch(
+          `https://bouvetapi-frbah7fhh5cjdpfy.swedencentral-01.azurewebsites.net/api/Profile/getUser`,
+          {
+            headers: {
+              Authorization: `Bearer ${userData.accessToken}`,
+            },
+          }
+        );
+    
+        if (!response.ok) {
+          throw new Error(`Feil ved henting av brukerdata: ${response.statusText}`);
+        }
+        const data = await response.json();
+        console.log("✅ Fetched user profile:", data);
+    
+        if (data.address) {
+          setAddress(data.address);
+        }
+      } catch (error) {
+        console.error("Feil ved henting av brukerdata:", error);
+      }
+    };
+
+    useEffect(() => {
+      if (userData?.accessToken) {
+        GetUser();
+      }
+    }, [userData?.accessToken]);
+    
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -45,30 +80,36 @@ export default function TravelForm() {
         if (hasError) return;
     
         try {
-          const response = await fetch("/api/travel", { //-----HUSK Å ENDRE-----
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              userId: "bruker123", //----Endre senere----
-              transportMode: 
-              selected, 
-              address,
-              timestamp: new Date().toISOString(),
-            }),
-          });
+          
+          if (!userData?.accessToken || !userData?.email) {
+            throw new Error("Mangler autentisering eller e-post.");
+          }          
+            const response = await fetch(`https://bouvetapi-frbah7fhh5cjdpfy.swedencentral-01.azurewebsites.net/api/transportEntry/upsert`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userData.accessToken}`,
+              },
+              body: JSON.stringify({
+                email: userData.email,           
+                startingAddress: address,        
+                method: selected?.value,                
+              }),
+            });
     
-          if (!response.ok) {
-            throw new Error("En feil har oppstått under registrering.");
-          }
-    
-          alert("Reise registrert!");
-        } catch (error) {
-          console.error("Feil ved innsending:", error);
-          alert("Klarte ikke å registrere turen. Prøv igjen senere.");
-        }
-      };
+            if (!response.ok) {
+              throw new Error(`Serverfeil: ${response.statusText}`);
+            }
+          
+            const result = await response.json();
+            console.log("✅ Registrering vellykket:", result);
+          
+            alert("Reise registrert!");
+            //router.push("/"); // optional redirect after success
+          } catch (error) {
+            console.error("Feil ved innsending:", error);
+            alert("Klarte ikke å registrere turen. Prøv igjen senere.");
+          }}
   
     return (
         <div className="flex flex-col items-center px-4">
@@ -93,14 +134,15 @@ export default function TravelForm() {
                     <label className="block font-semibold text-lg pb-2">Reisemåte</label>
                     
                     <div className="grid grid-cols-2 gap-4">
-                        {travelOptions.map(({ label, iconSrc }) => (
+                        {travelOptions.map(({ label, value, iconSrc }) => (
                         <TransportModeButton
                             key={label}
                             label={label}
+                            value={value}
                             icon={iconSrc}
-                            selected={selected === label}
-                            onClick={() => setSelected(label)}
-                        />
+                            selected={selected?.value === value}
+                            onClick={() => setSelected({ label, value })}
+                            />
                         ))}
                     </div>
                     {transportError && (
@@ -109,7 +151,7 @@ export default function TravelForm() {
                 </div>
 
                 {/*Registrer-knapp */}
-                    <div className="w-full mt-8">
+                    <div id="submit" className="w-full mt-8">
                         <PrimaryButton title="Registrer" type="submit"/>
                     </div>
             </form>
