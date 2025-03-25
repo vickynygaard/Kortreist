@@ -11,6 +11,9 @@ module.exports = {
 			customViolet: '#311687', //Mørk lilla farge #311687
 			customYellow: '#FFF8DA', //Lysegul farge #FFF8DA
 			customYellow2: '#FDF8F2', //Bakgrunnsfarge #FDF8F2
+			customOrange: '#FFC089', // Oransje farge  #FFC089
+			customGreen: '#1D8800', // Grønn farge  #1D8800
+			customRed: '#CE001A', // Rød farge  #CE001A
 		  },
 		},
 	  },

@@ -6,7 +6,7 @@ const Dashboard = () => {
 	
 	return (
 		<div className='flex flex-col w-full justify-center'>
-			
+			   
 			<main className='flex flex-col w-full gap-4 p-4'>
 				{/*Profil ----Ersatt med å hente fra API-----*/}
 					<DashboardHeader 

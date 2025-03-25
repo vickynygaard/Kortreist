@@ -33,7 +33,7 @@ export default function JoinTeamForm({
         onClick={onJoinTeam}
         disabled={!selectedTeam}
         className={`py-3 rounded-md text-white font-medium ${
-          selectedTeam ? "bg-[#1D8800]" : "bg-gray-400 cursor-not-allowed"
+          selectedTeam ? "bg-customGreen" : "bg-gray-400 cursor-not-allowed"
         }`}
       >
         Bli med i laget

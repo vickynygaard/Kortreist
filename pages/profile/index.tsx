@@ -1,13 +1,74 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Home, Users, Trophy, User, Coins, Leaf, ArrowLeft, Bus, Bike, Car, Crown, Flame, Globe, Clock, Settings, X } from "lucide-react";
+import { useUserAuth } from "@/components/userAuth";
+
+interface User {
+  userId: number;
+  name: string;
+  email: string;
+  nickName: string;
+  address: string;
+  totalScore: number;
+  companyId: number;
+}
 
 export default function Profile() {
   const [selectedStat, setSelectedStat] = useState<"co2" | "money">("co2");
   const [selectedBadge, setSelectedBadge] = useState<{ id: number; name: string; description: string; progress: number; total: number } | null>(null);
 
+  const {userData, loading, error } = useUserAuth();
+  const [fullUser, setFullUser] = useState<User | null>(null);
+  const [totalCo2Savings, setTotalCo2Savings] = useState<number | null>(null);
+  const [totalTravels, setTotalTravels] = useState<number | null>(null);
+
+
+  useEffect(() => {
+    if (!userData?.accessToken) return;
+    const fetchCo2Savings = async () => {
+      try {
+        const response = await fetch("https://bouvetapi-frbah7fhh5cjdpfy.swedencentral-01.azurewebsites.net/api/Profile/totalCo2", {
+          headers: {
+            Authorization: `Bearer ${userData.accessToken}`,
+          },
+        });
+        if (!response.ok) {
+          throw new Error("Error fetching CO₂ savings: " + response.statusText);
+        }
+        const data = await response.json();
+        setTotalCo2Savings(data.totalCo2Savings);
+      } catch (err) {
+        console.error("Failed to fetch CO₂ savings:", err);
+        console.log(userData)
+      }
+    };
+    fetchCo2Savings();
+  }, [userData?.accessToken]);
+
+  useEffect(() => {
+    if (!userData?.accessToken) return;
+    const fetchTravels = async () => {
+      try {
+        const response = await fetch("https://bouvetapi-frbah7fhh5cjdpfy.swedencentral-01.azurewebsites.net/api/Profile/totalTravels", {
+          headers: {
+            Authorization: `Bearer ${userData.accessToken}`,
+          },
+        });
+        if (!response.ok) {
+          throw new Error("Error fetching CO₂ savings: " + response.statusText);
+        }
+        const data = await response.json();
+        setTotalTravels(data.totalTravels);
+      } catch (err) {
+        console.error("Failed to fetch CO₂ savings:", err);
+        console.log(userData)
+      }
+    };
+    fetchTravels();
+  }, [userData?.accessToken]);
+
   const stats = {
-    co2: { value: 45, unit: "kg", label: "CO₂ spart" },
+    co2: { value: totalCo2Savings, unit: "kg", label: "CO₂ spart" },
     money: { value: 1200, unit: "kr", label: "Penger spart" },
   };
 
@@ -25,44 +86,44 @@ export default function Profile() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#FDF8F2] flex flex-col items-center">
+    <div className="fixed inset-0 overflow-y-auto bg-customYellow2 flex flex-col items-center">
       
-<div className="w-full px-4 p-8 flex items-center justify-between"> 
+<div className="w-full px-4 pt-8 p-4 flex items-center justify-between"> 
   
-  <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">Min Profil</h1>
+  <h1 className="text-2xl sm:text-2xl md:text-3xl font-semibold">Min Profil</h1>
 
   {/* Settings Ikon */}
-  <Link href="/settings" className="text-black hover:text-gray-800 dark:text-gray-300 dark:hover:text-white">
-    <Settings size={28} />
+  <Link href="/settings" className="text-black">
+    <Settings size={28} strokeWidth={2}/>
   </Link>
 </div>
 
 
         {/* Profile info boks */}
         <div className="w-full px-4">
-  <div className="w-full bg-[#FFF8DA] dark:bg-gray-800 p-4 rounded-lg flex flex-col shadow-md">
+  <div className="w-full bg-customYellow p-4 rounded-lg flex flex-col shadow-md">
           {/* Profilbilde og navn */}
           <div className="flex items-center gap-4">
             <img 
               src="https://www.w3schools.com/w3images/avatar2.png" 
               alt="Default Profile" 
-              className="w-16 h-16 rounded-full object-cover"
+              className="w-16 h-16 rounded-full object-cover border-2 border-customViolet"
             />
             <h2 className="text-lg font-semibold">Ola Nordmann</h2>
           </div>
 
           {/* Stats boks */}
-          <div className="flex justify-between w-full bg-[#FFC089] dark:bg-gray-700 rounded-lg p-3 mt-4 text-gray-600 dark:text-gray-300 text-sm">
+          <div className="flex justify-between w-full bg-customOrange rounded-lg p-3 mt-4 text-gray-600 text-sm">
             <div className="flex-1 text-center">
               <p className="text-lg font-semibold text-black">10 532</p>
               <p>Poeng</p>
             </div>
-            <div className="flex-1 text-center border-l border-[#FFF8DA]">
+            <div className="flex-1 text-center border-l border-customYellow">
               <p className="text-lg font-semibold text-black">10</p>
               <p>Utfordringer</p>
             </div>
-            <div className="flex-1 text-center border-l border-[#FFF8DA]">
-              <p className="text-lg font-semibold text-black">9</p>
+            <div className="flex-1 text-center border-l border-customYellow">
+              <p className="text-lg font-semibold text-black">{totalTravels}</p>
               <p>Reiser</p>
             </div>
           </div>
@@ -72,7 +133,7 @@ export default function Profile() {
       {/* CO₂ & penger spart */}
       <div className="w-full flex flex-col items-center mt-10 flex-1 justify-center">
         <div className="relative flex items-center justify-center w-36 h-36">
-          <div className="w-full h-full rounded-full border-8 border-[#5573CE]"></div>
+          <div className="w-full h-full rounded-full border-8 border-customViolet"></div>
           <div className="absolute flex flex-col items-center justify-center">
             <p className="text-xl font-semibold">{stats[selectedStat].value} {stats[selectedStat].unit}</p>
             <p className="text-gray-600 text-sm">{stats[selectedStat].label}</p>
@@ -80,16 +141,16 @@ export default function Profile() {
         </div>
 
         {/* Velg mellom - CO₂ & penger */}
-        <div className="flex w-[75%] max-w-xs justify-between bg-[#FFF8DA] dark:bg-gray-700 rounded-lg mt-4 p-2">
+        <div className="flex w-[75%] max-w-xs justify-between bg-customYellow rounded-lg mt-4 p-2">
           <button 
-            className={`flex-1 py-2 rounded-md flex items-center justify-center ${selectedStat === "co2" ? "bg-[#FFC089] text-white" : "text-gray-700 dark:text-gray-300"}`} 
+            className={`flex-1 py-2 rounded-md flex items-center justify-center ${selectedStat === "co2" ? "bg-customOrange text-white" : "text-gray-700"}`} 
             onClick={() => setSelectedStat("co2")}
           >
             <Leaf size={24} className="block" />
           </button>
 
           <button 
-            className={`flex-1 py-2 rounded-md flex items-center justify-center ${selectedStat === "money" ? "bg-[#FFC089] text-white" : "text-gray-700 dark:text-gray-300"}`} 
+            className={`flex-1 py-2 rounded-md flex items-center justify-center ${selectedStat === "money" ? "bg-customOrange text-white" : "text-gray-700"}`} 
             onClick={() => setSelectedStat("money")}
           >
             <Coins size={24} className="block" />
@@ -107,7 +168,7 @@ export default function Profile() {
           <button
            key={badge.id}
              className={`w-14 h-14 flex items-center justify-center rounded-lg cursor-pointer ${
-              badge.progress >= badge.total ? "bg-[#5573CE] text-white" : "bg-gray-300 text-gray-600"
+              badge.progress >= badge.total ? "bg-customViolet text-white" : "bg-gray-300 text-gray-600"
               }`}
                onClick={() => setSelectedBadge(badge)}
               >
@@ -122,13 +183,13 @@ export default function Profile() {
       {selectedBadge && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg text-center w-80 relative">
-            <button className="absolute top-4 right-4 text-gray-600 hover:text-gray-900" onClick={() => setSelectedBadge(null)}>
+            <button className="absolute top-4 right-4 text-gray-600" onClick={() => setSelectedBadge(null)}>
               <X size={24} />
             </button>
             <h3 className="font-semibold text-lg">{selectedBadge.name}</h3>
             <p className="text-gray-600">{selectedBadge.description}</p>
             <div className="w-full bg-gray-300 h-3 rounded-full mt-3">
-              <div className="bg-blue-500 h-3 rounded-full" style={{ width: `${((selectedBadge.progress / selectedBadge.total) * 100)}%` }}></div>
+              <div className="bg-customViolet h-3 rounded-full" style={{ width: `${((selectedBadge.progress / selectedBadge.total) * 100)}%` }}></div>
             </div>
             <p className="text-sm text-gray-700 mt-1">{selectedBadge.progress}/{selectedBadge.total} completed</p>
           </div>

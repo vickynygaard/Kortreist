@@ -26,7 +26,7 @@ export default function CreateTeamForm({
         onClick={onCreateTeam}
         disabled={!teamName.trim()}
         className={`py-3 rounded-md text-white font-medium ${
-          teamName.trim() ? "bg-[#1D3E75]" : "bg-gray-400 cursor-not-allowed"
+          teamName.trim() ? "bg-customViolet" : "bg-gray-400 cursor-not-allowed"
         }`}
       >
         Opprett lag

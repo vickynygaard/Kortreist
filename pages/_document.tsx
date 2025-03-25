@@ -16,7 +16,7 @@ export default function Document() {
 					media='(prefers-color-scheme: dark)'
 				/>
 				<meta name='theme-color' content='#f4f4f5' />
-				<link rel='apple-touch-icon' href='/images/Ikon512.png' />
+				<link rel='apple-touch-icon' href='/images/Ikon.png' />
 				<link rel='manifest' href='/manifest.json' />
 			</Head>
 			<body>
