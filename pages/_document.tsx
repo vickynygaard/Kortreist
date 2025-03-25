@@ -5,7 +5,7 @@ export default function Document() {
 		<Html lang='en'>
 			<Head>
 				<meta charSet='utf-8' />
-				<link rel='icon' type='image/png' href='images/Ikon.png' />
+				<link rel='icon' type='image/png' href={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/Ikon.png`} />
 				<meta
 					name='viewport'
 					content='width=device-width, initial-scale=1, user-scalable=0, viewport-fit=cover'
@@ -16,8 +16,8 @@ export default function Document() {
 					media='(prefers-color-scheme: dark)'
 				/>
 				<meta name='theme-color' content='#f4f4f5' />
-				<link rel='apple-touch-icon' href='images/Ikon.png' />
-				<link rel='manifest' href='/manifest.json' />
+				<link rel='apple-touch-icon' href={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/Ikon.png`} />
+				<link rel='manifest' href={`${process.env.NEXT_PUBLIC_BASE_PATH}/manifest.json`} />
 			</Head>
 			<body>
 				<Main />

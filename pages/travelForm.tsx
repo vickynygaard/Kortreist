@@ -6,13 +6,15 @@ import ReturnButton from "@/components/buttons/returnButton";
 import { useRouter } from "next/router";
 import { useUserAuth } from "@/components/userAuth";
 
-//Transport-metoder
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
 const travelOptions = [
-  { label: "Gange", value: "walking", iconSrc: "/images/travelForm/gange.svg" },
-  { label: "Sykkel", value: "cycling", iconSrc: "/images/travelForm/sykkel.svg" },
-  { label: "Kollektivtransport", value: "bus", iconSrc: "/images/travelForm/kollektiv.svg" },
-  { label: "Samkjøring", value: "car", iconSrc: "/images/travelForm/carpool.svg" },
+  { label: "Gange", value: "walking", iconSrc: `${basePath}/images/travelForm/gange.svg` },
+  { label: "Sykkel", value: "cycling", iconSrc: `${basePath}/images/travelForm/sykkel.svg` },
+  { label: "Kollektivtransport", value: "bus", iconSrc: `${basePath}/images/travelForm/kollektiv.svg` },
+  { label: "Samkjøring", value: "car", iconSrc: `${basePath}/images/travelForm/carpool.svg` },
 ];
+
 
 export default function TravelForm() {
   const { userData } = useUserAuth();
