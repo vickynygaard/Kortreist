@@ -40,8 +40,7 @@ const LoginButton: React.FC = () => {
     <div className="fixed inset-0 bg-customYellow2 overflow-hidden flex flex-col">
       {/* Content area, centered above the grass */}
       <div className="flex-1 flex flex-col items-center justify-center z-10">
-        <Image
-          src="./images/Logo.png"
+        <Image src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/Logo.png`}
           alt="Logo"
           width={120}
           height={120}
@@ -66,8 +65,8 @@ const LoginButton: React.FC = () => {
 
       {/* Grass image at the bottom */}
       <div className="w-full z-0">
-        <Image
-          src="./images/Grass.png"
+      <Image src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/Grass.png`}
+          
           alt="Scenery Illustration"
           width={850}
           height={303}

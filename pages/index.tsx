@@ -54,7 +54,7 @@ const Dashboard = () => {
 			<main className='flex flex-col w-full gap-4 p-4'>
 				{/*Profil ----Ersatt med å hente fra API-----*/}
 					<DashboardHeader 
-						profilePic="/images/Ikon.png"
+						profilePic={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/Ikon.png`}
 						name={user.name ?? "Bruker"}
 						points={user.totalScore?.toString() ?? "0"}
 						/>
@@ -86,7 +86,7 @@ const Dashboard = () => {
 			{/*Bakgrunnsbilde*/}
 			<footer className="absolute bottom-14 w-full h-40 md:h-80">
 				<Image
-				src="/images/scenery.png"
+				src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/scenery.png`}
 				alt="Illustrasjon av landskap med fabrikk og bygninger i bakgrunnen."
 				fill
 				className="absolute inset-0 -z-10 sm:object-scale-down md:object-cover"
