@@ -1,0 +1,33 @@
+{
+	"name": "Kortreist",
+	"short_name": "Kortreist",
+	"description": "A Progressive Web App for Bouvet",
+	"scope": "/Kortreist/",
+	"icons": [
+		{
+			"src": "/images/icon-192.png",
+			"type": "image/png",
+			"sizes": "192x192"
+		},
+		{
+			"src": "/images/icon-512.png",
+			"type": "image/png",
+			"sizes": "512x512"
+		},
+		{
+			"src": "/images/icon-maskable-192.png",
+			"type": "image/png",
+			"sizes": "192x192",
+			"purpose": "maskable"
+		},
+		{
+			"src": "/images/icon-maskable-512.png",
+			"type": "image/png",
+			"sizes": "512x512",
+			"purpose": "maskable"
+		}
+	],
+	"start_url": "/Kortreist/?source=pwa",
+	"orientation": "portrait",
+	"display": "standalone"
+}
