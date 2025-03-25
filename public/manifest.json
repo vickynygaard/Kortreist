@@ -1,7 +1,8 @@
 {
-	"name": "Rice Bowl",
-	"short_name": "Rice Bowl",
-	"description": "Fluffless jasmine rice for those cold winter nights",
+	"name": "Kortreist",
+	"short_name": "Kortreist",
+	"description": "A Progressive Web App for Bouvet",
+	"scope": "/Kortreist/",
 	"icons": [
 		{
 			"src": "/images/icon-192.png",
@@ -26,8 +27,7 @@
 			"purpose": "maskable"
 		}
 	],
-	"start_url": "/?source=pwa",
+	"start_url": "/Kortreist/?source=pwa",
 	"orientation": "portrait",
-	"display": "standalone",
-	"scope": "/"
+	"display": "standalone"
 }
