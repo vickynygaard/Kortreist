@@ -9,10 +9,10 @@ import { useUserAuth } from "@/components/userAuth";
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 const travelOptions = [
-  { label: "Gange", value: "walking", iconSrc: `${basePath}/images/travelForm/gange.svg` },
-  { label: "Sykkel", value: "cycling", iconSrc: `${basePath}/images/travelForm/sykkel.svg` },
-  { label: "Kollektivtransport", value: "bus", iconSrc: `${basePath}/images/travelForm/kollektiv.svg` },
-  { label: "Samkjøring", value: "car", iconSrc: `${basePath}/images/travelForm/carpool.svg` },
+  { label: "Gange", value: "walking", iconSrc: `${basePath}/images/travelForm/Gange.svg` },
+  { label: "Sykkel", value: "cycling", iconSrc: `${basePath}/images/travelForm/Sykkel.svg` },
+  { label: "Kollektivtransport", value: "bus", iconSrc: `${basePath}/images/travelForm/Kollektiv.svg` },
+  { label: "Samkjøring", value: "car", iconSrc: `${basePath}/images/travelForm/Carpool.svg` },
 ];
 
 
