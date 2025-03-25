@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+	.pb-safe {
+	  padding-bottom: env(safe-area-inset-bottom);
+	}
+	.p-safe {
+	  padding-bottom: env(safe-area-inset-bottom);
+	  padding-left: env(safe-area-inset-left);
+	  padding-right: env(safe-area-inset-right);
+	  padding-top: env(safe-area-inset-top);
+	}
+  }
+
 body {
 	@apply min-h-screen select-none bg-customYellow2 text-zinc-900 antialiased p-safe dark:bg-zinc-900 dark:text-zinc-50;
 
@@ -10,3 +22,44 @@ body {
 	-webkit-tap-highlight-color: transparent;
 	-webkit-touch-callout: none;
 }
+
+.touch-none {
+	touch-action: none; 
+  }
+  
+  .overscroll-contain {
+	overscroll-behavior: none; 
+  }
+
+  @layer utilities {
+    /* Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .no-scrollbar {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
+  }
+  .customScroll {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%; /* fallback if dvh is not supported */
+  }
+
+  *::-webkit-scrollbar {
+    display: none;
+  }
+
+  * {
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
+  }

@@ -21,7 +21,34 @@ export default function Profile() {
   const [fullUser, setFullUser] = useState<User | null>(null);
   const [totalCo2Savings, setTotalCo2Savings] = useState<number | null>(null);
   const [totalTravels, setTotalTravels] = useState<number | null>(null);
+  const [totalMoney, setTotalMoney] = useState<number | null>(null);
 
+  useEffect(() => {
+    if (!userData?.accessToken) return;
+  const GetUser = async () => {  
+    try {
+      const response = await fetch(
+        `https://bouvetapi-frbah7fhh5cjdpfy.swedencentral-01.azurewebsites.net/api/Profile/getUser`,
+        {
+          headers: {
+            Authorization: `Bearer ${userData.accessToken}`,
+          },
+        }
+      );
+  
+      if (!response.ok) {
+        throw new Error(`Feil ved henting av brukerdata: ${response.statusText}`);
+      }
+      const data = await response.json();
+      console.log("✅ Fetched user profile:", data);
+      setFullUser(data);
+      
+    } catch (error) {
+      console.error("Feil ved henting av brukerdata:", error);
+    }
+  };  
+  GetUser();
+}, [userData?.accessToken]);
 
   useEffect(() => {
     if (!userData?.accessToken) return;
@@ -43,6 +70,27 @@ export default function Profile() {
       }
     };
     fetchCo2Savings();
+  }, [userData?.accessToken]);
+  useEffect(() => {
+    if (!userData?.accessToken) return;
+    const fetchTotalMoney = async () => {
+      try {
+        const response = await fetch("https://bouvetapi-frbah7fhh5cjdpfy.swedencentral-01.azurewebsites.net/api/Profile/totalMoney", {
+          headers: {
+            Authorization: `Bearer ${userData.accessToken}`,
+          },
+        });
+        if (!response.ok) {
+          throw new Error("Error fetching CO₂ savings: " + response.statusText);
+        }
+        const data = await response.json();
+        setTotalMoney(data.totalMoneySaved);
+      } catch (err) {
+        console.error("Failed to fetch CO₂ savings:", err);
+        console.log(userData)
+      }
+    };
+    fetchTotalMoney();
   }, [userData?.accessToken]);
 
   useEffect(() => {
@@ -69,8 +117,8 @@ export default function Profile() {
 
   const stats = {
     co2: { value: totalCo2Savings, unit: "kg", label: "CO₂ spart" },
-    money: { value: 1200, unit: "kr", label: "Penger spart" },
-  };
+    money: { value: totalMoney !== null ? Math.floor(totalMoney) : 0, unit: "kr", label: "Penger spart" },
+  };  
 
   const badges = [
     { id: 1, icon: <Leaf size={24} />, bg: "bg-green-200", name: "Eco Warrior", description: "Use public transport or bike for 10 days.", progress: 7, total: 10 },
@@ -109,13 +157,17 @@ export default function Profile() {
               alt="Default Profile" 
               className="w-16 h-16 rounded-full object-cover border-2 border-customViolet"
             />
-            <h2 className="text-lg font-semibold">Ola Nordmann</h2>
+            <div className="flex flex-col">
+              <span className="text-lg font-semibold">{fullUser?.nickName ?? "Bruker"}</span>
+              <span className="text-sm text-gray-600">{fullUser?.name ?? ""}</span>
+            </div>
+
           </div>
 
           {/* Stats boks */}
           <div className="flex justify-between w-full bg-customOrange rounded-lg p-3 mt-4 text-gray-600 text-sm">
             <div className="flex-1 text-center">
-              <p className="text-lg font-semibold text-black">10 532</p>
+            <p className="text-lg font-semibold text-black">{fullUser?.totalScore ?? 0}</p>
               <p>Poeng</p>
             </div>
             <div className="flex-1 text-center border-l border-customYellow">

@@ -3,7 +3,7 @@ import LeaderboardItem from '@/components/leaderboard/leaderboardItem'
 import LeaderboardContainer from '@/components/leaderboard/leaderboardContainer';
 import LeaderboardMenu from '@/components/leaderboard/leaderboardMenu';
 
-const Leaderboard = () => {
+export default function Leaderboard() {
 
   return (
     <div className='flex flex-col w-full'>
@@ -20,5 +20,3 @@ const Leaderboard = () => {
     </div>
   );
 }
-
-export default Leaderboard;

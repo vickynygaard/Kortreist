@@ -1,15 +1,87 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { ArrowLeft } from "lucide-react";
 import { useMsal } from "@azure/msal-react";
+import { useUserAuth } from "@/components/userAuth";
 
+interface User {
+  userId: number;
+  name: string;
+  email: string;
+  address: string;
+  totalScore: number;
+  companyId: number;
+}
 
 export default function Settings() {
   const router = useRouter();
-  const [name, setName] = useState("Ola Nordmann");
   const [profilePicture, setProfilePicture] = useState<string | null>(null);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [showPointsInfo, setShowPointsInfo] = useState(false);
+  const [fullUser, setFullUser] = useState<User | null>(null);
+  const {userData, loading, error } = useUserAuth();
+  const [nickName, setNickName] = useState<string>("");
+
+
+  useEffect(() => {
+    if (!userData?.accessToken) return;
+  const GetUser = async () => {  
+    try {
+      const response = await fetch(
+        `https://bouvetapi-frbah7fhh5cjdpfy.swedencentral-01.azurewebsites.net/api/Profile/getUser`,
+        {
+          headers: {
+            Authorization: `Bearer ${userData.accessToken}`,
+          },
+        }
+      );
+  
+      if (!response.ok) {
+        throw new Error(`Feil ved henting av brukerdata: ${response.statusText}`);
+      }
+      const data = await response.json();
+      console.log("✅ Fetched user profile:", data);
+      
+      setFullUser(data);
+      setNickName(data.nickName || "");
+      
+    } catch (error) {
+      console.error("Feil ved henting av brukerdata:", error);
+    }
+  };  
+  GetUser();
+}, [userData?.accessToken]);
+
+
+const handleSaveNickname = async () => {
+  if (!userData?.accessToken) return;
+
+  try {
+    const response = await fetch(`https://bouvetapi-frbah7fhh5cjdpfy.swedencentral-01.azurewebsites.net/api/Users/updateProfile`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userData.accessToken}`,
+      },
+      body: JSON.stringify({
+        nickName: nickName,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Serverfeil: ${response.statusText}`);
+    }
+
+    const result = await response.json();
+    console.log("✅ Nickname updated:", result);
+    alert("Kallenavn oppdatert!");
+  } catch (err) {
+    console.error("❌ Feil ved oppdatering:", err);
+    alert("Klarte ikke å oppdatere kallenavn. Prøv igjen senere.");
+  }
+};
+
+
 
   // Håndterer Profilbilde opplastning 
   const handleProfilePictureChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,14 +138,20 @@ const handleLogout = () => {
       {/* Endre navn */}
       <div className="mt-6 w-full max-w-md">
         <label className="block text-gray-700 text-sm font-semibold mb-1">
-          Endre Navn:
+          Endre Kallenavn:
         </label>
         <input
           type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={nickName}
+          onChange={(e) => setNickName(e.target.value)}
           className="w-full max-w-md flex items-center justify-between p-4 bg-white rounded-lg shadow-md"
         />
+        <button
+        onClick={handleSaveNickname}
+        className="mt-2 px-4 py-2 bg-customViolet text-white rounded-md text-sm font-medium"
+      >
+        Lagre kallenavn
+      </button>
       </div>
        
       <div className="mt-6 w-full max-w-md flex items-center justify-between p-4 bg-white rounded-lg shadow-md">
