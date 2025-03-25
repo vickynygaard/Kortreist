@@ -86,7 +86,7 @@ const Dashboard = () => {
 			{/*Bakgrunnsbilde*/}
 			<footer className="absolute bottom-14 w-full h-40 md:h-80">
 				<Image
-				src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/scenery.png`}
+				src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/Scenery.png`}
 				alt="Illustrasjon av landskap med fabrikk og bygninger i bakgrunnen."
 				fill
 				className="absolute inset-0 -z-10 sm:object-scale-down md:object-cover"
