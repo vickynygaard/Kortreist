@@ -1,37 +1,57 @@
-import Page from '@/components/page'
-import Section from '@/components/section'
-import { AuthenticatedTemplate } from '@azure/msal-react'
+import DashboardButton from '@/components/buttons/dashboardButton'
+import DashboardHeader from '@/components/dashboard/dashboardHeader'
+import Image from 'next/image'
 
-const Index = () => (
-	<Page>
-		<Section>
-			<AuthenticatedTemplate>Du er logget inn</AuthenticatedTemplate>
-			<h2 className='text-xl font-semibold text-zinc-800 dark:text-zinc-200'>
-				Kortreist
-			</h2>
+const Dashboard = () => {
+	
+	return (
+		<div className='flex flex-col w-full justify-center'>
+			   
+			<main className='flex flex-col w-full gap-4 p-4'>
+				{/*Profil ----Ersatt med å hente fra API-----*/}
+					<DashboardHeader 
+						profilePic="/images/Ikon.png"
+						name='Frode'
+						points='73'
+					/>
 
-			<div className='mt-2'>
-				<p className='text-zinc-600 dark:text-zinc-400'>
-					Kortreistr{' '}
-					<span className='font-medium text-zinc-900 dark:text-zinc-50'>
-						Kortreist
-					</span>{' '}
-					Kortreist
-				</p>
+				{/*Tre hovedknapper*/}
+				<div className='flex flex-col gap-4 pt-4'>
+					<DashboardButton
+						href="travelForm"
+						image="images/RegistrerReise.svg"
+						title="Registrer reise"
+						description="Samle poeng for å reise bærekraftig til jobb"
+					/>
 
-				<br />
+					<DashboardButton
+						href="/team"
+						image="images/RegistrerReise.svg"
+						title="Ditt lag"
+						description="Se lagstatistikk, medlemmer..."
+					/>
 
-				<p className='text-sm text-zinc-600 dark:text-zinc-400'>
-					<a
-						href='https://github.com/mvllow/next-pwa-template'
-						className='underline'
-					>
-						Kortreist
-					</a>
-				</p>
-			</div>
-		</Section>
-	</Page>
-)
+					<DashboardButton
+						href="travelForm.tsx"
+						image="images/RegistrerReise.svg"
+						title="Ukens utfordringer"
+						description="Fullfør utfordringer for å samle poeng"
+					/>
+				</div>
+			</main>
 
-export default Index
+			{/*Bakgrunnsbilde*/}
+			<footer className="absolute bottom-14 w-full h-40 md:h-80">
+				<Image
+				src="/images/scenery.png"
+				alt="Illustrasjon av landskap med fabrikk og bygninger i bakgrunnen."
+				fill
+				className="absolute inset-0 -z-10 sm:object-scale-down md:object-cover"
+				/>
+			</footer>
+
+		</div>
+	);
+}
+
+export default Dashboard;
