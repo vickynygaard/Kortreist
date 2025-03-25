@@ -1,10 +1,10 @@
 export const msalConfig = {
     auth: {
-      clientId: "640cd4bc-39b6-425f-befb-3a7ac41eb14e", 
+      clientId: "8c273982-9bae-4667-8180-375d552c93ea", 
       authority: "https://bouvetB2Ctenant.b2clogin.com/bouvetB2Ctenant.onmicrosoft.com/B2C_1_SignUpSignIn",
       knownAuthorities: ["bouvetB2Ctenant.b2clogin.com"],
-      redirectUri: "https://vickynygaard.github.io/Kortreist/login/",
-      postLogoutRedirectUri: "https://vickynygaard.github.io/Kortreist/login/",
+      redirectUri: "https://vickynygaard.github.io/Kortreist/",
+      postLogoutRedirectUri: "https://vickynygaard.github.io/Kortreist/",
     },
     cache: {
       cacheLocation: "sessionStorage",
