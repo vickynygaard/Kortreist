@@ -39,4 +39,4 @@ Desktop.ini
 .vscode/
 
 #Msal
-msalConfig.js
+msal/msalConfig.local.js

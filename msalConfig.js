@@ -1,18 +1,7 @@
-export const msalConfig = {
-    auth: {
-      clientId: "640cd4bc-39b6-425f-befb-3a7ac41eb14e",
-      authority: "https://bouvetB2Ctenant.b2clogin.com/bouvetB2Ctenant.onmicrosoft.com/B2C_1_SignUpSignIn",
-      knownAuthorities: ["bouvetB2Ctenant.b2clogin.com"],
-      redirectUri: "http://localhost:3000/login",
-      postLogoutRedirectUri: "http://localhost:3000/login",
-    },
-    cache: {
-      cacheLocation: "sessionStorage",
-      storeAuthStateInCookie: false,
-    }
-  };
-  
-  export const loginRequest = {
-    scopes: ["openid", "profile", "email", "https://bouvetB2Ctenant.onmicrosoft.com/user_impersonation/user_impersonation" 
-  ]
-  };
+import { msalConfig as prodConfig, loginRequest as prodLogin } from "./msal/msalConfig.prod";
+import { msalConfig as localConfig, loginRequest as localLogin } from "./msal/msalConfig.local";
+
+const isDev = process.env.NODE_ENV === "development";
+
+export const msalConfig = isDev ? localConfig : prodConfig;
+export const loginRequest = isDev ? localLogin : prodLogin;
