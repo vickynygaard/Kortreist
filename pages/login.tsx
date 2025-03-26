@@ -4,18 +4,53 @@ import { loginRequest } from "../msalConfig";
 import Button from "../components/buttons/Button";
 import Image from "next/image";
 import router, { useRouter } from "next/router";
+import { useUserAuth } from "@/components/userAuth";
 
 const LoginButton: React.FC = () => {
-  const { instance, accounts, inProgress } = useMsal(); // ✅ <- include `accounts` here
+  const { userData } = useUserAuth();
+  const { instance, accounts, inProgress } = useMsal(); 
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
   useEffect(() => {
-    if (accounts.length > 0 && inProgress === "none") {
-      router.push("/"); // 👈 redirect to your home page
-    }
-  }, [accounts, inProgress, router]);
+    const tryUpsertAndRedirect = async () => {
+      if (!userData?.accessToken || inProgress !== "none") return;
+  
+      try {
+        const response = await fetch(
+          `https://bouvetapi-frbah7fhh5cjdpfy.swedencentral-01.azurewebsites.net/api/Users/upsert`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${userData.accessToken}`,
+            },
+            body: JSON.stringify({}),
+          }
+        );
+  
+        if (!response.ok) {
+          throw new Error(`Serverfeil: ${response.statusText}`);
+        }
+  
+        const result = await response.json();
+        console.log("✅ User upserted:", result);
+  
+        // 🔁 Check if profile is complete (optional)
+        if (!result.nickName || !result.profilePicture) {
+          router.push("/onboarding");
+        } else {
+          router.push("/");
+        }
+      } catch (err) {
+        console.error("❌ Feil ved oppdatering:", err);
+      }
+    };
+  
+    tryUpsertAndRedirect();
+  }, [userData?.accessToken, inProgress]);
+  
 
 
   const handleSignIn = async () => {

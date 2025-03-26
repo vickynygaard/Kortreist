@@ -1,7 +1,7 @@
 // useUserAuth.tsx
 import { useEffect, useState } from "react";
 import { useMsal } from "@azure/msal-react";
-import { loginRequest } from "../msalConfig";
+import { loginRequest } from "@/msalConfig";
 import { AccountInfo, InteractionRequiredAuthError } from "@azure/msal-browser";
 
 export interface TokenClaims {

@@ -9,6 +9,7 @@ interface User {
   email: string;
   nickName: string;
   address: string;
+  profilePicture: string;
   totalScore: number;
   companyId: number;
 }
@@ -153,7 +154,7 @@ export default function Profile() {
           {/* Profilbilde og navn */}
           <div className="flex items-center gap-4">
             <img 
-              src="https://www.w3schools.com/w3images/avatar2.png" 
+              src={`/images/profile-pictures/${fullUser?.profilePicture || "avatar1.png"}`}
               alt="Default Profile" 
               className="w-16 h-16 rounded-full object-cover border-2 border-customViolet"
             />

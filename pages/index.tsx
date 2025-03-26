@@ -49,7 +49,7 @@ const Dashboard = () => {
 	  if (!user) return <div>Laster brukerdata...</div>;
 	
 	return (
-		<div className='flex flex-col w-full justify-center'>
+		<div className='flex flex-col w-full min-h-screen justify-between'>
 			   
 			<main className='flex flex-col w-full gap-4 p-4'>
 				{/*Profil ----Ersatt med å hente fra API-----*/}
@@ -84,15 +84,15 @@ const Dashboard = () => {
 				</div>
 			</main>
 			{/*Bakgrunnsbilde*/}
-			<footer className="absolute bottom-14 w-full h-40 md:h-80">
-				<Image
+			<footer className="relative w-full h-40 md:h-60 mt-auto">
+			<Image
 				src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/Scenery.png`}
 				alt="Illustrasjon av landskap med fabrikk og bygninger i bakgrunnen."
 				fill
-				className="absolute inset-0 -z-10 sm:object-scale-down md:object-cover"
-				/>
+				className="object-cover"
+				priority
+			/>
 			</footer>
-
 		</div>
 	);
 }

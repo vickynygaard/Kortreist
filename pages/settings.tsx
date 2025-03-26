@@ -4,23 +4,35 @@ import { ArrowLeft } from "lucide-react";
 import { useMsal } from "@azure/msal-react";
 import { useUserAuth } from "@/components/userAuth";
 
-interface User {
-  userId: number;
-  name: string;
-  email: string;
-  address: string;
-  totalScore: number;
-  companyId: number;
-}
+const availableAvatars = [
+  "avatar1.png",
+  "avatar2.png",
+  "avatar3.png",
+  "avatar4.png",
+  "avatar5.png",
+  "avatar6.png",
+  "avatar7.png",
+  "avatar8.png",
+  "avatar9.png",
+  "avatar10.png",
+  "avatar11.png",
+  "avatar12.png",
+  "avatar13.png",
+  "avatar14.png",
+  "avatar15.png",
+  "avatar16.png",
+];
+
 
 export default function Settings() {
   const router = useRouter();
+  const {instance} = useMsal();
   const [profilePicture, setProfilePicture] = useState<string | null>(null);
+  const [nickName, setNickName] = useState<string>("");
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [showPointsInfo, setShowPointsInfo] = useState(false);
-  const [fullUser, setFullUser] = useState<User | null>(null);
+  const [showAvatarModal, setShowAvatarModal] = useState(false);
   const {userData, loading, error } = useUserAuth();
-  const [nickName, setNickName] = useState<string>("");
 
 
   useEffect(() => {
@@ -42,8 +54,8 @@ export default function Settings() {
       const data = await response.json();
       console.log("✅ Fetched user profile:", data);
       
-      setFullUser(data);
       setNickName(data.nickName || "");
+      setProfilePicture(data.profilePicture || "");
       
     } catch (error) {
       console.error("Feil ved henting av brukerdata:", error);
@@ -65,7 +77,8 @@ const handleSaveNickname = async () => {
       },
       body: JSON.stringify({
         nickName: nickName,
-      }),
+        profilePicture: profilePicture, 
+      }),      
     });
 
     if (!response.ok) {
@@ -81,19 +94,6 @@ const handleSaveNickname = async () => {
   }
 };
 
-
-
-  // Håndterer Profilbilde opplastning 
-  const handleProfilePictureChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setProfilePicture(imageUrl);
-    }
-  };
-
-  const { instance } = useMsal();
-
 const handleLogout = () => {
   sessionStorage.removeItem("userUpserted");
   instance.logoutRedirect();
@@ -101,7 +101,9 @@ const handleLogout = () => {
 
 
   return (
-    <div className="fixed inset-0 overflow-y-auto bg-customYellow2 p-8 flex flex-col pb-24"> 
+<div className="min-h-screen bg-customYellow2 flex justify-center overflow-y-auto">
+
+<div className="w-full max-w-md flex flex-col">
       
       {/* Tilbakeknapp og tittel */}
       <div className="relative flex items-center justify-center mb-6">
@@ -116,24 +118,16 @@ const handleLogout = () => {
 </div>
 
 
-      {/* Profilbilde opplastning */}
-      <div className="flex flex-col items-center gap-3 mt-2">
-        <img
-          src={profilePicture || "https://www.w3schools.com/w3images/avatar2.png"} 
-          alt="Profile"
-          className="w-24 h-24 rounded-full object-cover border-2 border-customViolet"
-        />
-
-        <label className="cursor-pointer bg-customViolet text-white px-4 py-2 rounded-md text-sm transition">
-          Endre Profilbilde
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleProfilePictureChange}
-            className="hidden"
-          />
-        </label>
-      </div>
+      {/* Profilbilde */}
+      <div className="flex flex-col items-center justify-center mt-4">
+      <img
+        src={`/images/profile-pictures/${profilePicture || "avatar1.png"}`}
+        alt="Profile"
+        onClick={() => setShowAvatarModal(true)}
+        className="w-24 h-24 rounded-full object-cover border-2 border-customViolet cursor-pointer hover:opacity-80 transition"
+      />
+      <p className="text-sm text-gray-500 mt-1">Trykk for å endre bilde</p>
+    </div>
 
       {/* Endre navn */}
       <div className="mt-6 w-full max-w-md">
@@ -212,6 +206,47 @@ const handleLogout = () => {
                >
             Logg ut
           </button>
+          </div>
+
+          {showAvatarModal && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center px-2 py-4 justify-center"
+        onClick={(e) => {
+          if (e.target === e.currentTarget) {
+            setShowAvatarModal(false); // Close when clicking backdrop
+          }
+        }}
+      >
+    <div className="bg-white no-scrollbar overflow-y-auto overscroll-contain rounded-lg p-6 max-w-md max-h-[70vh] w-full shadow-lg">
+      <h2 className="text-lg font-semibold mb-4 text-center">Velg et profilbilde</h2>
+      <div className="grid grid-cols-4 gap-4">
+        {availableAvatars.map((avatar) => (
+          <img
+            key={avatar}
+            src={`/images/profile-pictures/${avatar}`}
+            alt={avatar}
+            onClick={() => {
+              setProfilePicture(avatar);
+              setShowAvatarModal(false); // Close modal
+            }}
+            className={`w-16 h-16 rounded-full cursor-pointer transition border-4 ${
+              profilePicture === avatar
+                ? "border-customViolet scale-110"
+                : "border-transparent hover:border-gray-400 hover:scale-105"
+            }`}
+          />
+        ))}
+      </div>
+      <button
+        onClick={() => setShowAvatarModal(false)}
+        className="mt-4 w-full bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 rounded"
+      >
+        Lukk
+      </button>
     </div>
+  </div>
+)}
+
+    </div>
+    
   );
 }

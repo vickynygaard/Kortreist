@@ -51,8 +51,8 @@ useEffect(() => {
 
       navigator.serviceWorker
         .register(swPath)
-        .then(() => console.log("✅ Service Worker Registered"))
-        .catch((err) => console.error("❌ Service Worker Registration Failed:", err));
+        .then(() => console.log("Service Worker Registered"))
+        .catch((err) => console.error("Service Worker Registration Failed:", err));
     }
 
     ReactModal.setAppElement('#__next');
