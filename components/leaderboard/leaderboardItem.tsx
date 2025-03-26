@@ -4,7 +4,7 @@ const LeaderboardItem = ({ nickName, score, rank, profilePicture }: { nickName: 
 
   <div className="flex items-center gap-4 flex-grow">
     <img
-      src={`/images/profile-pictures/${profilePicture || "avatar1.png"}`}
+      src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/profile-pictures/${profilePicture || "avatar1.png"}`}
       alt={nickName}
       className="w-10 h-10 rounded-full border-2 border-customViolet object-cover"
     />

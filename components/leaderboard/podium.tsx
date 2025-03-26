@@ -16,7 +16,7 @@ const Podium= ({ nickName, score, rank, profilePicture}: { nickName:string, scor
       {/* Avatar (floating effect) */}
       <div className="relative -mb-6 z-10">
         <img
-          src={`/images/profile-pictures/${profilePicture || "avatar1.png"}`}
+          src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/profile-pictures/${profilePicture || "avatar1.png"}`}
           alt={nickName}
           className={`w-16 h-16 rounded-full border-4 ${medalColors[rank]} object-cover bg-white`}
         />

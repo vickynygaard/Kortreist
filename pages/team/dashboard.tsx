@@ -109,7 +109,7 @@ export default function DashboardPage() {
                   className="flex flex-col items-center bg-customYellow p-4 rounded-lg w-32 flex-shrink-0 h-44"
                 >
                   <img
-                    src={`/images/profile-pictures/${member.profilePicture || "avatar1.png"}`}
+                    src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/profile-pictures/${member.profilePicture || "avatar1.png"}`}
                     alt={member.NickName}
                     className="w-14 h-14 rounded-full object-cover border-2 border-customViolet"
                   />

@@ -121,7 +121,7 @@ const handleLogout = () => {
       {/* Profilbilde */}
       <div className="flex flex-col items-center justify-center mt-4">
       <img
-        src={`/images/profile-pictures/${profilePicture || "avatar1.png"}`}
+        src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/profile-pictures/${profilePicture || "avatar1.png"}`}
         alt="Profile"
         onClick={() => setShowAvatarModal(true)}
         className="w-24 h-24 rounded-full object-cover border-2 border-customViolet cursor-pointer hover:opacity-80 transition"
@@ -222,7 +222,7 @@ const handleLogout = () => {
         {availableAvatars.map((avatar) => (
           <img
             key={avatar}
-            src={`/images/profile-pictures/${avatar}`}
+            src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/profile-pictures/${avatar || "avatar1.png"}`}
             alt={avatar}
             onClick={() => {
               setProfilePicture(avatar);
