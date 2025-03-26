@@ -154,7 +154,7 @@ export default function Profile() {
           {/* Profilbilde og navn */}
           <div className="flex items-center gap-4">
             <img 
-              src={`/images/profile-pictures/${fullUser?.profilePicture || "avatar1.png"}`}
+              src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/profile-pictures/${fullUser?.profilePicture || "avatar1.png"}`}
               alt="Default Profile" 
               className="w-16 h-16 rounded-full object-cover border-2 border-customViolet"
             />
