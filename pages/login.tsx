@@ -37,8 +37,7 @@ const LoginButton: React.FC = () => {
         const result = await response.json();
         console.log("✅ User upserted:", result);
   
-        // 🔁 Check if profile is complete (optional)
-        if (!result.nickName || !result.profilePicture) {
+        if (!result.isProfileComplete) {
           router.push("/onboarding");
         } else {
           router.push("/");
