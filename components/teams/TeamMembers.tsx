@@ -17,7 +17,7 @@ export default function TeamMembers({ teamMembers }: TeamMembersProps) {
       {teamMembers.map((member) => (
         <div key={member.id} className="flex items-center gap-4 p-3 bg-customYellow rounded-md">
           <img
-            src={member.profilePicture}
+            src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/profile-pictures/${member.profilePicture || "avatar1.png"}`}
             alt={member.name}
             className="w-12 h-12 rounded-full object-cover border-2 border-customViolet"
           />
