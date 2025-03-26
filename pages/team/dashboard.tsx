@@ -146,7 +146,7 @@ export default function DashboardPage() {
                 >
                 <div className="flex items-center gap-4">
                     <img
-                    src={`/images/profile-pictures/${member.profilePicture || "avatar1.png"}`}
+                    src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/profile-pictures/${member.profilePicture || "avatar1.png"}`}
                     alt={member.NickName}
                     className="w-12 h-12 rounded-full object-cover border-2 border-customViolet"
                     />
