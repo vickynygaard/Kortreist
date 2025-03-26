@@ -37,3 +37,6 @@ Desktop.ini
 
 # VSCode settings
 .vscode/
+
+#Msal
+msalConfig.js
