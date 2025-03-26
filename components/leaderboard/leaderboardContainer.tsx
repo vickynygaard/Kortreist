@@ -6,8 +6,9 @@ import { useUserAuth } from '../userAuth';
 interface User {
   rank: number;
   userId: number;
-  name: string;
+  nickName: string;
   totalScore: number;
+  profilePicture: string;
 }
 
 const LeaderboardContainer = () => {
@@ -31,6 +32,7 @@ const LeaderboardContainer = () => {
           throw new Error(`Error fetching users: ${response.statusText}`);
         }
         const data = await response.json();
+        console.log(data);
         const sorted = [...data].sort((a, b) => b.totalScore - a.totalScore);
         
         let currentRank = 1;
@@ -53,6 +55,7 @@ const LeaderboardContainer = () => {
         setRestOfBoard(sorted.slice(podiumWithRank.length));
         
         setUsers(data);
+        console.log(data);
       } catch (err) {
         console.error("Failed to fetch users:", err);
       }
@@ -66,10 +69,9 @@ const LeaderboardContainer = () => {
     if (!user) return null;
   
     return (
-      <Podium {...user} score={user.totalScore} />
+      <Podium {...user} score={user.totalScore} profilePicture={user.profilePicture} />
     );
   };
-
 
   return (
     <div className="flex flex-col">
@@ -92,8 +94,9 @@ const LeaderboardContainer = () => {
           <LeaderboardItem
             key={user.userId}
             rank={index + topThree.length + 1} // start after podium
-            name={user.name}
+            nickName={user.nickName}
             score={user.totalScore}
+            profilePicture={user.profilePicture}
           />
         ))}
           </div>

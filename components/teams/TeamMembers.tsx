@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 interface Member {
   id: number;
   name: string;
-  image: string;
+  profilePicture: string;
   points: number;
 }
 
@@ -17,7 +17,7 @@ export default function TeamMembers({ teamMembers }: TeamMembersProps) {
       {teamMembers.map((member) => (
         <div key={member.id} className="flex items-center gap-4 p-3 bg-customYellow rounded-md">
           <img
-            src={member.image}
+            src={member.profilePicture}
             alt={member.name}
             className="w-12 h-12 rounded-full object-cover border-2 border-customViolet"
           />
