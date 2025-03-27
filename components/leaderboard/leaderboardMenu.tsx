@@ -18,7 +18,7 @@ const MenuItem = ({href, title}: {href: string; title: string;}) => {
   }
   
   const LeaderboardMenu = () => (
-    <nav className="flex w-screen justify-center p-4 font-medium">
+    <nav className="flex w-full justify-center p-4 font-medium">
         <div className="flex w-full max-w-md justify-between">
             <MenuItem href="/leaderboard" title="Solo" />
             <MenuItem href="/leaderboard/team" title="Lag" />

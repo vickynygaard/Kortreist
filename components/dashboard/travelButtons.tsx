@@ -11,7 +11,7 @@ interface TransportModeProps {
 
 const TransportModeButton: React.FC<TransportModeProps> = ({icon, label, selected = false, onClick}) => {
     const baseButton =
-    "flex flex-col items-center justify-center gap-2 w-full aspect-[5/4] border-2 rounded-xl transition";
+    "flex flex-col items-center justify-center gap-2 w-full aspect-[5/4] bg-customYellow2 border-2 rounded-xl transition";
     const selectedButton = selected
     ? "border-violet-600 bg-violet-100"
     : "border-violet-900";

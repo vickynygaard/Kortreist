@@ -69,7 +69,7 @@ const [upserting, setUpserting] = useState(false);       // Post-login user setu
   };
 
   return (
-    <div className="fixed inset-0 bg-customYellow2 overflow-hidden flex flex-col">
+<div className="flex-1 flex flex-col items-center justify-start z-10 pt-20">
       {/* Content area, centered above the grass */}
       <div className="flex-1 flex flex-col items-center justify-center z-10">
         <Image src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/Logo.png`}
@@ -93,17 +93,6 @@ const [upserting, setUpserting] = useState(false);       // Post-login user setu
             className="border-customViolet text-white bg-customViolet w-60"
           />
         </div>
-      </div>
-
-      {/* Grass image at the bottom */}
-      <div className="w-full z-0">
-      <Image src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/Grass.png`}
-          
-          alt="Scenery Illustration"
-          width={850}
-          height={303}
-          className="w-full object-contain"
-        />
       </div>
     </div>
   );

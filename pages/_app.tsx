@@ -8,11 +8,48 @@ import { msalConfig } from "../msalConfig";
 import { PublicClientApplication } from '@azure/msal-browser'
 import { useIsAuthenticated, useMsal } from "@azure/msal-react";
 import { MsalProvider } from '@azure/msal-react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import ReactModal from "react-modal";
+import Page from '@/components/page'
+import Section from '@/components/section'
+import Footer from '@/components/footer'
 
 const msalInstance = new PublicClientApplication(msalConfig);
+
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter();
+  const [msalReady, setMsalReady] = useState(false);
+
+  useEffect(() => {
+    const initMsal = async () => {
+      try {
+        await msalInstance.initialize();
+        setMsalReady(true);
+      } catch (err) {
+        console.error("MSAL initialization failed:", err);
+      }
+    };
+
+    initMsal();
+  }, []);
+
+  if (!msalReady) {
+    return <div className="flex justify-center items-center h-screen">Laster inn ...</div>;
+  }
+
+  return (
+    <MsalProvider instance={msalInstance}>
+      <MainApp Component={Component} pageProps={pageProps} />
+    </MsalProvider>
+  );
+}
+
+type MainAppProps = {
+  Component: AppProps["Component"];
+  pageProps: AppProps["pageProps"];
+};
+
+function MainApp({ Component, pageProps }: MainAppProps) {
 
   const RequireAuth = ({ children }: { children: React.ReactNode }) => {
     const isAuthenticated = useIsAuthenticated();
@@ -20,18 +57,18 @@ export default function App({ Component, pageProps }: AppProps) {
     const router = useRouter();
   
     useEffect(() => {
-      // ✅ Don't redirect while MSAL is still handling loginRedirect or acquiring tokens
+      // Dont redirect when Msal is working
       if (inProgress === "none" && !isAuthenticated && router.pathname !== "/login") {
         router.replace("/login");
       }
     }, [isAuthenticated, inProgress, router]);
   
-    // ✅ Wait until MSAL is done before rendering protected content
+    // Wait for Msal
     if (inProgress !== "none") {
       return <div className="flex justify-center items-center h-screen">Loading...</div>;
     }
     
-    // ✅ If not authenticated and not on login page, don’t flash content
+    // If not logged in go /login
     if (!isAuthenticated && router.pathname !== "/login") {
       return null;
     }
@@ -62,22 +99,18 @@ useEffect(() => {
     if (isPWA) {
       // Use the safe-area inset for the bottom (if available)
       document.documentElement.style.setProperty('--bottom-offset', 'env(safe-area-inset-bottom)');
-      document.documentElement.style.setProperty('--app-bottom-padding', 'calc(4rem + env(safe-area-inset-bottom))');
-      document.documentElement.style.setProperty('--app-top-padding', 'calc(3rem + env(safe-area-inset-top))');    
+      document.documentElement.style.setProperty('--app-bottom-padding', 'calc(12rem + env(safe-area-inset-bottom))');
+      document.documentElement.style.setProperty('--app-top-padding', 'calc(1rem + env(safe-area-inset-top))');    
 
       return;
     } else {
       document.documentElement.style.setProperty('--bottom-offset', 'env(safe-area-inset-bottom)');
-      document.documentElement.style.setProperty('--app-bottom-padding', 'calc(4rem + env(safe-area-inset-bottom))');
-      document.documentElement.style.setProperty('--app-top-padding', 'calc(4rem + env(safe-area-inset-top))');    }
+      document.documentElement.style.setProperty('--app-bottom-padding', 'calc(15rem + env(safe-area-inset-bottom))');
+      document.documentElement.style.setProperty('--app-top-padding', 'calc(1rem + env(safe-area-inset-top))');    }
 
     // Detect if the user is in Safari
     const userAgent = window.navigator.userAgent.toLowerCase();
     const isSafari = userAgent.includes("safari") && !userAgent.includes("chrome");
-
-    if (isSafari && router.pathname !== "/install") {
-      router.replace("/install");
-    }
 
   }, []);
 
@@ -94,10 +127,10 @@ useEffect(() => {
 
 
 
-	const router = useRouter(); // ✅ Get the current route
-	const hideNavbarRoutes = ["/login"]; // ✅ Define routes to hide navbar
+	const router = useRouter(); 
+	const hideNavbarRoutes = ["/login"]; 
 
-	const showNavbar = !hideNavbarRoutes.includes(router.pathname); // ✅ Check if navbar should be shown
+	const showNavbar = !hideNavbarRoutes.includes(router.pathname); 
 
 	return (
 		<MsalProvider instance={msalInstance}>
@@ -111,23 +144,22 @@ useEffect(() => {
 		<ThemeProvider
 		attribute="class"
 		defaultTheme="light"
-		enableSystem={false} // <== Important: disables system preference
+		enableSystem={false} 
 		disableTransitionOnChange
 		>
     <RequireAuth>
-			<div
-    className="mx-auto max-w-screen-md overflow-y-auto px-safe sm:pb-0"
-    style={{
-      paddingTop: 'var(--app-top-padding)',
-      paddingBottom: 'var(--app-bottom-padding)',
-    }}
-  >
-			<Component {...pageProps} />
-			</div>
+      <Page>
+        <Section>
+      
+        <Component {...pageProps} />
+
+      </Section>
+      <Footer />
+      </Page>
       </RequireAuth>
 		</ThemeProvider>
       
-      {/* ✅ Only render the Navbar if showNavbar is true */}
+      {/* Only render the Navbar if showNavbar is true */}
 			{showNavbar && <Navbar />}
 		</>
 		</MsalProvider>

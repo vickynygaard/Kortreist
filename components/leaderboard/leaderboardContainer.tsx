@@ -89,7 +89,7 @@ const LeaderboardContainer = () => {
 
 
           {/*Resten av ledertavlen*/}
-          <div className="w-full max-h-[400px] overflow-y-auto bg-customYellow rounded-t-lg">
+          <div className="mt-4 w-full rounded-t-lg bg-customYellow2/50 backdrop-blur-md">
           {restOfBoard.map((user, index) => (
           <LeaderboardItem
             key={user.userId}
@@ -99,6 +99,7 @@ const LeaderboardContainer = () => {
             profilePicture={user.profilePicture}
           />
         ))}
+          
           </div>
     </div>
   );

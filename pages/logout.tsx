@@ -10,14 +10,14 @@ const Logout = () => {
   useEffect(() => {
     const logout = async () => {
       await instance.logoutRedirect({
-        postLogoutRedirectUri: "/login", // 👈 Redirect back to login after logout
+        postLogoutRedirectUri: "/login", 
       });
     };
 
     logout();
   }, [instance]);
 
-  return null; // Or a spinner if you want
+  return null; 
 };
 
 export default Logout;

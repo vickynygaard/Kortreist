@@ -68,7 +68,7 @@ export default function OnboardingPage() {
   }
 
   return (
-    <main className="fixed inset-0 bg-customYellow2 flex flex-col items-center px-4 pt-4 pb-24">
+    <main className="fixed inset-0 bg-customYellow2 flex flex-col items-center px-4">
       <div className="w-full max-w-xs sm:max-w-md flex flex-col gap-4 mt-16 text-center">
         <p className="text-lg sm:text-xl font-medium text-black">
           Du er ikke medlem av et lag:

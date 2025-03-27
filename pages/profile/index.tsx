@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Home, Users, Trophy, User, Coins, Leaf, ArrowLeft, Bus, Bike, Car, Crown, Flame, Globe, Clock, Settings, X } from "lucide-react";
 import { useUserAuth } from "@/components/userAuth";
+import Section from "@/components/section";
+import Page from "@/components/page";
 
 interface User {
   userId: number;
@@ -135,22 +137,21 @@ export default function Profile() {
   ];
 
   return (
-    <div className="fixed inset-0 overflow-y-auto bg-customYellow2 flex flex-col items-center">
-      
-<div className="w-full px-4 pt-8 p-4 flex items-center justify-between"> 
-  
-  <h1 className="text-2xl sm:text-2xl md:text-3xl font-semibold">Min Profil</h1>
-
-  {/* Settings Ikon */}
-  <Link href="/settings" className="text-black">
-    <Settings size={28} strokeWidth={2}/>
-  </Link>
-</div>
+    <div className="flex flex-col items-center">
+            
+       {/* Settings Ikon og Min Profil */}     
+      <div className="w-full px-4 flex text-center items-center justify-between"> 
+        <h1 className="text-2xl font-medium pb-4 text-center">Min Profil</h1>
+        {/* Settings Ikon */}
+        <Link href="/settings" className="text-black">
+          <Settings size={28} strokeWidth={2}/>
+        </Link>
+      </div>
 
 
         {/* Profile info boks */}
         <div className="w-full px-4">
-  <div className="w-full bg-customYellow p-4 rounded-lg flex flex-col shadow-md">
+        <div className="w-full bg-customYellow2 p-4 rounded-2xl flex flex-col border-2 border-violet-900">
           {/* Profilbilde og navn */}
           <div className="flex items-center gap-4">
             <img 
@@ -159,24 +160,24 @@ export default function Profile() {
               className="w-16 h-16 rounded-full object-cover border-2 border-customViolet"
             />
             <div className="flex flex-col">
-              <span className="text-lg font-semibold">{fullUser?.nickName ?? "Bruker"}</span>
+              <p className="text-lg font-semibold">{fullUser?.nickName ?? "Bruker"}</p>
               <span className="text-sm text-gray-600">{fullUser?.name ?? ""}</span>
             </div>
 
           </div>
 
           {/* Stats boks */}
-          <div className="flex justify-between w-full bg-customOrange rounded-lg p-3 mt-4 text-gray-600 text-sm">
-            <div className="flex-1 text-center">
-            <p className="text-lg font-semibold text-black">{fullUser?.totalScore ?? 0}</p>
+          <div className="flex justify-between w-full bg-customViolet rounded-2xl p-3 mt-4 text-gray-600 text-sm">
+            <div className="flex-1 text-center text-white">
+            <p className="text-lg font-semibold">{fullUser?.totalScore ?? 0}</p>
               <p>Poeng</p>
             </div>
-            <div className="flex-1 text-center border-l border-customYellow">
-              <p className="text-lg font-semibold text-black">10</p>
+            <div className="flex-1 text-center text-white border-l border-customYellow2">
+              <p className="text-lg font-semibold">10</p>
               <p>Utfordringer</p>
             </div>
-            <div className="flex-1 text-center border-l border-customYellow">
-              <p className="text-lg font-semibold text-black">{totalTravels}</p>
+            <div className="flex-1 text-center border-l text-white border-customYellow2">
+              <p className="text-lg font-semibold">{totalTravels}</p>
               <p>Reiser</p>
             </div>
           </div>
@@ -184,7 +185,7 @@ export default function Profile() {
         </div>
 
       {/* CO₂ & penger spart */}
-      <div className="w-full flex flex-col items-center mt-10 flex-1 justify-center">
+      <div className="w-full flex flex-col items-center mt-10 justify-center">
         <div className="relative flex items-center justify-center w-36 h-36">
           <div className="w-full h-full rounded-full border-8 border-customViolet"></div>
           <div className="absolute flex flex-col items-center justify-center">
@@ -194,16 +195,16 @@ export default function Profile() {
         </div>
 
         {/* Velg mellom - CO₂ & penger */}
-        <div className="flex w-[75%] max-w-xs justify-between bg-customYellow rounded-lg mt-4 p-2">
+        <div className="flex w-[75%] max-w-xs justify-between bg-customYellow2 rounded-2xl mt-4 p-2 border-2 border-violet-900">
           <button 
-            className={`flex-1 py-2 rounded-md flex items-center justify-center ${selectedStat === "co2" ? "bg-customOrange text-white" : "text-gray-700"}`} 
+            className={`flex-1 py-2 rounded-2xl flex items-center justify-center ${selectedStat === "co2" ? "bg-customViolet text-white" : "text-gray-700"}`} 
             onClick={() => setSelectedStat("co2")}
           >
             <Leaf size={24} className="block" />
           </button>
 
           <button 
-            className={`flex-1 py-2 rounded-md flex items-center justify-center ${selectedStat === "money" ? "bg-customOrange text-white" : "text-gray-700"}`} 
+            className={`flex-1 py-2 rounded-2xl flex items-center justify-center ${selectedStat === "money" ? "bg-customViolet text-white" : "text-gray-700"}`} 
             onClick={() => setSelectedStat("money")}
           >
             <Coins size={24} className="block" />
@@ -212,25 +213,32 @@ export default function Profile() {
       </div>
 
       {/* Badges */}
-      <div className="w-full px-4 mt-6 mb-20">
-        <h2 className="text-lg font-semibold mb-3">Badges</h2>
+      <div className="w-full px-4 mt-10">
+  <div className="bg-customYellow2 p-4 rounded-2xl border-2 border-violet-900">
+    <h2 className="text-lg font-semibold mb-3">Badges</h2>
 
-        {/* Badge layout */}
-        <div className="grid grid-cols-5 gap-3">
-        {badges.map((badge) => (
-          <button
-           key={badge.id}
-             className={`w-14 h-14 flex items-center justify-center rounded-lg cursor-pointer ${
-              badge.progress >= badge.total ? "bg-customViolet text-white" : "bg-gray-300 text-gray-600"
-              }`}
-               onClick={() => setSelectedBadge(badge)}
-              >
-          {badge.icon}
-          </button>
-         ))}
+    <div className="grid grid-cols-5 gap-3 place-items-center sm:grid-cols-5">
+      {badges.map((badge) => (
+        <button
+          key={badge.id}
+          className={`w-14 h-14 flex items-center justify-center border rounded-lg cursor-pointer ${
+            badge.progress >= badge.total
+              ? "bg-customViolet text-white"
+              : "bg-white/50 text-gray-700"
+          }`}
+          onClick={() => setSelectedBadge(badge)}
+        >
+          <span className="flex items-center justify-center w-full h-full">
+            {badge.icon}
+          </span>
+        </button>
+      ))}
+    </div>
+  </div>
+</div>
 
-        </div>
-      </div>
+
+    
 
       {/* Badge info */}
       {selectedBadge && (
