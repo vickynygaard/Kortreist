@@ -15,7 +15,7 @@
   }
 
 body {
-	@apply min-h-screen select-none bg-customYellow2 text-zinc-900 antialiased p-safe dark:bg-zinc-900 dark:text-zinc-50;
+	@apply select-none bg-customYellow2 text-zinc-900 antialiased p-safe;
 
 	/* PWA enhancements */
 	-webkit-overflow-scrolling: touch;
@@ -63,3 +63,6 @@ body {
     -ms-overflow-style: none; 
     scrollbar-width: none; 
   }
+
+
+  

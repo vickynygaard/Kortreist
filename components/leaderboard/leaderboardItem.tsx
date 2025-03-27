@@ -1,5 +1,5 @@
 const LeaderboardItem = ({ nickName, score, rank, profilePicture }: { nickName: string, score: number, rank: number, profilePicture: string; }) => (
-  <div className="flex items-center justify-between p-4 px-8 gap-4 border-b border-gray-500 bg-customYellow">
+  <div className="flex items-center justify-between p-4 px-8 gap-4 border-b border-gray-500 last:border-b-0">
   <span className="font-bold w-6 text-center">{rank}</span>
 
   <div className="flex items-center gap-4 flex-grow">

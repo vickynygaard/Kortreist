@@ -79,7 +79,7 @@ export default function OnboardingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-customYellow2 p-6 flex flex-col justify-center items-center">
+    <div className="bg-customYellow2 p-6 flex flex-col justify-center items-center">
       <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
         <h1 className="text-2xl font-semibold text-customViolet mb-6 text-center">
           Fullfør profilen din

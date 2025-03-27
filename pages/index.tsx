@@ -1,5 +1,6 @@
 import DashboardButton from '@/components/buttons/dashboardButton'
 import DashboardHeader from '@/components/dashboard/dashboardHeader'
+import Footer from '@/components/footer';
 import { UserData, useUserAuth } from '@/components/userAuth';
 import Image from 'next/image'
 import { useState, useEffect } from 'react';
@@ -49,7 +50,7 @@ const Dashboard = () => {
 	  if (!user) return <div>Laster brukerdata...</div>;
 	
 	return (
-		<div className='flex flex-col w-full min-h-screen justify-between'>
+		<div className='flex flex-col w-full justify-between'>
 			   
 			<main className='flex flex-col w-full gap-4 p-4'>
 				{/*Profil ----Ersatt med å hente fra API-----*/}
@@ -84,15 +85,7 @@ const Dashboard = () => {
 				</div>
 			</main>
 			{/*Bakgrunnsbilde*/}
-			<footer className="relative w-full h-40 md:h-60 mt-auto">
-			<Image
-				src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/Scenery.png`}
-				alt="Illustrasjon av landskap med fabrikk og bygninger i bakgrunnen."
-				fill
-				className="object-cover"
-				priority
-			/>
-			</footer>
+		<Footer />
 		</div>
 	);
 }

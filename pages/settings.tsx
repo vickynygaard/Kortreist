@@ -101,21 +101,20 @@ const handleLogout = () => {
 
 
   return (
-<div className="min-h-screen bg-customYellow2 flex justify-center overflow-y-auto">
-
-<div className="w-full max-w-md flex flex-col">
+    <div className="flex justify-center w-full">
+    <div className="w-full max-w-md flex flex-col mx-auto px-4">
       
       {/* Tilbakeknapp og tittel */}
       <div className="relative flex items-center justify-center mb-6">
-  <button
-    onClick={() => router.push("/profile")}
-    className="absolute left-0 text-black"
-  >
-    <ArrowLeft size={28} strokeWidth={2}/>
-  </button>
+      <button
+        onClick={() => router.push("/profile")}
+        className="absolute left-0 text-black"
+      >
+        <ArrowLeft size={28} strokeWidth={2}/>
+      </button>
 
-  <h1 className="text-2xl font-semibold text-black">Innstillinger</h1>
-</div>
+      <h1 className="text-2xl font-semibold text-black">Innstillinger</h1>
+    </div>
 
 
       {/* Profilbilde */}

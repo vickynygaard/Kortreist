@@ -31,7 +31,11 @@ const Podium= ({ nickName, score, rank, profilePicture}: { nickName:string, scor
       </div>
 
       {/* Name below or above depending on spacing */}
-      <span className="mt-2 text-center text-sm font-medium">{nickName}</span>
+      <div className="mt-2 h-8 w-full px-1 text-center">
+      <span className="text-base font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-violet-600 line-clamp-2 leading-tight break-words">
+        {nickName}
+      </span>
+    </div>
     </div>
   );
 };
