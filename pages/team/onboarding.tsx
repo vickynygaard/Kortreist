@@ -5,12 +5,15 @@ import JoinTeamForm from "../../components/teams/JoinTeamForm";
 import { useRouter } from "next/router";
 import { useUserAuth } from "@/components/userAuth";
 
-type Team = { name: string; teamId: number };
+type Team = { 
+  name: string; 
+  teamId: number; 
+  memberCount: number; // ensure your API returns this
+};
 
 export default function OnboardingPage() {
   const [step, setStep] = useState<"" | "create" | "join">("");
   const [teamName, setTeamName] = useState("");
-  const [selectedTeam, setSelectedTeam] = useState("");
   const [existingTeams, setExistingTeams] = useState<Team[]>([]);
   const [loadingTeams, setLoadingTeams] = useState(true);
   const router = useRouter();
@@ -36,8 +39,9 @@ export default function OnboardingPage() {
         }
 
         const teams = await response.json(); // full team list
-        setExistingTeams(teams); // no mapping to strings
-    } catch (error) {
+        console.log(teams);
+        setExistingTeams(teams); // assuming each team has { teamId, name, memberCount }
+      } catch (error) {
         console.error("Feil ved henting av lag:", error);
       } finally {
         setLoadingTeams(false);
@@ -68,14 +72,18 @@ export default function OnboardingPage() {
   }
 
   return (
-    <main className="fixed inset-0 bg-customYellow2 flex flex-col items-center px-4">
-      <div className="w-full max-w-xs sm:max-w-md flex flex-col gap-4 mt-16 text-center">
+    <main className="flex flex-col items-center px-4">
+      <div className="w-full text-center text-2xl font-medium pb-4">
+        <h1>Velg et Lag</h1>
+      </div>
+
+      <div className="w-full max-w-xs sm:max-w-md flex flex-col gap-4 mt-6 text-center">
         <p className="text-lg sm:text-xl font-medium text-black">
           Du er ikke medlem av et lag:
         </p>
 
         {step === "" && (
-          <TeamOptions onCreate={() => setStep("create")} onJoin={() => setStep("join")} />
+          <TeamOptions onCreate={() => setStep("create")} />
         )}
 
         {step === "create" && (
@@ -85,19 +93,15 @@ export default function OnboardingPage() {
             accessToken={userData.accessToken}
             onCreateTeam={handleSuccess}
             onBack={() => setStep("")}
-          />
-        )}
-
-        {step === "join" && (
-          <JoinTeamForm
-            selectedTeam={selectedTeam}
-            setSelectedTeam={setSelectedTeam}
+            />
+            )}
+            
+            <JoinTeamForm
             existingTeams={existingTeams}
             accessToken={userData.accessToken}
             onJoinTeam={handleSuccess}
             onBack={() => setStep("")}
           />
-        )}
       </div>
     </main>
   );
