@@ -43,7 +43,7 @@ export default function TravelForm() {
           throw new Error(`Feil ved henting av brukerdata: ${response.statusText}`);
         }
         const data = await response.json();
-        console.log("✅ Fetched user profile:", data);
+        console.log("Fetched user profile:", data);
     
         if (data.address) {
           setAddress(data.address);
@@ -104,10 +104,10 @@ export default function TravelForm() {
             }
           
             const result = await response.json();
-            console.log("✅ Registrering vellykket:", result);
+            console.log("Registrering vellykket:", result);
           
             alert("Reise registrert!");
-            //router.push("/"); // optional redirect after success
+            router.push("/?test:1");
           } catch (error) {
             console.error("Feil ved innsending:", error);
             alert("Klarte ikke å registrere turen. Prøv igjen senere.");

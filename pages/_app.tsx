@@ -2,7 +2,7 @@ import type { AppProps } from 'next/app'
 import { ThemeProvider } from 'next-themes'
 import Head from 'next/head'
 import Navbar from '@/components/navbar'
-import router, { useRouter } from 'next/router' // ✅ Import useRouter
+import router, { useRouter } from 'next/router' 
 import '@/styles/globals.css'
 import { msalConfig } from "../msalConfig";
 import { PublicClientApplication } from '@azure/msal-browser'
@@ -13,6 +13,7 @@ import ReactModal from "react-modal";
 import Page from '@/components/page'
 import Section from '@/components/section'
 import Footer from '@/components/footer'
+import { UserProfileProvider } from '@/components/UserProfileContext'
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
@@ -128,7 +129,7 @@ useEffect(() => {
 
 
 	const router = useRouter(); 
-	const hideNavbarRoutes = ["/login"]; 
+	const hideNavbarRoutes = ["/login", "/onboarding"]; 
 
 	const showNavbar = !hideNavbarRoutes.includes(router.pathname); 
 
@@ -148,6 +149,7 @@ useEffect(() => {
 		disableTransitionOnChange
 		>
     <RequireAuth>
+    <UserProfileProvider>
       <Page>
         <Section>
       
@@ -156,6 +158,7 @@ useEffect(() => {
       </Section>
       <Footer />
       </Page>
+      </UserProfileProvider>
       </RequireAuth>
 		</ThemeProvider>
       

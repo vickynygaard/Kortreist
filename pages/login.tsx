@@ -36,7 +36,7 @@ const [upserting, setUpserting] = useState(false);       // Post-login user setu
         if (!response.ok) throw new Error(`Serverfeil: ${response.statusText}`);
   
         const result = await response.json();
-        console.log("✅ User upserted:", result);
+        console.log("User upserted:", result);
   
         router.push(result.isProfileComplete ? "/" : "/onboarding");
       } catch (err) {
@@ -47,7 +47,7 @@ const [upserting, setUpserting] = useState(false);       // Post-login user setu
     };
   
     tryUpsertAndRedirect();
-  }, [userData?.accessToken, inProgress, upserting]);
+  }, [userData?.accessToken, inProgress]);
 
 
   const handleSignIn = async () => {

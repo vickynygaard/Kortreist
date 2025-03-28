@@ -37,7 +37,7 @@ const Dashboard = () => {
 			}
 	
 			const data = await response.json();
-			console.log("✅ Brukerdata hentet:", data);
+			console.log("Brukerdata hentet:", data);
 			setUser(data);
 		  } catch (error) {
 			console.error("❌ Feil ved henting av brukerdata:", error);
@@ -77,15 +77,13 @@ const Dashboard = () => {
 					/>
 
 					<DashboardButton
-						href="travelForm.tsx"
+						href="challenges"
 						image="images/RegistrerReise.svg"
 						title="Ukens utfordringer"
 						description="Fullfør utfordringer for å samle poeng"
 					/>
 				</div>
 			</main>
-			{/*Bakgrunnsbilde*/}
-		<Footer />
 		</div>
 	);
 }
