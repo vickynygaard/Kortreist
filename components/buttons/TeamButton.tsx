@@ -17,7 +17,7 @@ const TeamButton: React.FC<TeamButtonProps> = ({
 }) => {
   const baseStyles =
     "py-3 px-4 w-full sm:w-auto flex-grow rounded-md font-medium flex items-center justify-center gap-2 whitespace-nowrap"; 
-    // ✅ `w-full` makes button stretch on small screens, `sm:w-auto` keeps it adaptable
+    // `w-full` makes button stretch on small screens, `sm:w-auto` keeps it adaptable
 
   const variants = {
     primary: "bg-customViolet text-white",

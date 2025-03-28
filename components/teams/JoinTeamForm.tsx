@@ -69,9 +69,9 @@ export default function JoinTeamForm({
           </div>
           <button
             onClick={() => handleJoin(team.teamId)}
-            disabled={isLoading}
+            disabled={isLoading || team.memberCount >= 5}
             className={`w-full py-2 mt-4 rounded-md text-white font-medium ${
-              !isLoading
+              !isLoading && team.memberCount < 5
                 ? "bg-customGreen hover:bg-green-600"
                 : "bg-gray-400 cursor-not-allowed"
             }`}
