@@ -87,7 +87,7 @@ useEffect(() => {
     if (!userData?.accessToken) return;
     const fetchtotalChallenges = async () => {
       try {
-        const response = await fetch("http://localhost:5279/api/Profile/completedcount", {
+        const response = await fetch("https://bouvetapi-frbah7fhh5cjdpfy.swedencentral-01.azurewebsites.net/api/Profile/completedcount", {
           headers: {
             Authorization: `Bearer ${userData.accessToken}`,
           },
