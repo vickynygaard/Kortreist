@@ -112,7 +112,7 @@ export default function OnboardingPage() {
       console.log("Brukerdata oppdatert");
       router.push("/");
     } catch (err) {
-      console.error("❌ Feil under lagring:", err);
+      console.error("Feil under lagring:", err);
       alert("Noe gikk galt. Prøv igjen.");
     } finally {
       setLoading(false);
