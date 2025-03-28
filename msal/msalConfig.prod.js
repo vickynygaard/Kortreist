@@ -7,7 +7,7 @@ export const msalConfig = {
       postLogoutRedirectUri: "https://vickynygaard.github.io/Kortreist/login/",
     },
     cache: {
-      cacheLocation: "sessionStorage",
+      cacheLocation: "localStorage",
       storeAuthStateInCookie: false,
     }
   };
