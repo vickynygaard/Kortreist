@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useUserAuth } from "@/components/userAuth";
 import { useRouter } from "next/router";
-import AddressAutocomplete from "@/components/AddressAutocomplete";
+import AddressAutocomplete from "@/components/addressAutocomplete";
 
 interface Company {
   companyId: number;
