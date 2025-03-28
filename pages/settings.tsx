@@ -3,7 +3,8 @@ import { useRouter } from "next/router";
 import { ArrowLeft } from "lucide-react";
 import { useMsal } from "@azure/msal-react";
 import { useUserAuth } from "@/components/userAuth";
-import AddressAutocomplete from "@/components/AddressAutocomplete";
+import AddressAutocomplete from "@/components/addressAutocomplete";
+
 
 const availableAvatars = [
   "avatar1.png",
