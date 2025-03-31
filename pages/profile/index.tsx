@@ -161,21 +161,31 @@ function getIconForAchievement(name: string) {
         </div>
 
         {/* Velg mellom - CO₂ & penger */}
-        <div className="flex w-[75%] max-w-xs justify-between bg-customYellow2 rounded-2xl mt-4 p-2 border-2 border-violet-900">
-          <button 
-            className={`flex-1 py-2 rounded-2xl flex items-center justify-center ${selectedStat === "co2" ? "bg-customViolet text-white" : "text-gray-700"}`} 
-            onClick={() => setSelectedStat("co2")}
-          >
-            <Leaf size={24} className="block" />
-          </button>
+        <div className="flex w-[75%] max-w-xs items-center justify-center space-x-2 bg-customYellow2 rounded-2xl mt-4 p-2 border-2 border-violet-900">
+        <button
+          className={`flex-1 py-2 rounded-2xl flex items-center justify-center ${
+            selectedStat === "co2" ? "bg-green-500" : "bg-gray-200"
+          }`}
+          onClick={() => setSelectedStat("co2")}
+        >
+          <Leaf
+            size={24}
+            className={`${selectedStat === "co2" ? "text-white" : "text-green-500"}`}
+          />
+        </button>
 
-          <button 
-            className={`flex-1 py-2 rounded-2xl flex items-center justify-center ${selectedStat === "money" ? "bg-customViolet text-white" : "text-gray-700"}`} 
-            onClick={() => setSelectedStat("money")}
-          >
-            <Coins size={24} className="block" />
-          </button>
-        </div>
+        <button
+          className={`flex-1 py-2 rounded-2xl flex items-center justify-center ${
+            selectedStat === "money" ? "bg-yellow-500" : "bg-gray-200"
+          }`}
+          onClick={() => setSelectedStat("money")}
+        >
+          <Coins
+            size={24}
+            className={`${selectedStat === "money" ? "text-white" : "text-yellow-500"}`}
+          />
+        </button>
+      </div>
       </div>
 
       {/* Badges */}

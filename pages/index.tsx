@@ -1,6 +1,5 @@
 import DashboardButton from '@/components/buttons/dashboardButton';
 import DashboardHeader from '@/components/dashboard/dashboardHeader';
-import Footer from '@/components/footer';
 import { useUserAuth } from '@/components/userAuth';
 import CustomSpinner from '@/components/dashboard/customSpinner';
 import { useApi } from '@/hooks/useApi';
@@ -12,6 +11,7 @@ interface User {
   totalScore: number;
   companyId: number;
   nickName: string;
+  profilePicture: string;
 }
 
 const Dashboard = () => {
@@ -45,7 +45,7 @@ const Dashboard = () => {
     <div className="flex flex-col w-full justify-between">
       <main className="flex flex-col w-full gap-4 p-4">
         <DashboardHeader 
-          profilePic={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/Ikon.png`}
+          profilePic={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/profile-pictures/${user?.profilePicture}`}
           name={user?.name ?? "Bruker"}
           points={user?.totalScore?.toString() ?? "0"}
         />
@@ -70,7 +70,6 @@ const Dashboard = () => {
           />
         </div>
       </main>
-      <Footer />
     </div>
   );
 };

@@ -78,11 +78,12 @@ function MainApp({ Component, pageProps }: MainAppProps) {
   
     // Wait for Msal
     if (inProgress !== "none" || userLoading) {
+      const loadingMessage = !isAuthenticated ? "Logger inn..." : "Laster inn...";
       return (
         <div className="flex justify-center items-center h-screen">
           <div className="flex flex-col items-center space-y-4">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-customViolet"></div>
-            <p className="text-customViolet text-lg">Logger inn...</p>
+            <p className="text-customViolet text-lg">{loadingMessage}</p>
           </div>
         </div>
       );

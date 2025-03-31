@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { useUserAuth } from "@/components/userAuth";
 import ReturnButton from "@/components/buttons/returnButton";
-import Challenge from "../components/dashboard/challenge";
+import Challenge from "@/components/dashboard/challenge";
 import CustomSpinner from "@/components/dashboard/customSpinner";
 import { useApi } from "@/hooks/useApi";
+import ConfirmationModal from "@/components/modalConfirm";
 
 interface UserChallenge {
   challengeId: number;
@@ -29,6 +30,10 @@ const ChallengePage: React.FC = () => {
 
   const [loadingChallengeId, setLoadingChallengeId] = useState<number | null>(null);
 
+  // State to track which custom challenge needs confirmation
+  const [confirmChallengeId, setConfirmChallengeId] = useState<number | null>(null);
+
+
   const handleCustomChallengeCompletion = async (challengeId: number) => {
     setLoadingChallengeId(challengeId);
     const response = await fetch(
@@ -44,7 +49,6 @@ const ChallengePage: React.FC = () => {
     );
 
     if (!response.ok) {
-      // Refresh challenge data using mutate
       console.log("Error completing custom challenge:", response);
   };
 
@@ -105,6 +109,7 @@ const ChallengePage: React.FC = () => {
                 : challenge.requiredCount!
             }
             challengeType={challenge.type}
+            challengePoints={challenge.points}
           />
           {challenge.method === "custom" &&
             challenge.requiredCount !== undefined &&
@@ -112,7 +117,7 @@ const ChallengePage: React.FC = () => {
               <button
                 disabled={loadingChallengeId === challenge.challengeId}
                 className="mt-2 px-4 py-2 rounded bg-violet-700 text-white hover:bg-violet-800"
-                onClick={() => handleCustomChallengeCompletion(challenge.challengeId)}
+                onClick={() => setConfirmChallengeId(challenge.challengeId)}
               >
                 {loadingChallengeId === challenge.challengeId
                   ? "Registrerer..."
@@ -121,6 +126,19 @@ const ChallengePage: React.FC = () => {
             )}
         </div>
       ))}
+
+      {/* Confirm complete */}
+      {confirmChallengeId !== null && (
+        <ConfirmationModal
+          message="Er du sikker på at du vil fullføre denne aktiviteten?"
+          onConfirm={() => {
+            handleCustomChallengeCompletion(confirmChallengeId);
+            setConfirmChallengeId(null);
+          }}
+          onCancel={() => setConfirmChallengeId(null)}
+          confirmColor="green"
+        />
+      )}
     </div>
   );
 };
