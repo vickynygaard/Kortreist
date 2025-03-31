@@ -45,7 +45,11 @@ export default function OnboardingPage() {
         const data = await res.json();
         setCompanies(data);
       } catch (err) {
-        console.error("❌ Kunne ikke hente selskaper:", err);
+          return (
+            <div className="flex justify-center items-center h-screen">
+              <p>Her skjedde det noe galt, prøv å laste inn på nytt</p>
+            </div>
+          );
       }
     };
 
@@ -77,7 +81,11 @@ export default function OnboardingPage() {
       if (data.address) setAddress(data.address);
 
     } catch (error) {
-      console.error("Feil ved henting av brukerdata:", error);
+        return (
+          <div className="flex justify-center items-center h-screen">
+            <p>Her skjedde det noe galt, prøv å laste inn på nytt</p>
+          </div>
+        );
     }
   };  
   GetUser();
@@ -112,8 +120,11 @@ export default function OnboardingPage() {
       console.log("Brukerdata oppdatert");
       router.push("/");
     } catch (err) {
-      console.error("Feil under lagring:", err);
-      alert("Noe gikk galt. Prøv igjen.");
+        return (
+          <div className="flex justify-center items-center h-screen">
+            <p>Her skjedde det noe galt, prøv å laste inn på nytt</p>
+          </div>
+        );
     } finally {
       setLoading(false);
     }

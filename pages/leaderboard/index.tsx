@@ -5,6 +5,8 @@ import LeaderboardMenu from '@/components/leaderboard/leaderboardMenu';
 import Page from '@/components/page';
 import Section from '@/components/section';
 import Footer from '@/components/footer';
+import { useApi } from '@/hooks/useApi';
+
 
 export default function Leaderboard() {
 //BUG Can scroll on the side of the page

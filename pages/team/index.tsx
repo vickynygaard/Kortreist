@@ -29,7 +29,6 @@ export default function TeamIndex() {
           router.replace("/team/onboarding");
         }
       } catch (error) {
-        console.error("Feil ved henting av lag:", error);
         router.replace("/team/onboarding");
       } finally {
         setCheckingTeam(false);
