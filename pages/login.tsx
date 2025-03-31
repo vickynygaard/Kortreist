@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useMsal } from "@azure/msal-react";
-import { loginRequest } from "../msalConfig";
+import { loginRequest, signupRequest } from "../msalConfig";
 import Button from "../components/buttons/Button";
 import Image from "next/image";
 import router, { useRouter } from "next/router";
@@ -68,7 +68,18 @@ const [error, setError] = useState<string | null>(null);
   };
 
   const handleSignUp = async () => {
-    console.log("Create Account button clicked");
+    setIsLoading(true);
+    try {
+      await instance.loginRedirect({
+        ...signupRequest,
+        prompt: "login",
+      });
+    } catch (error) {
+      console.error("Signup error:", error);
+      setError("Kunne ikke opprette konto akkurat nå.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (error) {

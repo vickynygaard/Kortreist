@@ -16,3 +16,13 @@ export const msalConfig = {
     scopes: ["openid", "profile", "email", "https://bouvetB2Ctenant.onmicrosoft.com/user_impersonation/user_impersonation" 
   ]
   };
+
+  export const signupRequest = {
+    scopes: [
+      "openid",
+      "profile",
+      "email",
+      "https://bouvetB2Ctenant.onmicrosoft.com/user_impersonation/user_impersonation"
+    ],
+    authority: "https://bouvetB2Ctenant.b2clogin.com/bouvetB2Ctenant.onmicrosoft.com/B2C_1_SignUp"
+  };
