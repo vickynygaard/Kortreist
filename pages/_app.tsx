@@ -13,7 +13,6 @@ import ReactModal from "react-modal";
 import Page from '@/components/page'
 import Section from '@/components/section'
 import Footer from '@/components/footer'
-import { UserProfileProvider } from '@/components/UserProfileContext';
 import 'styles/nprogress.css';
 import NProgress from 'nprogress';
 import CustomSpinner from '@/components/dashboard/customSpinner'
