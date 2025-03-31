@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import TeamStats from "../../components/teams/TeamStats";
 import TeamMembers from "../../components/teams/TeamMembers";
 import { useUserAuth } from "@/components/userAuth";
-import Footer from "@/components/footer";
 import router from "next/router";
 import { useApi } from "@/hooks/useApi";
 import CustomSpinner from "@/components/dashboard/customSpinner";
+import ConfirmationModal from "@/components/modalConfirm";
 
 interface Team {
   teamId: number;
@@ -21,6 +21,7 @@ interface Team {
 
 export default function DashboardPage() {
   const [selectedPage, setSelectedPage] = useState("lagstatistikk");
+  const [showConfirm, setShowConfirm] = useState(false);
   const { userData, loading: authLoading } = useUserAuth();
 
   const { data: team, isLoading: apiLoading, error } = useApi<Team>(
@@ -29,7 +30,6 @@ export default function DashboardPage() {
     { refreshInterval: 30000 }
   );
 
-  // Combine loading states
   const isLoading = authLoading || apiLoading || !team;
 
   // Redirect to onboarding if team not found 
@@ -39,7 +39,6 @@ export default function DashboardPage() {
     }
   }, [error]);
 
-  // Map backend members for display
   const mappedMembers =
     team?.members.map((m) => ({
       id: m.userId,
@@ -51,30 +50,27 @@ export default function DashboardPage() {
     .sort((a, b) => b.points - a.points)
     .slice(0, 3);
 
-
-    if (isLoading) {
-      return (
-        <div className="flex justify-center items-center h-screen">
-          <CustomSpinner />
-        </div>
-      );
-    }
-    
-if (error) {
-  if (error.message.includes("404")) {
-    return null;
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <CustomSpinner />
+      </div>
+    );
   }
-  // Otherwise, show an error message.
+    
+  if (error) {
+    if (error.message.includes("404")) {
+      return null;
+    }
     return (
       <div className="flex justify-center items-center h-screen">
         <p>Her skjedde det noe galt, prøv å laste inn på nytt</p>
       </div>
     );
-}
+  }
 
-
-  const handleLeaveTeam = async () => {
-    if (!window.confirm("Er du sikker på at du vil forlate laget?")) return;
+  const confirmLeaveTeam = async () => {
+    setShowConfirm(false);
     if (!userData?.accessToken) return;
     try {
       const response = await fetch(
@@ -92,11 +88,7 @@ if (error) {
       }
       router.replace("/team");
     } catch (error) {
-        return (
-          <div className="flex justify-center items-center h-screen">
-            <p>Her skjedde det noe galt, prøv å laste inn på nytt</p>
-          </div>
-        );
+      console.error(error);
     }
   };
 
@@ -176,7 +168,7 @@ if (error) {
                 </p>
               </div>
               <button
-                onClick={handleLeaveTeam}
+                onClick={() => setShowConfirm(true)}
                 className="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-200 transition"
               >
                 Forlat Lag
@@ -214,7 +206,16 @@ if (error) {
           </main>
         )}
       </div>
-      <Footer />
+
+      {/* Confirm leave team */}
+      {showConfirm && (
+      <ConfirmationModal
+        message="Er du sikker på at du vil forlate laget?"
+        onConfirm={confirmLeaveTeam}
+        onCancel={() => setShowConfirm(false)}
+        confirmColor="red"
+      />
+    )}
     </div>
   );
 }

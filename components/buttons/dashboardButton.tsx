@@ -27,7 +27,10 @@ interface ButtonProps {
       </div>
 
       {/* Pil-ikon */}
-      <div className="row-span-2 flex items-center justify-center"><ArrowRight size={24} strokeWidth={2} /></div>
+      {/* Arrow Icon */}
+      <div className="row-span-2 flex items-center justify-center self-center justify-self-center">
+          <ArrowRight size={24} strokeWidth={2} />
+      </div>
     </button>
 
     );

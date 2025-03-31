@@ -4,7 +4,6 @@ import LeaderboardContainer from '@/components/leaderboard/leaderboardContainer'
 import LeaderboardMenu from '@/components/leaderboard/leaderboardMenu';
 import Page from '@/components/page';
 import Section from '@/components/section';
-import Footer from '@/components/footer';
 import { useApi } from '@/hooks/useApi';
 
 
@@ -20,8 +19,6 @@ export default function Leaderboard() {
       <LeaderboardMenu />
 
       <LeaderboardContainer />
-
-      <Footer />
     </div>
   );
 }
