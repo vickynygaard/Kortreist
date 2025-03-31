@@ -13,7 +13,13 @@ import ReactModal from "react-modal";
 import Page from '@/components/page'
 import Section from '@/components/section'
 import Footer from '@/components/footer'
-import { UserProfileProvider } from '@/components/UserProfileContext'
+import { UserProfileProvider } from '@/components/UserProfileContext';
+import 'styles/nprogress.css';
+import NProgress from 'nprogress';
+import CustomSpinner from '@/components/dashboard/customSpinner'
+import { Toaster } from 'react-hot-toast'
+import { useUserAuth } from '@/components/userAuth'
+
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
@@ -51,6 +57,13 @@ type MainAppProps = {
 };
 
 function MainApp({ Component, pageProps }: MainAppProps) {
+  const router = useRouter(); 
+	const hideNavbarRoutes = ["/login", "/onboarding"]; 
+	const showNavbar = !hideNavbarRoutes.includes(router.pathname); 
+  const [isRouteChanging, setIsRouteChanging] = useState(false);
+  const [isDataLoading, setIsDataLoading] = useState(false);
+  const { userData, loading: userLoading } = useUserAuth();
+
 
   const RequireAuth = ({ children }: { children: React.ReactNode }) => {
     const isAuthenticated = useIsAuthenticated();
@@ -65,8 +78,15 @@ function MainApp({ Component, pageProps }: MainAppProps) {
     }, [isAuthenticated, inProgress, router]);
   
     // Wait for Msal
-    if (inProgress !== "none") {
-      return <div className="flex justify-center items-center h-screen">Loading...</div>;
+    if (inProgress !== "none" || userLoading) {
+      return (
+        <div className="flex justify-center items-center h-screen">
+          <div className="flex flex-col items-center space-y-4">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-customViolet"></div>
+            <p className="text-customViolet text-lg">Logger inn...</p>
+          </div>
+        </div>
+      );
     }
     
     // If not logged in go /login
@@ -76,6 +96,23 @@ function MainApp({ Component, pageProps }: MainAppProps) {
   
     return <>{children}</>;
   };
+
+
+ useEffect(() => {
+    const handleStart = () => setIsRouteChanging(true);
+    const handleComplete = () => setIsRouteChanging(false);
+
+    router.events.on("routeChangeStart", handleStart);
+    router.events.on("routeChangeComplete", handleComplete);
+    router.events.on("routeChangeError", handleComplete);
+
+    return () => {
+      router.events.off("routeChangeStart", handleStart);
+      router.events.off("routeChangeComplete", handleComplete);
+      router.events.off("routeChangeError", handleComplete);
+    };
+  }, [router.events]);
+
   
 
 useEffect(() => {
@@ -126,13 +163,6 @@ useEffect(() => {
       };
     }, []);
 
-
-
-	const router = useRouter(); 
-	const hideNavbarRoutes = ["/login", "/onboarding"]; 
-
-	const showNavbar = !hideNavbarRoutes.includes(router.pathname); 
-
 	return (
 		<MsalProvider instance={msalInstance}>
 		<>
@@ -149,7 +179,8 @@ useEffect(() => {
 		disableTransitionOnChange
 		>
     <RequireAuth>
-    <UserProfileProvider>
+
+    {(isRouteChanging || isDataLoading) &&  <CustomSpinner />}
       <Page>
         <Section>
       
@@ -158,12 +189,14 @@ useEffect(() => {
       </Section>
       <Footer />
       </Page>
-      </UserProfileProvider>
+
       </RequireAuth>
 		</ThemeProvider>
       
       {/* Only render the Navbar if showNavbar is true */}
 			{showNavbar && <Navbar />}
+      <Toaster /> 
+
 		</>
 		</MsalProvider>
 	)

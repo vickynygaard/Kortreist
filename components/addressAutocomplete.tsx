@@ -21,11 +21,13 @@ interface AddressAutocompleteProps {
   // Return the "valid" address that user has selected
   selectedAddress: string;
   setSelectedAddress: (value: string) => void;
+  inputBgClass?: string;
 }
 
 export default function AddressAutocomplete({
   selectedAddress,
   setSelectedAddress,
+  inputBgClass = "bg-white", // default to white if not provided
 }: AddressAutocompleteProps) {
   const [typedAddress, setTypedAddress] = useState(selectedAddress);
   const [suggestions, setSuggestions] = useState<ORSFeature[]>([]);
@@ -113,7 +115,7 @@ export default function AddressAutocomplete({
           }}
           onFocus={() => setIsFocused(true)}
           onBlur={handleBlur}
-          className="w-full p-3 rounded border focus:outline-none focus:ring-2 focus:ring-customViolet"
+          className={`w-full p-3 rounded border ${inputBgClass} focus:outline-none focus:ring-2 focus:ring-customViolet`}
         />
         {typedAddress && (
           <button

@@ -7,10 +7,12 @@ import router, { useRouter } from "next/router";
 import { useUserAuth } from "@/components/userAuth";
 
 const LoginButton: React.FC = () => {
-  const { userData } = useUserAuth();
+  const { userData, loading } = useUserAuth();
   const { instance, accounts, inProgress } = useMsal(); 
   const [isLoading, setIsLoading] = useState(false);       // Login loading
 const [upserting, setUpserting] = useState(false);       // Post-login user setup
+const [error, setError] = useState<string | null>(null);
+
 
 
   const router = useRouter();
@@ -40,7 +42,8 @@ const [upserting, setUpserting] = useState(false);       // Post-login user setu
   
         router.push(result.isProfileComplete ? "/" : "/onboarding");
       } catch (err) {
-        console.error("❌ Feil ved oppdatering:", err);
+        console.error("Upsert error:", err);
+        setError("Her skjedde det noe galt, prøv å laste inn på nytt");
       } finally {
         setUpserting(false);
       }
@@ -67,6 +70,28 @@ const [upserting, setUpserting] = useState(false);       // Post-login user setu
   const handleSignUp = async () => {
     console.log("Create Account button clicked");
   };
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-red-600 text-lg">{error}</p>
+      </div>
+    );
+  }
+  
+
+  let loadingFull = loading || isLoading || upserting;
+
+  if (loadingFull) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-customViolet"></div>
+          <p className="text-customViolet text-lg">Logger inn...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
 <div className="flex-1 flex flex-col items-center justify-start z-10 pt-20">

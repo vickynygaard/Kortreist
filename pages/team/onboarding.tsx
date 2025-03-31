@@ -1,75 +1,50 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import TeamOptions from "../../components/teams/TeamOptions";
 import CreateTeamForm from "../../components/teams/CreateTeamForm";
 import JoinTeamForm from "../../components/teams/JoinTeamForm";
 import { useRouter } from "next/router";
 import { useUserAuth } from "@/components/userAuth";
+import { useApi } from "@/hooks/useApi";
+import CustomSpinner from "@/components/dashboard/customSpinner";
 
 type Team = { 
   name: string; 
   teamId: number; 
-  memberCount: number; // ensure your API returns this
+  memberCount: number;
 };
 
 export default function OnboardingPage() {
   const [step, setStep] = useState<"" | "create" | "join">("");
   const [teamName, setTeamName] = useState("");
-  const [existingTeams, setExistingTeams] = useState<Team[]>([]);
-  const [loadingTeams, setLoadingTeams] = useState(true);
   const router = useRouter();
-
   const { userData, loading, error } = useUserAuth();
 
-  useEffect(() => {
-    if (!userData?.accessToken) return;
+  const { data: existingTeams, isLoading: teamsLoading, error: teamsError } = useApi<Team[]>(
+    userData?.accessToken ? "/api/Team/company" : null,
+    userData?.accessToken,
+    { refreshInterval: 30000 }
+  );
 
-    const fetchTeams = async () => {
-      try {
-        const response = await fetch(
-          `https://bouvetapi-frbah7fhh5cjdpfy.swedencentral-01.azurewebsites.net/api/Team/company`,
-          {
-            headers: {
-              Authorization: `Bearer ${userData.accessToken}`,
-            },
-          }
-        );
+  // Combine loading states
+  if (loading || teamsLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <CustomSpinner />
+      </div>
+    );
+  }
 
-        if (!response.ok) {
-          throw new Error(`Feil ved henting av lag: ${response.statusText}`);
-        }
-
-        const teams = await response.json(); // full team list
-        console.log(teams);
-        setExistingTeams(teams); // assuming each team has { teamId, name, memberCount }
-      } catch (error) {
-        console.error("Feil ved henting av lag:", error);
-      } finally {
-        setLoadingTeams(false);
-      }
-    };
-
-    fetchTeams();
-  }, [userData?.accessToken]);
+  if (error || teamsError || !userData?.accessToken) {
+      return (
+        <div className="flex justify-center items-center h-screen">
+          <p>Her skjedde det noe galt, prøv å laste inn på nytt</p>
+        </div>
+      );
+  }
 
   const handleSuccess = () => {
     router.replace("/team/dashboard");
   };
-
-  if (loading || loadingTeams) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <p>Laster inn...</p>
-      </div>
-    );
-  }
-
-  if (error || !userData?.accessToken) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <p>Kunne ikke laste inn. Vennligst logg inn på nytt.</p>
-      </div>
-    );
-  }
 
   return (
     <main className="flex flex-col items-center px-4">
@@ -83,8 +58,16 @@ export default function OnboardingPage() {
         </p>
 
         {step === "" && (
+        <>
+          {existingTeams?.length === 0 ? (
+            <p>Det finnes ingen lag ennå. Du kan være den første til å lage ett!</p>
+          ) : (
+            <p>Velg et lag å bli med i, eller opprett ditt eget.</p>
+          )}
           <TeamOptions onCreate={() => setStep("create")} />
-        )}
+        </>
+      )}
+
 
         {step === "create" && (
           <CreateTeamForm
@@ -93,15 +76,15 @@ export default function OnboardingPage() {
             accessToken={userData.accessToken}
             onCreateTeam={handleSuccess}
             onBack={() => setStep("")}
-            />
-            )}
-            
-            <JoinTeamForm
-            existingTeams={existingTeams}
-            accessToken={userData.accessToken}
-            onJoinTeam={handleSuccess}
-            onBack={() => setStep("")}
           />
+        )}
+            
+        <JoinTeamForm
+          existingTeams={existingTeams || []}
+          accessToken={userData.accessToken}
+          onJoinTeam={handleSuccess}
+          onBack={() => setStep("")}
+        />
       </div>
     </main>
   );

@@ -20,11 +20,9 @@ export default function JoinTeamForm({
   onBack,
 }: JoinTeamFormProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
 
   const handleJoin = async (teamId: number) => {
     setIsLoading(true);
-    setErrorMsg("");
 
     try {
       const matchedTeam = existingTeams.find((team) => team.teamId === teamId);
@@ -49,8 +47,11 @@ export default function JoinTeamForm({
 
       onJoinTeam();
     } catch (error: any) {
-      console.error("Join team error:", error);
-      setErrorMsg(error.message || "Ukjent feil");
+        return (
+          <div className="flex justify-center items-center h-screen">
+            <p>Her skjedde det noe galt, prøv å laste inn på nytt</p>
+          </div>
+        );
     } finally {
       setIsLoading(false);
     }
@@ -80,7 +81,6 @@ export default function JoinTeamForm({
           </button>
         </div>
       ))}
-      {errorMsg && <p className="text-red-500 text-sm">{errorMsg}</p>}
     </div>
   );
 }

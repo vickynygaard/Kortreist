@@ -4,31 +4,35 @@ import { ArrowLeft } from "lucide-react";
 import { useMsal } from "@azure/msal-react";
 import { useUserAuth } from "@/components/userAuth";
 import AddressAutocomplete from "@/components/addressAutocomplete";
-
+import { useApi } from "@/hooks/useApi";
+import CustomSpinner from "@/components/dashboard/customSpinner";
+import toast from "react-hot-toast";
 
 const availableAvatars = [
-  "avatar1.png",
-  "avatar2.png",
-  "avatar3.png",
-  "avatar4.png",
-  "avatar5.png",
-  "avatar6.png",
-  "avatar7.png",
-  "avatar8.png",
-  "avatar9.png",
-  "avatar10.png",
-  "avatar11.png",
-  "avatar12.png",
-  "avatar13.png",
-  "avatar14.png",
-  "avatar15.png",
-  "avatar16.png",
+  "avatar1.png", "avatar2.png", "avatar3.png", "avatar4.png",
+  "avatar5.png", "avatar6.png", "avatar7.png", "avatar8.png",
+  "avatar9.png", "avatar10.png", "avatar11.png", "avatar12.png",
+  "avatar13.png", "avatar14.png", "avatar15.png", "avatar16.png",
 ];
+
+interface UserProfile {
+  nickName: string;
+  profilePicture: string | null;
+  address: string;
+}
 
 export default function Settings() {
   const router = useRouter();
   const { instance } = useMsal();
   const { userData } = useUserAuth();
+
+  // Use the unified API hook for fetching user profile data
+  const endpoint = userData?.accessToken ? "/api/Profile/getUser" : null;
+  const { data: fetchedProfile, isLoading, error } = useApi<UserProfile>(
+    endpoint,
+    userData?.accessToken,
+    { refreshInterval: 30000 }
+  );
 
   // Profile data states
   const [profilePicture, setProfilePicture] = useState<string | null>(null);
@@ -41,56 +45,33 @@ export default function Settings() {
   const [showAvatarModal, setShowAvatarModal] = useState(false);
 
   // Saving states
-  const [initialProfileData, setInitialProfileData] = useState<{
-    profilePicture: string | null;
-    nickName: string;
-    address: string;
-  } | null>(null);
+  useEffect(() => {
+    if (fetchedProfile) {
+      setNickName(fetchedProfile.nickName);
+      setProfilePicture(fetchedProfile.profilePicture);
+      setAddress(fetchedProfile.address);
+    }
+  }, [fetchedProfile]);
+
+  // Track the initial data to determine if changes were made
+  const [initialProfileData, setInitialProfileData] = useState<UserProfile | null>(null);
+
+  useEffect(() => {
+    if (fetchedProfile) {
+      setInitialProfileData({
+        nickName: fetchedProfile.nickName,
+        profilePicture: fetchedProfile.profilePicture,
+        address: fetchedProfile.address,
+      });
+    }
+  }, [fetchedProfile]);
 
   const [isSaving, setIsSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
 
-  // 1. Fetch user profile on mount
-  useEffect(() => {
-    if (!userData?.accessToken) return;
-    const GetUser = async () => {
-      try {
-        const response = await fetch(
-          `https://bouvetapi-frbah7fhh5cjdpfy.swedencentral-01.azurewebsites.net/api/Profile/getUser`,
-          {
-            headers: {
-              Authorization: `Bearer ${userData.accessToken}`,
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error(`Feil ved henting av brukerdata: ${response.statusText}`);
-        }
-        const data = await response.json();
-        console.log("Fetched user profile:", data);
-
-        // Populate state
-        setNickName(data.nickName || "");
-        setProfilePicture(data.profilePicture || "");
-        setAddress(data.address ?? "");
-
-        // Store the “original” data to compare later
-        setInitialProfileData({
-          nickName: data.nickName || "",
-          profilePicture: data.profilePicture || "",
-          address: data.address ?? "",
-        });
-      } catch (error) {
-        console.error("Feil ved henting av brukerdata:", error);
-      }
-    };
-    GetUser();
-  }, [userData?.accessToken]);
-
-  // 2. Compare current vs. initial data to enable/disable the Save button
+  // Compare current vs. initial data to enable/disable the Save button
   const isDirty = useMemo(() => {
-    if (!initialProfileData) return false; // not fetched yet
+    if (!initialProfileData) return false;
     return (
       nickName !== initialProfileData.nickName ||
       profilePicture !== initialProfileData.profilePicture ||
@@ -98,7 +79,6 @@ export default function Settings() {
     );
   }, [nickName, profilePicture, address, initialProfileData]);
 
-  // 3. Single “Save Profile” function
   const handleSaveProfile = async () => {
     if (!userData?.accessToken) return;
 
@@ -128,6 +108,9 @@ export default function Settings() {
 
       const result = await response.json();
       console.log("Profile updated:", result);
+      
+      // Show success toast
+      toast.success("Profil oppdatert!");
       router.push("/profile");
 
       // Update the initial data to the new values (so button will disable again)
@@ -139,8 +122,11 @@ export default function Settings() {
 
       setSaveMessage("Profil oppdatert!");
     } catch (err) {
-      console.error("❌ Feil ved oppdatering:", err);
-      setSaveMessage("Klarte ikke å oppdatere profil. Prøv igjen senere.");
+        return (
+          <div className="flex justify-center items-center h-screen">
+            <p>Her skjedde det noe galt, prøv å laste inn på nytt</p>
+          </div>
+        );
     } finally {
       setIsSaving(false);
     }
@@ -150,6 +136,22 @@ export default function Settings() {
     sessionStorage.removeItem("userUpserted");
     instance.logoutRedirect();
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <CustomSpinner />
+      </div>
+    );
+  }
+  
+  if (error) {
+      return (
+        <div className="flex justify-center items-center h-screen">
+          <p>Her skjedde det noe galt, prøv å laste inn på nytt</p>
+        </div>
+      );
+  }
 
   return (
     <div className="flex justify-center w-full">
@@ -165,9 +167,7 @@ export default function Settings() {
         {/* Profile Picture */}
         <div className="flex flex-col items-center justify-center mt-4">
           <img
-            src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/profile-pictures/${
-              profilePicture || "avatar1.png"
-            }`}
+            src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/profile-pictures/${profilePicture || "avatar1.png"}`}
             alt="Profile"
             onClick={() => setShowAvatarModal(true)}
             className="w-24 h-24 rounded-full object-cover border-2 border-customViolet cursor-pointer hover:opacity-80 transition"
@@ -182,7 +182,7 @@ export default function Settings() {
             type="text"
             value={nickName}
             onChange={(e) => setNickName(e.target.value)}
-            className="w-full max-w-md flex items-center justify-between p-4 bg-white rounded-lg shadow-md"
+            className="w-full max-w-md p-4 bg-white rounded-lg shadow-md"
           />
         </div>
 
@@ -232,7 +232,7 @@ export default function Settings() {
               - 10 poeng for å kjøre bil
               <br />
               <br />
-              Lengere distanse gir flere poeng:
+              Lengre distanse gir flere poeng:
               <br />
               - 0 - 2 km = 20 poeng
               <br />
@@ -290,9 +290,7 @@ export default function Settings() {
               {availableAvatars.map((avatar) => (
                 <img
                   key={avatar}
-                  src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/profile-pictures/${
-                    avatar || "avatar1.png"
-                  }`}
+                  src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/profile-pictures/${avatar || "avatar1.png"}`}
                   alt={avatar}
                   onClick={() => {
                     setProfilePicture(avatar);

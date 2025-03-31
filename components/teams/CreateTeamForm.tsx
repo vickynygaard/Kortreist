@@ -1,3 +1,4 @@
+import router from "next/router";
 import React, { useState } from "react";
 
 interface CreateTeamFormProps {
@@ -16,11 +17,9 @@ export default function CreateTeamForm({
   onBack,
 }: CreateTeamFormProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
 
   const handleCreate = async () => {
     setIsLoading(true);
-    setErrorMsg("");
 
     try {
       const response = await fetch(
@@ -33,20 +32,27 @@ export default function CreateTeamForm({
           },
           body: JSON.stringify({
             name: teamName,
-            companyId: 1, // Replace with real companyId if needed
           }),
         }
       );
 
       if (!response.ok) {
+        if (response.status === 428) {
+          // Redirect to onboarding screen
+          router.push("/onboarding");
+          return;
+        }
         const text = await response.text();
         throw new Error(text || "Noe gikk galt under oppretting av lag.");
       }
 
       onCreateTeam();
     } catch (error: any) {
-      console.error("Create team error:", error);
-      setErrorMsg(error.message || "Ukjent feil");
+        return (
+          <div className="flex justify-center items-center h-screen">
+            <p>Her skjedde det noe galt, prøv å laste inn på nytt</p>
+          </div>
+        );
     } finally {
       setIsLoading(false);
     }
@@ -70,7 +76,6 @@ export default function CreateTeamForm({
       >
         {isLoading ? "Oppretter..." : "Opprett lag"}
       </button>
-      {errorMsg && <p className="text-red-500 text-sm">{errorMsg}</p>}
       <button onClick={onBack} className="text-gray-600 hover:text-black">
         Tilbake
       </button>
