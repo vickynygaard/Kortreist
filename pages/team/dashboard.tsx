@@ -143,15 +143,15 @@ export default function DashboardPage() {
                     alt={member.NickName}
                     className="w-14 h-14 rounded-full object-cover border-2 border-customViolet"
                   />
-                  <p className="text-md font-semibold text-black mt-2 text-center leading-tight h-10 flex items-center justify-center">
-                    {member.NickName}
-                  </p>
-                  <div className="mt-auto">
-                    <p>Poeng: </p>
-                    <p className="text-lg font-bold text-customViolet">
-                      {member.points}
+                  <div className="h-12 flex items-center justify-center">
+                    <p className="text-md max-w-24 line-clamp-2 break-all font-semibold text-black text-center leading-tight">
+                      {member.NickName}
                     </p>
                   </div>
+                  <div className="mt-auto flex flex-col items-center">
+                  <p className="text-sm text-gray-700">Poeng</p>
+                  <p className="text-lg font-bold text-customViolet">{member.points}</p>
+                </div>
                 </div>
               ))}
             </div>
@@ -160,9 +160,9 @@ export default function DashboardPage() {
           <main className="mt-28 w-full">
             <div className="relative z-10 flex justify-between items-center bg-customYellow2 px-4 py-3 border-2 border-violet-900 rounded-2xl shadow-md">
               <div>
-                <h2 className="text-2xl sm:text-3xl font-semibold text-customViolet">
-                  {team.name}
-                </h2>
+              <h2 className="text-xl sm:text-2xl font-semibold text-customViolet line-clamp-1 break-words max-w-[10rem] sm:max-w-[16rem]">
+                {team.name}
+              </h2>
                 <p className="mt-1 text-sm sm:text-base text-black">
                   Dere er {mappedMembers.length} medlemmer
                 </p>
@@ -189,7 +189,7 @@ export default function DashboardPage() {
                         alt={member.NickName}
                         className="w-12 h-12 rounded-full object-cover border-2 border-customViolet"
                       />
-                      <p className="text-lg font-medium text-black">
+                      <p className="text-base font-medium text-black break-all line-clamp-1 max-w-[18rem]">
                         {member.NickName}
                       </p>
                     </div>

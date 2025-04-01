@@ -18,6 +18,7 @@ import NProgress from 'nprogress';
 import CustomSpinner from '@/components/dashboard/customSpinner'
 import { Toaster } from 'react-hot-toast'
 import { useUserAuth } from '@/components/userAuth'
+import { initProfanityFilter } from '@/services/norwegianNonValid'
 
 
 const msalInstance = new PublicClientApplication(msalConfig);
@@ -114,9 +115,8 @@ function MainApp({ Component, pageProps }: MainAppProps) {
   }, [router.events]);
 
   
-
+// Initialize the service worker
 useEffect(() => {
-    
     if ("serviceWorker" in navigator) {
       const swPath = process.env.NODE_ENV === "production" ? "/Kortreist/sw.js" : "/sw.js";
 
@@ -130,6 +130,7 @@ useEffect(() => {
         .catch((err) => console.error("Service Worker Registration Failed:", err));
     }
 
+    // Set the app element for ReactModal
     ReactModal.setAppElement('#__next');
 
     // Check if the app is already running in PWA mode
@@ -152,6 +153,7 @@ useEffect(() => {
 
   }, []);
 
+    // Handle orientation change
     useEffect(() => {
     function handleOrientationChange() {
       window.dispatchEvent(new Event('resize'));
@@ -161,6 +163,11 @@ useEffect(() => {
       return () => {
         window.removeEventListener('orientationchange', handleOrientationChange);
       };
+    }, []);
+
+    // Initialize profanity filter
+    useEffect(() => {
+      initProfanityFilter();
     }, []);
 
 	return (

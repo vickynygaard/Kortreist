@@ -7,6 +7,8 @@ import AddressAutocomplete from "@/components/addressAutocomplete";
 import { useApi } from "@/hooks/useApi";
 import CustomSpinner from "@/components/dashboard/customSpinner";
 import toast from "react-hot-toast";
+import { validateName } from "@/services/validateName";
+import { mutate } from "swr";
 
 const availableAvatars = [
   "avatar1.png", "avatar2.png", "avatar3.png", "avatar4.png",
@@ -39,6 +41,8 @@ export default function Settings() {
   const [nickName, setNickName] = useState<string>("");
   const [address, setAddress] = useState<string>("");
 
+  const [nickNameError, setNickNameError] = useState<string | null>(null);
+
   // Additional states
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [showPointsInfo, setShowPointsInfo] = useState(false);
@@ -58,13 +62,25 @@ export default function Settings() {
 
   useEffect(() => {
     if (fetchedProfile) {
+      setNickName(fetchedProfile.nickName);
+      setProfilePicture(fetchedProfile.profilePicture);
+      setAddress(fetchedProfile.address);
+      setNickNameError(validateName(fetchedProfile.nickName));
+  
+      // This is what was missing
       setInitialProfileData({
         nickName: fetchedProfile.nickName,
         profilePicture: fetchedProfile.profilePicture,
         address: fetchedProfile.address,
       });
     }
-  }, [fetchedProfile]);
+  }, [fetchedProfile]);  
+
+  const handleNickNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setNickName(value);
+    setNickNameError(validateName(value));
+  };
 
   const [isSaving, setIsSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
@@ -82,6 +98,11 @@ export default function Settings() {
   const handleSaveProfile = async () => {
     if (!userData?.accessToken) return;
 
+    if (nickNameError) {
+      toast.error("Kallenavnet er ugyldig.");
+      return;
+    }
+    
     setIsSaving(true);
     setSaveMessage("");
 
@@ -108,6 +129,8 @@ export default function Settings() {
 
       const result = await response.json();
       console.log("Profile updated:", result);
+
+      mutate(["/api/Profile/overview", userData.accessToken]);
       
       // Show success toast
       toast.success("Profil oppdatert!");
@@ -181,9 +204,12 @@ export default function Settings() {
           <input
             type="text"
             value={nickName}
-            onChange={(e) => setNickName(e.target.value)}
-            className="w-full max-w-md p-4 bg-white rounded-lg shadow-md"
-          />
+            onChange={handleNickNameChange}
+            className={`w-full p-3 rounded border border-gray-300 focus:outline-none focus:border-customViolet focus:ring-1 focus:ring-customViolet`}
+            />
+          {nickNameError && (
+            <p className="text-red-600 text-sm mt-1">{nickNameError}</p>
+          )}
         </div>
 
         {/* Address */}
@@ -257,10 +283,12 @@ export default function Settings() {
           {saveMessage && <p className="text-sm text-gray-600">{saveMessage}</p>}
           <button
             onClick={handleSaveProfile}
-            disabled={!isDirty || isSaving}
+            disabled={!isDirty || isSaving || Boolean(nickNameError)}
             className={`px-4 py-2 rounded-md text-white text-sm font-medium transition ${
-              isDirty && !isSaving ? "bg-customViolet" : "bg-gray-400 cursor-not-allowed"
-            }`}
+              isDirty && !isSaving && !nickNameError
+                ? "bg-customViolet"
+                : "bg-gray-400 cursor-not-allowed"
+            }`}            
           >
             {isSaving ? "Lagrer..." : "Lagre profil"}
           </button>
