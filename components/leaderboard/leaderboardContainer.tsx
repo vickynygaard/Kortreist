@@ -31,36 +31,26 @@ const LeaderboardContainer = () => {
   // Process data when it's available.
   useEffect(() => {
     if (!data) return;
-
-    const podiumWithRank: (User & { rank: number })[] = [];
-
+  
     const sorted = [...data].sort((a, b) => b.totalScore - a.totalScore);
+    const ranked: (User & { rank: number })[] = [];
+  
     let currentRank = 1;
-
-    for (let i = 0; i < sorted.length && podiumWithRank.length < 3; i++) {
+    for (let i = 0; i < sorted.length; i++) {
       if (i > 0 && sorted[i].totalScore === sorted[i - 1].totalScore) {
-        // If the score is the same as the previous user, share the rank
-        podiumWithRank.push({ ...sorted[i], rank: podiumWithRank[podiumWithRank.length - 1].rank });
+        // Same score, same rank
+        ranked.push({ ...sorted[i], rank: ranked[i - 1].rank });
       } else {
-        // Otherwise, increment the rank
-        podiumWithRank.push({ ...sorted[i], rank: currentRank });
+        // New score, new rank
+        ranked.push({ ...sorted[i], rank: currentRank });
       }
       currentRank++;
     }
-
-    setTopThree(podiumWithRank);
-    setRestOfBoard(sorted.slice(podiumWithRank.length));
-  }, [data]);
-
-  const renderPodium = (rank: number) => {
-    const user = topThree.find((u) => u.rank === rank);
-    if (!user) return null;
   
-    return (
-      <Podium {...user} score={user.totalScore} profilePicture={user.profilePicture} />
-    );
-  };
-
+    setTopThree(ranked.slice(0, 3));
+    setRestOfBoard(ranked.slice(3));
+  }, [data]);
+  
   const isLoading = authLoading || apiLoading || error;
 
   if (error) {
@@ -79,26 +69,38 @@ const LeaderboardContainer = () => {
     );
   }
 
+  const visualOrder = [2, 1, 3]; // left, center, right
+
   return (
     <div className="flex flex-col">
       {/* Podium for top three */}
       <div className="flex justify-center items-end gap-6 mt-10">
-        {renderPodium(2)}
-        {renderPodium(1)}
-        {renderPodium(3)}
-      </div>
-
-      {/* Rest of leaderboard */}
-      <div className="mt-4 w-full rounded-t-lg bg-customYellow2/50 backdrop-blur-md">
-        {restOfBoard.map((user, index) => (
-          <LeaderboardItem
+      {visualOrder.map((visualPos) => {
+        const user = topThree[visualPos - 1];
+        if (!user) return null;
+        return (
+          <Podium
             key={user.userId}
-            rank={index + topThree.length + 1} // start after podium
+            rank={user.rank}
             nickName={user.nickName}
             score={user.totalScore}
             profilePicture={user.profilePicture}
+            visualPosition={visualPos}
           />
-        ))}
+        );
+      })}
+    </div>
+      {/* Rest of leaderboard */}
+      <div className="mt-4 w-full rounded-t-lg bg-customYellow2/50 backdrop-blur-md">
+      {restOfBoard.map((user) => (
+        <LeaderboardItem
+          key={user.userId}
+          rank={user.rank}
+          nickName={user.nickName}
+          score={user.totalScore}
+          profilePicture={user.profilePicture}
+        />
+      ))}
       </div>
     </div>
   );

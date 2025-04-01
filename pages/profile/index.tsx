@@ -42,12 +42,14 @@ export default function Profile() {
   const { data: overview, isLoading: overviewLoading, error: overviewError } = useApi<ProfileOverview>(
     endpoint,
     userData?.accessToken,
-    { refreshInterval: 30000 }
+    { revalidateOnFocus: true,    // Refetch when user switches back to the tab or navigates back to the page
+    revalidateOnMount: true,      // Fetch fresh data when component first mounts
+    revalidateIfStale: false,     // Don't aggressively refetch in the background
+    refreshInterval: 0            // No polling; this is not a dashboard
+    }
   );
 
   const isLoading = authLoading || overviewLoading || !overview;
-
-  console.log("Overview:", overview);
 
   if (overviewError) {
       return (
@@ -126,8 +128,8 @@ function getIconForAchievement(name: string) {
               className="w-16 h-16 rounded-full object-cover border-2 border-customViolet"
             />
             <div className="flex flex-col">
-              <p className="text-lg font-semibold">{overview?.user.nickName ?? "Bruker"}</p>
-              <span className="text-sm text-gray-600">{overview?.user.name ?? ""}</span>
+              <p className="text-lg font-semibold break-all line-clamp-1 max-w-[20rem]">{overview?.user.nickName ?? "Bruker"}</p>
+              <span className="text-sm text-gray-600 break-all line-clamp-1 max-w-[14rem]">{overview?.user.name ?? ""}</span>
             </div>
 
           </div>
