@@ -19,6 +19,7 @@ import CustomSpinner from '@/components/dashboard/customSpinner'
 import { Toaster } from 'react-hot-toast'
 import { useUserAuth } from '@/components/userAuth'
 import { initProfanityFilter } from '@/services/norwegianNonValid'
+import { useDelayedLoading } from '@/services/useDelayedLoading'
 
 
 const msalInstance = new PublicClientApplication(msalConfig);
@@ -60,25 +61,24 @@ function MainApp({ Component, pageProps }: MainAppProps) {
   const router = useRouter(); 
 	const hideNavbarRoutes = ["/login", "/onboarding"]; 
 	const showNavbar = !hideNavbarRoutes.includes(router.pathname); 
-  const [isRouteChanging, setIsRouteChanging] = useState(false);
-  const [isDataLoading, setIsDataLoading] = useState(false);
-  const { userData, loading: userLoading } = useUserAuth();
-
+  
 
   const RequireAuth = ({ children }: { children: React.ReactNode }) => {
     const isAuthenticated = useIsAuthenticated();
     const { inProgress } = useMsal();
     const router = useRouter();
+    const { loading: userLoading } = useUserAuth();
+    const showSpinner = useDelayedLoading(150);
+  
+    const isHardLoading = inProgress !== "none" || userLoading;
   
     useEffect(() => {
-      // Dont redirect when Msal is working
       if (inProgress === "none" && !isAuthenticated && router.pathname !== "/login") {
         router.replace("/login");
       }
     }, [isAuthenticated, inProgress, router]);
   
-    // Wait for Msal
-    if (inProgress !== "none" || userLoading) {
+    if (isHardLoading && showSpinner) {
       const loadingMessage = !isAuthenticated ? "Logger inn..." : "Laster inn...";
       return (
         <div className="flex justify-center items-center h-screen">
@@ -89,32 +89,14 @@ function MainApp({ Component, pageProps }: MainAppProps) {
         </div>
       );
     }
-    
-    // If not logged in go /login
+  
     if (!isAuthenticated && router.pathname !== "/login") {
       return null;
     }
   
     return <>{children}</>;
-  };
-
-
- useEffect(() => {
-    const handleStart = () => setIsRouteChanging(true);
-    const handleComplete = () => setIsRouteChanging(false);
-
-    router.events.on("routeChangeStart", handleStart);
-    router.events.on("routeChangeComplete", handleComplete);
-    router.events.on("routeChangeError", handleComplete);
-
-    return () => {
-      router.events.off("routeChangeStart", handleStart);
-      router.events.off("routeChangeComplete", handleComplete);
-      router.events.off("routeChangeError", handleComplete);
-    };
-  }, [router.events]);
-
-  
+  };  
+ 
 // Initialize the service worker
 useEffect(() => {
     if ("serviceWorker" in navigator) {
@@ -186,8 +168,6 @@ useEffect(() => {
 		disableTransitionOnChange
 		>
     <RequireAuth>
-
-    {(isRouteChanging || isDataLoading) &&  <CustomSpinner />}
       <Page>
         <Section>
       

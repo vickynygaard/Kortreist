@@ -5,10 +5,13 @@ import LeaderboardMenu from '@/components/leaderboard/leaderboardMenu';
 import Page from '@/components/page';
 import Section from '@/components/section';
 import { useApi } from '@/hooks/useApi';
+import { usePrefetchMainRoutes } from '@/services/preFetch';
 
 
 export default function Leaderboard() {
-//BUG Can scroll on the side of the page
+
+  usePrefetchMainRoutes();
+
   return (
     <div className='flex flex-col  w-full'>
       

@@ -3,6 +3,12 @@ import DashboardHeader from '@/components/dashboard/dashboardHeader';
 import { useUserAuth } from '@/components/userAuth';
 import CustomSpinner from '@/components/dashboard/customSpinner';
 import { useApi } from '@/hooks/useApi';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { mutate } from 'swr';
+import { fetcher } from '@/services/api';
+import { usePrefetchMainRoutes } from '@/services/preFetch';
+import { useDelayedLoading } from '@/services/useDelayedLoading';
 
 interface User {
   userId: number;
@@ -17,21 +23,24 @@ interface User {
 const Dashboard = () => {
   const { userData } = useUserAuth();
   
+  usePrefetchMainRoutes();
+
   const endpoint = userData?.accessToken ? "/api/Profile/getUser" : null;
-  
   const { data: user, isLoading, error } = useApi<User>(
     endpoint,
     userData?.accessToken,
     { refreshInterval: 30000 }
   );
 
-  if (isLoading) {
+  const showSpinner = useDelayedLoading();
+
+  if (isLoading && showSpinner) {
     return (
       <div className="flex justify-center items-center h-screen">
         <CustomSpinner />
       </div>
     );
-  }
+  }  
   
   if (error) {
     return (

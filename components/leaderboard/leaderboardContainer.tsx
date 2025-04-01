@@ -4,6 +4,7 @@ import LeaderboardItem from './leaderboardItem';
 import { useUserAuth } from '../userAuth';
 import { useApi } from '@/hooks/useApi';
 import CustomSpinner from '../dashboard/customSpinner';
+import { useDelayedLoading } from '@/services/useDelayedLoading';
 
 interface User {
   rank: number;
@@ -61,13 +62,15 @@ const LeaderboardContainer = () => {
     );
   }
 
-  if (isLoading) {
+  const showSpinner = useDelayedLoading();
+
+  if (isLoading && showSpinner) {
     return (
       <div className="flex justify-center items-center h-screen">
         <CustomSpinner />
       </div>
     );
-  }
+  }  
 
   const visualOrder = [2, 1, 3]; // left, center, right
 
