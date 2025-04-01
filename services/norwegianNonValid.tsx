@@ -11,7 +11,7 @@ export async function initProfanityFilter() {
 
     const words = text
         .split("\n")
-        .map(word => word.trim().replace(/[^\p{L}\p{N} ]+/gu, ""))
+        .map(word => word.trim().replace(/[^a-zA-Z0-9æøåÆØÅ ]+/g, ""))
         .filter(Boolean);
 
     leoProfanity.add(words);
