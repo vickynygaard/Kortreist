@@ -6,6 +6,8 @@ import Section from "@/components/section";
 import Page from "@/components/page";
 import { useApi } from "@/hooks/useApi";
 import CustomSpinner from "@/components/dashboard/customSpinner";
+import { useDelayedLoading } from "@/services/useDelayedLoading";
+import { usePrefetchMainRoutes } from "@/services/preFetch";
 
 interface User {
   name: string;
@@ -37,6 +39,8 @@ export default function Profile() {
   const [selectedBadge, setSelectedBadge] = useState<{ id: number; name: string; description: string; progress: number; total: number } | null>(null);
 
   const { userData, loading: authLoading } = useUserAuth();
+
+  usePrefetchMainRoutes();
   
   const endpoint = userData?.accessToken ? "/api/Profile/overview" : null;
   const { data: overview, isLoading: overviewLoading, error: overviewError } = useApi<ProfileOverview>(
@@ -49,6 +53,7 @@ export default function Profile() {
     }
   );
 
+  const showSpinner = useDelayedLoading();
   const isLoading = authLoading || overviewLoading || !overview;
 
   if (overviewError) {
@@ -59,7 +64,7 @@ export default function Profile() {
       );
   }
 
-  if (isLoading) {
+  if (isLoading && showSpinner) {
     return (
       <div className="flex justify-center items-center h-screen">
         <CustomSpinner />
