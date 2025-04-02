@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Home, Users, Trophy, User, Coins, Leaf, ArrowLeft, Bus, Bike, Car, Crown, Flame, Globe, Clock, Settings, X } from "lucide-react";
+import { Home, Users, Trophy, User, Coins, Leaf, ArrowLeft, Bus, Bike, Car, Crown, Flame, Globe, Clock, Settings, X, UnlockIcon, Star, Flag, MapPin } from "lucide-react";
 import { useUserAuth } from "@/components/userAuth";
 import Section from "@/components/section";
 import Page from "@/components/page";
@@ -23,6 +23,7 @@ interface UserAchievement {
   total: number;
   progress: number;
   earnedAt: string | null;
+  tier: number;
 }
 
 interface ProfileOverview {
@@ -36,7 +37,7 @@ interface ProfileOverview {
 
 export default function Profile() {
   const [selectedStat, setSelectedStat] = useState<"co2" | "money">("co2");
-  const [selectedBadge, setSelectedBadge] = useState<{ id: number; name: string; description: string; progress: number; total: number } | null>(null);
+  const [selectedBadge, setSelectedBadge] = useState<{ id: number; name: string; description: string; progress: number; total: number; } | null>(null);
 
   const { userData, loading: authLoading } = useUserAuth();
 
@@ -46,7 +47,7 @@ export default function Profile() {
   const { data: overview, isLoading: overviewLoading, error: overviewError } = useApi<ProfileOverview>(
     endpoint,
     userData?.accessToken,
-    { revalidateOnFocus: true,    // Refetch when user switches back to the tab or navigates back to the page
+    { revalidateOnFocus: false,    // Refetch when user switches back to the tab or navigates back to the page
     revalidateOnMount: true,      // Fetch fresh data when component first mounts
     revalidateIfStale: false,     // Don't aggressively refetch in the background
     refreshInterval: 0            // No polling; this is not a dashboard
@@ -77,44 +78,42 @@ export default function Profile() {
     money: { value: Math.floor(overview?.totalMoneySaved ?? 0), unit: "kr", label: "Penger spart" },
   };  
 
-  const allBadges = [
-    { id: 1, icon: <Leaf size={24} />, name: "Eco Warrior", description: "Use public transport or bike for 10 days.", total: 10 },
-    { id: 2, icon: <Globe size={24} />, name: "Step Master", description: "Walk 5 times in one week.", total: 5 },
-    { id: 3, icon: <Bus size={24} />, name: "Bus Rider", description: "Take the bus 20 times.", total: 20 },
-    { id: 4, icon: <Bike size={24} />, name: "Cyclist", description: "Bike 100km in total.", total: 100 },
-    { id: 5, icon: <Car size={24} />, name: "Carpool Hero", description: "Carpool 5 times.", total: 5 },
-    { id: 6, icon: <Clock size={24} />, name: "15 Rides", description: "Use any transport 15 times.", total: 15 },
-    { id: 7, icon: <Users size={24} />, name: "Versatile Voyager", description: "Use 4 transport types in one week.", total: 1 },
-    { id: 8, icon: <Crown size={24} />, name: "Midnight Rider", description: "Travel after midnight.", total: 1 },
-    { id: 9, icon: <Trophy size={24} />, name: "Custom Conqueror", description: "Complete 3 custom challenges.", total: 3 },
-    { id: 10, icon: <Flame size={24} />, name: "Achievement Hunter", description: "Unlock 5 achievements.", total: 5 },
-  ];
-
-function getIconForAchievement(name: string) {
-  const iconMap: { [key: string]: JSX.Element } = {
-    "Miljøkriger": <Leaf size={24} />,                // Eco Warrior
-    "Skrittmester": <Globe size={24} />,              // Step Master
-    "Bussentusiast": <Bus size={24} />,               // Bus Rider
-    "Syklist": <Bike size={24} />,                    // Cyclist
-    "Samkjøringshelt": <Car size={24} />,             // Carpool Hero
-    "15 Reiser": <Clock size={24} />,                 // 15 Rides
-    "Allsidig Reisende": <Users size={24} />,         // Versatile Voyager
-    "Midnattsreisende": <Crown size={24} />,          // Midnight Rider
-    "Utfordringsmester": <Trophy size={24} />,        // Custom Conqueror
-    "Prestasjonssamler": <Flame size={24} />,         // Achievement Hunter
+  function getTierStyles(tier: number): string {
+    switch (tier) {
+      case 1: return "border-bronze bg-gradient-to-br from-[#fff4e1] to-[#e5a66a]"; // Bronze
+      case 2: return "border-silver bg-gradient-to-br from-[#f2f2f2] to-[#b4b4b4]"; // Silver
+      case 3: return "border-gold bg-gradient-to-br from-yellow-400 to-yellow-600"; // Gold
+      default: return "border-gray-300 bg-white/50"; // For tier 0 or unknown
+    }
+  }
   
-    // fallback:
-    default: <Trophy size={24} />,
-  };
-  return iconMap[name] || iconMap.default;
-}
+
+  function getBaseIcon(name: string): JSX.Element {
+    const base = name.split(" ")[0]; // Extract "Turgåer" from "Turgåer I"
+  
+    const iconMap: Record<string, JSX.Element> = {
+      "Turgåer": <Globe size={24} />,
+      "Syklist": <Bike size={24} />,
+      "Bussreisende": <Bus size={24} />,
+      "Samkjører": <Car size={24} />,
+      "Utforsker": <Users size={24} />,
+      "Egen": <Crown size={24} />, 
+      "Poengjeger": <Coins size={24} />,
+      "CO₂-sparer": <Leaf size={24} />,
+      "Pengebesparer": <Coins size={24} />,
+      "Opplåser": <UnlockIcon size={24} />, 
+      default: <Trophy size={24} />,
+    };
+  
+    return iconMap[base] || iconMap.default;
+  }
 
   return (
     <div className="flex flex-col items-center">
             
        {/* Settings Ikon og Min Profil */}     
       <div className="w-full px-4 flex text-center items-center justify-between"> 
-        <h1 className="text-2xl font-medium pb-4 text-center">Min Profil</h1>
+        <h1 className="font-bold text-3xl text-violet-950 pb-6">Min Profil</h1>
         {/* Settings Ikon */}
         <Link href="/profile/settings" className="text-black">
           <Settings size={28} strokeWidth={2}/>
@@ -124,7 +123,7 @@ function getIconForAchievement(name: string) {
 
         {/* Profile info boks */}
         <div className="w-full px-4">
-        <div className="w-full bg-customYellow2 p-4 rounded-2xl flex flex-col border-2 border-violet-900">
+        <div className="w-full bg-customYellow2 p-4 rounded-2xl flex flex-col">
           {/* Profilbilde og navn */}
           <div className="flex items-center gap-4">
             <img 
@@ -138,60 +137,68 @@ function getIconForAchievement(name: string) {
             </div>
 
           </div>
-
-          {/* Stats boks */}
-          <div className="flex justify-between w-full bg-customViolet rounded-2xl p-3 mt-4 text-gray-600 text-sm">
-            <div className="flex-1 text-center text-white">
-            <p className="text-lg font-semibold">{overview?.user.totalScore ?? 0}</p>
-              <p>Poeng</p>
-            </div>
-            <div className="flex-1 text-center text-white border-l border-customYellow2">
-              <p className="text-lg font-semibold">{overview?.completedChallenges ?? 0}</p>
-              <p>Utfordringer</p>
-            </div>
-            <div className="flex-1 text-center border-l text-white border-customYellow2">
-              <p className="text-lg font-semibold">{overview?.totalTravels ?? 0}</p>
-              <p>Reiser</p>
-            </div>
+        {/* Stats boks */}
+        <div className="grid grid-cols-3 gap-2 bg-customYellow2 border-2 border-customViolet rounded-2xl mt-2 py-3 shadow-sm">
+            {[
+              {
+                icon: <Star size={22} className="text-yellow-500 mb-1" />,
+                value: overview?.user.totalScore ?? 0,
+                label: "Poeng",
+              },
+              {
+                icon: <Flag size={22} className="text-pink-400 mb-1" />,
+                value: overview?.completedChallenges ?? 0,
+                label: "Utfordringer",
+              },
+              {
+                icon: <MapPin size={22} className="text-sky-400 mb-1" />,
+                value: overview?.totalTravels ?? 0,
+                label: "Reiser",
+              },
+            ].map((stat, index) => (
+              <div
+                key={index}
+                className={`flex flex-col items-center px-2 ${
+                  index !== 0 ? "border-l border-customViolet" : ""
+                }`}
+              >
+                {stat.icon}
+                <p className="text-lg font-bold text-customViolet leading-none">{stat.value}</p>
+                <p className="text-xs text-customViolet mt-0.5">{stat.label}</p>
+              </div>
+            ))}
           </div>
-        </div>
-        </div>
+      </div>
+      </div>
 
       {/* CO₂ & penger spart */}
       <div className="w-full flex flex-col items-center mt-10 justify-center">
-        <div className="relative flex items-center justify-center w-36 h-36">
-          <div className="w-full h-full rounded-full border-8 border-customViolet"></div>
-          <div className="absolute flex flex-col items-center justify-center">
-            <p className="text-xl font-semibold">{stats[selectedStat].value ?? 0} {stats[selectedStat].unit}</p>
-            <p className="text-gray-600 text-sm">{stats[selectedStat].label}</p>
-          </div>
+      <div className="relative w-36 h-36 rounded-full bg-gradient-to-br from-white to-gray-100 shadow-inner flex items-center justify-center">
+      <div className={`absolute w-full h-full rounded-full animate-pulse
+        ${selectedStat === "co2" ? "shadow-[0_0_15px_#22c55e]" : "shadow-[0_0_15px_#facc15]"}`}>
+      </div>
+        <div className="z-10 flex flex-col items-center">
+          <p className="text-xl font-bold text-gray-800">
+            {stats[selectedStat].value} {stats[selectedStat].unit}
+          </p>
+          <p className="text-sm text-gray-500">{stats[selectedStat].label}</p>
         </div>
+      </div>
 
         {/* Velg mellom - CO₂ & penger */}
-        <div className="flex w-[75%] max-w-xs items-center justify-center space-x-2 bg-customYellow2 rounded-2xl mt-4 p-2 border-2 border-violet-900">
-        <button
-          className={`flex-1 py-2 rounded-2xl flex items-center justify-center ${
-            selectedStat === "co2" ? "bg-green-500" : "bg-gray-200"
-          }`}
-          onClick={() => setSelectedStat("co2")}
-        >
-          <Leaf
-            size={24}
-            className={`${selectedStat === "co2" ? "text-white" : "text-green-500"}`}
-          />
-        </button>
-
-        <button
-          className={`flex-1 py-2 rounded-2xl flex items-center justify-center ${
-            selectedStat === "money" ? "bg-yellow-500" : "bg-gray-200"
-          }`}
-          onClick={() => setSelectedStat("money")}
-        >
-          <Coins
-            size={24}
-            className={`${selectedStat === "money" ? "text-white" : "text-yellow-500"}`}
-          />
-        </button>
+        <div className="flex w-[75%] max-w-xs items-center justify-center space-x-2 bg-customYellow2 rounded-2xl mt-4 p-2 border-2 border-violet-900 shadow-sm">
+        {["co2", "money"].map((stat) => (
+          <button
+            key={stat}
+            className={`flex-1 py-2 rounded-xl flex items-center justify-center transition-all duration-200 ease-in-out 
+              ${selectedStat === stat ? 
+                stat === "co2" ? "bg-green-500 text-white shadow-md" : "bg-yellow-500 text-white shadow-md"
+              : "bg-gray-100 text-gray-600"}`}
+            onClick={() => setSelectedStat(stat as "co2" | "money")}
+          >
+            {stat === "co2" ? <Leaf size={24} /> : <Coins size={24} />}
+          </button>
+        ))}
       </div>
       </div>
 
@@ -202,30 +209,23 @@ function getIconForAchievement(name: string) {
 
     <div className="grid grid-cols-5 gap-3 place-items-center sm:grid-cols-5">
     {overview?.achievements.map((badge) => (
-  <button
-    key={badge.achievementId}
-    className={`w-14 h-14 flex items-center justify-center border rounded-lg cursor-pointer ${
-      badge.earnedAt !== null
-        ? "bg-customViolet text-white"
-        : "bg-white/50 text-gray-700"
-    }`}
-    
-    onClick={() =>
-      setSelectedBadge({
-        id: badge.achievementId,
-        name: badge.name,
-        description: badge.description,
-        progress: badge.progress,
-        total: badge.total,
-      })
-    }
-  >
-    <span className="flex items-center justify-center w-full h-full">
-    {getIconForAchievement(badge.name)}
-    </span>
-  </button>
-))}
-
+      <button
+        key={badge.achievementId}
+        className={`w-14 h-14 flex items-center justify-center border-2 rounded-xl shadow-sm transition-all duration-200 text-gray-700
+          ${getTierStyles(badge.tier)} }`}
+        onClick={() =>
+          setSelectedBadge({
+            id: badge.achievementId,
+            name: badge.name,
+            description: badge.description,
+            progress: badge.progress,
+            total: badge.total,
+          })
+        }
+      >
+        {getBaseIcon(badge.name)}
+      </button>
+      ))}
     </div>
   </div>
 </div>

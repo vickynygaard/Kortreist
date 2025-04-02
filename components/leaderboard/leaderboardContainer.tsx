@@ -14,45 +14,49 @@ interface User {
   profilePicture: string;
 }
 
-const LeaderboardContainer = () => {
+interface LeaderboardContainerProps {
+  users?: User[];
+  loadingOverride?: boolean;
+}
+
+const LeaderboardContainer = ({ users, loadingOverride = false }: LeaderboardContainerProps) => {
   const [topThree, setTopThree] = useState<User[]>([]);
   const [restOfBoard, setRestOfBoard] = useState<User[]>([]);
   const { userData, loading: authLoading } = useUserAuth();
-  
-  // Fetch all users for leaderboard
-  const endpoint = userData?.accessToken ? '/api/users/all' : null;
+
+  const endpoint = !users && userData?.accessToken ? '/api/users/all' : null;
 
   const { data, isLoading: apiLoading, error } = useApi<User[]>(
     endpoint,
     userData?.accessToken,
     { refreshInterval: 30000 }
   );
-  
 
-  // Process data when it's available.
+  const combinedData = users ?? data;
+
   useEffect(() => {
-    if (!data) return;
-  
-    const sorted = [...data].sort((a, b) => b.totalScore - a.totalScore);
+    if (!combinedData) return;
+
+    const sorted = [...combinedData].sort((a, b) => b.totalScore - a.totalScore);
     const ranked: (User & { rank: number })[] = [];
-  
+
     let currentRank = 1;
     for (let i = 0; i < sorted.length; i++) {
       if (i > 0 && sorted[i].totalScore === sorted[i - 1].totalScore) {
-        // Same score, same rank
         ranked.push({ ...sorted[i], rank: ranked[i - 1].rank });
       } else {
-        // New score, new rank
         ranked.push({ ...sorted[i], rank: currentRank });
       }
       currentRank++;
     }
-  
+
     setTopThree(ranked.slice(0, 3));
     setRestOfBoard(ranked.slice(3));
-  }, [data]);
+  }, [combinedData]);
+
+  const showSpinner = useDelayedLoading();
+  const isLoading = users ? loadingOverride : (authLoading || apiLoading);
   
-  const isLoading = authLoading || apiLoading || error;
 
   if (error) {
     return (
@@ -62,51 +66,49 @@ const LeaderboardContainer = () => {
     );
   }
 
-  const showSpinner = useDelayedLoading();
-
   if (isLoading && showSpinner) {
     return (
       <div className="flex justify-center items-center h-screen">
         <CustomSpinner />
       </div>
     );
-  }  
+  }
 
-  const visualOrder = [2, 1, 3]; // left, center, right
+  const visualOrder = [2, 1, 3];
 
   return (
     <div className="flex flex-col">
-      {/* Podium for top three */}
       <div className="flex justify-center items-end gap-6 mt-10">
-      {visualOrder.map((visualPos) => {
-        const user = topThree[visualPos - 1];
-        if (!user) return null;
-        return (
-          <Podium
+        {visualOrder.map((visualPos) => {
+          const user = topThree[visualPos - 1];
+          if (!user) return null;
+          return (
+            <Podium
+              key={user.userId}
+              rank={user.rank}
+              nickName={user.nickName}
+              score={user.totalScore}
+              profilePicture={user.profilePicture}
+              visualPosition={visualPos}
+            />
+          );
+        })}
+      </div>
+
+      <div className="mt-4 w-full rounded-t-lg bg-customYellow2/50 backdrop-blur-md">
+        {restOfBoard.map((user) => (
+          <LeaderboardItem
             key={user.userId}
             rank={user.rank}
             nickName={user.nickName}
             score={user.totalScore}
             profilePicture={user.profilePicture}
-            visualPosition={visualPos}
           />
-        );
-      })}
-    </div>
-      {/* Rest of leaderboard */}
-      <div className="mt-4 w-full rounded-t-lg bg-customYellow2/50 backdrop-blur-md">
-      {restOfBoard.map((user) => (
-        <LeaderboardItem
-          key={user.userId}
-          rank={user.rank}
-          nickName={user.nickName}
-          score={user.totalScore}
-          profilePicture={user.profilePicture}
-        />
-      ))}
+        ))}
       </div>
     </div>
   );
 };
+
 
 export default LeaderboardContainer;

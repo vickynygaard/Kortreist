@@ -9,6 +9,7 @@ import CustomSpinner from "@/components/dashboard/customSpinner";
 import toast from "react-hot-toast";
 import { validateName } from "@/services/validateName";
 import { mutate } from "swr";
+import ReturnButton from "@/components/buttons/returnButton";
 
 const availableAvatars = [
   "avatar1.png", "avatar2.png", "avatar3.png", "avatar4.png",
@@ -178,14 +179,13 @@ export default function Settings() {
 
   return (
     <div className="flex justify-center w-full">
-      <div className="w-full max-w-md flex flex-col mx-auto px-4">
-        {/* Back button + title */}
-        <div className="relative flex items-center justify-center mb-6">
-          <button onClick={() => router.push("/profile")} className="absolute left-0 text-black">
-            <ArrowLeft size={28} strokeWidth={2} />
-          </button>
-          <h1 className="text-2xl font-semibold text-black">Innstillinger</h1>
-        </div>
+    <div className="w-full max-w-md flex flex-col mx-auto px-4">
+      <div className="flex flex-col items-center px-4">
+      <header className="self-start">
+        <ReturnButton onClick={() => router.back()} />
+      </header>
+      <div className="font-bold text-3xl text-violet-950 pb-6">Instillinger</div></div>
+
 
         {/* Profile Picture */}
         <div className="flex flex-col items-center justify-center mt-4">

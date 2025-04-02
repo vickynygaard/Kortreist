@@ -14,8 +14,16 @@ module.exports = {
 			customOrange: '#FFC089', // Oransje farge  #FFC089
 			customGreen: '#1D8800', // Grønn farge  #1D8800
 			customRed: '#CE001A', // Rød farge  #CE001A
+			bronze: "#cd7f32",
+			silver: "#C0C0C0",
+			gold: "#FFD700"
 		  },
 		},
 	  },
+	  safelist: [
+		'border-bronze',
+		'border-silver',
+		'border-gold',
+	  ],
 	plugins: [require('tailwindcss-safe-area')],
 }

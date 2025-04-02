@@ -16,8 +16,8 @@ export default function Leaderboard() {
     <div className='flex flex-col  w-full'>
       
       {/*Overskrift*/}
-      <div className='w-full text-center text-2xl font-medium pb-4'>
-        <h1>Ledertavle</h1>
+      <div className='w-full text-center'>
+      <div className="font-bold text-3xl text-violet-950 pb-6">Ledertavle</div>
       </div>
       <LeaderboardMenu />
 
