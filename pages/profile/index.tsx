@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Home, Users, Trophy, User, Coins, Leaf, ArrowLeft, Bus, Bike, Car, Crown, Flame, Globe, Clock, Settings, X, UnlockIcon, Star, Flag, MapPin } from "lucide-react";
+import { Home, Footprints, Goal, Users, Trophy, User, Coins, Leaf, Bus, Bike, Car, Crown, Globe, Settings, X, UnlockIcon, Star, Flag, MapPin } from "lucide-react";
 import { useUserAuth } from "@/components/userAuth";
 import Section from "@/components/section";
 import Page from "@/components/page";
@@ -92,13 +92,13 @@ export default function Profile() {
     const base = name.split(" ")[0]; // Extract "Turgåer" from "Turgåer I"
   
     const iconMap: Record<string, JSX.Element> = {
-      "Turgåer": <Globe size={24} />,
+      "Turgåer": <Footprints size={24} />,
       "Syklist": <Bike size={24} />,
       "Bussreisende": <Bus size={24} />,
       "Samkjører": <Car size={24} />,
-      "Utforsker": <Users size={24} />,
+      "Utforsker": <Globe size={24} />,
       "Egen": <Crown size={24} />, 
-      "Poengjeger": <Coins size={24} />,
+      "Poengjeger": <Goal size={24} />,
       "CO₂-sparer": <Leaf size={24} />,
       "Pengebesparer": <Coins size={24} />,
       "Opplåser": <UnlockIcon size={24} />, 
