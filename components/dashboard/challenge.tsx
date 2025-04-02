@@ -30,7 +30,7 @@ const Challenge: React.FC<ChallengeProps> = ({
   return (
     <div className="grid bg-customYellow2 w-full max-h-40 grid-cols-3 grid-rows-2 gap-2 rounded-xl border-2 border-violet-900 p-4">
       {/* Title */}
-      <div className="col-span-2 self-start font-mono font-bold text-lg p-2">
+      <div className="col-span-2 self-start font-bold text-lg p-2">
         {title}
       </div>
 
@@ -48,7 +48,7 @@ const Challenge: React.FC<ChallengeProps> = ({
               trailColor: '#d1d5db',
             })}
           />
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-xs font-mono text-gray-800 leading-tight">
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-xs text-gray-800 leading-tight">
             {challengeType === "Distance" ? (
               <>
                 <span className="text-base">{`${current.toFixed(1)}km`}</span>
@@ -70,7 +70,7 @@ const Challenge: React.FC<ChallengeProps> = ({
 
       {/* Progress Details (bottom-left) */}
       <div className="col-span-2 self-start flex flex-col pl-4">
-        <div className="font-mono">
+        <div className="">
           <strong>{progressLabel}</strong>
         </div>
         <div>{isCompleted ? "Fullført" : "Pågår"}</div>
