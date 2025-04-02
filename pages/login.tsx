@@ -28,10 +28,8 @@ const [error, setError] = useState<string | null>(null);
           {
             method: "POST",
             headers: {
-              "Content-Type": "application/json",
               Authorization: `Bearer ${userData.accessToken}`,
             },
-            body: JSON.stringify({}),
           }
         );
   
