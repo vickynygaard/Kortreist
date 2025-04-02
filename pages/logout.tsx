@@ -10,7 +10,7 @@ const Logout = () => {
   useEffect(() => {
     const logout = async () => {
       await instance.logoutRedirect({
-        postLogoutRedirectUri: "/login", 
+        postLogoutRedirectUri: `${process.env.NEXT_PUBLIC_BASE_PATH}/login`, 
       });
     };
 
