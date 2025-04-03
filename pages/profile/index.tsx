@@ -114,7 +114,7 @@ export default function Profile() {
       "Bussreisende": <Bus size={24} />,
       "Samkjører": <Car size={24} />,
       "Utforsker": <Globe size={24} />,
-      "Egen": <Crown size={24} />, 
+      "Joker": <Crown size={24} />, 
       "Poengjeger": <Goal size={24} />,
       "CO₂-sparer": <Leaf size={24} />,
       "Pengebesparer": <Coins size={24} />,
@@ -222,7 +222,7 @@ export default function Profile() {
       {/* Badges */}
       <div className="w-full px-4 mt-10">
   <div className="bg-customYellow2 p-4 rounded-2xl border-2 border-violet-900">
-    <h2 className="text-lg font-semibold mb-3">Badges</h2>
+    <h2 className="text-lg font-semibold mb-3">Merker</h2>
 
     <div className="grid grid-cols-5 gap-3 place-items-center sm:grid-cols-5">
     {overview?.achievements.map((badge) => (
@@ -254,11 +254,11 @@ export default function Profile() {
     return (
       <div
         className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
-        onClick={() => setSelectedBadge(null)} // Close if clicked outside modal
+        onClick={() => setSelectedBadge(null)} //Close if clicked outside modal
       >
         <div
           className="bg-white p-6 rounded-lg shadow-lg text-center w-80 relative"
-          onClick={(e) => e.stopPropagation()} // Prevent closing if clicked inside modal
+          onClick={(e) => e.stopPropagation()} //Prevent closing if clicked inside modal
         >
           <button
             className="absolute top-4 right-4 text-gray-600"
