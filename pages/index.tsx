@@ -25,13 +25,32 @@ const Dashboard = () => {
   
   usePrefetchMainRoutes();
 
-  const endpoint = userData?.accessToken ? "/api/Profile/getUser" : null;
-  const { data: user, isLoading, error } = useApi<User>(
-    endpoint,
+  // Get cached index data from localStorage if available
+  let fallbackUser: User | undefined;
+  if (typeof window !== 'undefined') {
+    const cached = localStorage.getItem("indexData");
+    if (cached) {
+      try {
+        fallbackUser = JSON.parse(cached);
+      } catch (error) {
+        console.error("Failed to parse cached index data:", error);
+      }
+    }
+  }
+
+  const { data: user, isLoading: isLoading, error } = useApi<User>(
+    "/api/Profile/getUser",
     userData?.accessToken,
-    { refreshInterval: 30000 }
+    { fallbackData: fallbackUser, refreshInterval: 30000, enabled: !!userData?.accessToken }
   );
 
+  // Save fresh data to localStorage when available
+  useEffect(() => {
+    if (user && typeof window !== 'undefined') {
+      localStorage.setItem("indexData", JSON.stringify(user));
+    }
+  }, [user]);
+  
   const showSpinner = useDelayedLoading();
 
   if (isLoading && showSpinner) {

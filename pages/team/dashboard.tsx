@@ -6,11 +6,13 @@ import router from "next/router";
 import { useApi } from "@/hooks/useApi";
 import CustomSpinner from "@/components/dashboard/customSpinner";
 import ConfirmationModal from "@/components/modalConfirm";
+import { useDelayedLoading } from "@/services/useDelayedLoading";
 
 interface Team {
   teamId: number;
   name: string;
   teamTotalScore: number;
+  teamProfilePicture: string;
   members: {
     userId: number;
     nickName: string;
@@ -24,50 +26,74 @@ export default function DashboardPage() {
   const [showConfirm, setShowConfirm] = useState(false);
   const { userData, loading: authLoading } = useUserAuth();
 
+    // Retrieve cached team data if available
+    let fallbackTeam: Team | undefined;
+    if (typeof window !== "undefined") {
+      const cached = localStorage.getItem("teamData");
+      if (cached) {
+        try {
+          fallbackTeam = JSON.parse(cached);
+        } catch (error) {
+          console.error("Failed to parse cached team data:", error);
+        }
+      }
+    }
+
   const { data: team, isLoading: apiLoading, error } = useApi<Team>(
-    userData?.accessToken ? "/api/team/myteam" : null,
+    "/api/team/myteam",
     userData?.accessToken,
-    { refreshInterval: 30000 }
+    { refreshInterval: 30000, revalidateOnMount: true, fallbackData: fallbackTeam, enabled: !!userData?.accessToken }
   );
 
+    // Update cache when new team data is fetched
+    useEffect(() => {
+      if (team && typeof window !== "undefined") {
+        localStorage.setItem("teamData", JSON.stringify(team));
+      }
+    }, [team]);
+  
   const isLoading = authLoading || apiLoading || !team;
 
-  // Redirect to onboarding if team not found 
-  useEffect(() => {
-    if (error && error.message.includes("404")) {
-      router.replace("/team/onboarding");
-    }
-  }, [error]);
+    // Redirect to onboarding if team not found 
+    useEffect(() => {
+      if (!isLoading && !team && !error) {
+        router.replace("/team/onboarding");
+      }
+    }, [isLoading, team, error]); 
 
-  const mappedMembers =
-    team?.members.map((m) => ({
-      id: m.userId,
-      NickName: m.nickName,
-      points: m.totalScore,
-      profilePicture: m.profilePicture,
-    })) || [];
-  const topMembers = [...mappedMembers]
-    .sort((a, b) => b.points - a.points)
-    .slice(0, 3);
-
-  if (isLoading) {
+  const showSpinner = useDelayedLoading();
+  
+  if (isLoading && showSpinner) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <CustomSpinner />
-      </div>
-    );
-  }
-    
-  if (error) {
-    if (error.message.includes("404")) {
-      return null;
-    }
-    return (
-      <div className="flex justify-center items-center h-screen">
+            <CustomSpinner />
+          </div>
+        );
+      }  
+      
+      if (error) {
+        if (error.message.includes("404")) {
+          return null;
+        }
+        return (
+          <div className="flex justify-center items-center h-screen">
         <p>Her skjedde det noe galt, prøv å laste inn på nytt</p>
       </div>
     );
-  }
+  } 
+  
+  if (!team) return null; // So typeScript doesn't complain
+
+  const mappedMembers =
+  team.members.map((m) => ({
+    id: m.userId,
+    NickName: m.nickName,
+    points: m.totalScore,
+    profilePicture: m.profilePicture,
+  })) || [];
+  const topMembers = [...mappedMembers]
+  .sort((a, b) => b.points - a.points)
+  .slice(0, 3);
 
   const confirmLeaveTeam = async () => {
     setShowConfirm(false);
@@ -123,9 +149,15 @@ export default function DashboardPage() {
         </div>
 
         {selectedPage === "lagstatistikk" ? (
-          <main className="mt-28 flex flex-col gap-6">
-            <div className="p-4 bg-customYellow2 border-2 border-violet-900 rounded-2xl text-center">
-              <TeamStats teamName={team.name} totalScore={team.teamTotalScore} />
+          <main className="mt-20 flex flex-col gap-6">
+            <div className="p-4 bg-customYellow2 text-center">
+            <TeamStats
+              teamName={team.name}
+              totalScore={team.teamTotalScore}
+              teamProfilePicture={team.teamProfilePicture}
+              accessToken={userData?.accessToken}
+              teamId={team.teamId}
+            />
             </div>
             <p className="text-2xl font-semibold text-customViolet text-center mt-4">
               Ukens bærekraftshelter

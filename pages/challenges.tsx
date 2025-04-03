@@ -22,17 +22,16 @@ const ChallengePage: React.FC = () => {
   const router = useRouter();
   const { userData } = useUserAuth();
 
-  const { data: challenges, isLoading, error, mutate } = useApi<UserChallenge[]>(
-    userData?.accessToken ? `/api/challenge/current/user` : null,
-    userData?.accessToken,
-    { refreshInterval: 30000 }
-  );
+    const { data: challenges, isLoading, error, mutate } = useApi<UserChallenge[]>(
+      "/api/challenge/current/user",
+      userData?.accessToken,
+      { refreshInterval: 30000, enabled: !!userData?.accessToken }
+    );
 
   const [loadingChallengeId, setLoadingChallengeId] = useState<number | null>(null);
 
   // State to track which custom challenge needs confirmation
   const [confirmChallengeId, setConfirmChallengeId] = useState<number | null>(null);
-
 
   const handleCustomChallengeCompletion = async (challengeId: number) => {
     setLoadingChallengeId(challengeId);

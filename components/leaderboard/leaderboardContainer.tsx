@@ -12,6 +12,10 @@ interface User {
   nickName: string;
   totalScore: number;
   profilePicture: string;
+  type?: "user" | "team";
+}
+interface IsUser {
+  userId: number;
 }
 
 interface LeaderboardContainerProps {
@@ -19,18 +23,43 @@ interface LeaderboardContainerProps {
   loadingOverride?: boolean;
 }
 
+  // Retrieve cached leaderboard data (if available)
+  let fallbackLeaderboard: User[] | undefined;
+  if (typeof window !== "undefined") {
+    const cached = localStorage.getItem("leaderboardData");
+    if (cached) {
+      try {
+        fallbackLeaderboard = JSON.parse(cached);
+      } catch (error) {
+        console.error("Failed to parse cached leaderboardData:", error);
+      }
+    }
+  }
+
 const LeaderboardContainer = ({ users, loadingOverride = false }: LeaderboardContainerProps) => {
   const [topThree, setTopThree] = useState<User[]>([]);
   const [restOfBoard, setRestOfBoard] = useState<User[]>([]);
   const { userData, loading: authLoading } = useUserAuth();
 
-  const endpoint = !users && userData?.accessToken ? '/api/users/all' : null;
-
   const { data, isLoading: apiLoading, error } = useApi<User[]>(
-    endpoint,
+    "/api/users/all",
     userData?.accessToken,
-    { refreshInterval: 30000 }
+    { refreshInterval: 30000, enabled: !!userData?.accessToken, fallbackData: fallbackLeaderboard }
   );
+  const { data: currentUserData, isLoading: userLoading, error: userError } = useApi<IsUser>(
+    "/api/profile/getUser",
+    userData?.accessToken,
+    { refreshInterval: 0,
+      revalidateOnFocus: false,
+      revalidateOnMount: true,
+      enabled: !!userData?.accessToken }
+  );
+
+  useEffect(() => {
+    if (data && typeof window !== "undefined") {
+      localStorage.setItem("leaderboardData", JSON.stringify(data));
+    }
+  }, [data]);
 
   const combinedData = users ?? data;
 
@@ -55,10 +84,9 @@ const LeaderboardContainer = ({ users, loadingOverride = false }: LeaderboardCon
   }, [combinedData]);
 
   const showSpinner = useDelayedLoading();
-  const isLoading = users ? loadingOverride : (authLoading || apiLoading);
+  const isLoading = users ? loadingOverride : (authLoading || apiLoading || userLoading);
   
-
-  if (error) {
+  if (error || userError) {
     return (
       <div className="flex justify-center items-center h-screen">
         <p>Her skjedde det noe galt, prøv å laste inn på nytt</p>
@@ -74,7 +102,9 @@ const LeaderboardContainer = ({ users, loadingOverride = false }: LeaderboardCon
     );
   }
 
+  // Define the visual order for podium placement.
   const visualOrder = [2, 1, 3];
+  const currentUserId = currentUserData?.userId;
 
   return (
     <div className="flex flex-col">
@@ -90,6 +120,7 @@ const LeaderboardContainer = ({ users, loadingOverride = false }: LeaderboardCon
               score={user.totalScore}
               profilePicture={user.profilePicture}
               visualPosition={visualPos}
+              type={user.type ?? "user"}
             />
           );
         })}
@@ -103,12 +134,13 @@ const LeaderboardContainer = ({ users, loadingOverride = false }: LeaderboardCon
             nickName={user.nickName}
             score={user.totalScore}
             profilePicture={user.profilePicture}
+            type={user.type ?? "user"}
+            isCurrentUser={user.userId === currentUserId} // highlight current user
           />
         ))}
       </div>
     </div>
   );
 };
-
 
 export default LeaderboardContainer;

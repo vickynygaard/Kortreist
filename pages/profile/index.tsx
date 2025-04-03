@@ -42,17 +42,34 @@ export default function Profile() {
   const { userData, loading: authLoading } = useUserAuth();
 
   usePrefetchMainRoutes();
-  
-  const endpoint = userData?.accessToken ? "/api/Profile/overview" : null;
-  const { data: overview, isLoading: overviewLoading, error: overviewError } = useApi<ProfileOverview>(
-    endpoint,
-    userData?.accessToken,
-    { revalidateOnFocus: false,    // Refetch when user switches back to the tab or navigates back to the page
-    revalidateOnMount: true,      // Fetch fresh data when component first mounts
-    revalidateIfStale: false,     // Don't aggressively refetch in the background
-    refreshInterval: 0            // No polling; this is not a dashboard
+
+    // Load cached data from localStorage (if available)
+    let fallbackData: ProfileOverview | undefined;
+    if (typeof window !== "undefined") {
+      const cachedOverview = localStorage.getItem("profileOverview");
+      if (cachedOverview) {
+        try {
+          fallbackData = JSON.parse(cachedOverview);
+        } catch (error) {
+          console.error("Failed to parse cached overview:", error);
+        }
+      }
     }
-  );
+
+    const { data: overview, isLoading: overviewLoading, error: overviewError } = useApi<ProfileOverview>(
+      "/api/Profile/overview",
+      userData?.accessToken,
+      { 
+        fallbackData,
+        revalidateOnMount: true,
+        enabled: !!userData?.accessToken }
+    );
+
+    useEffect(() => {
+      if (overview && typeof window !== "undefined") {
+        localStorage.setItem("profileOverview", JSON.stringify(overview));
+      }
+    }, [overview]);
 
   const showSpinner = useDelayedLoading();
   const isLoading = authLoading || overviewLoading || !overview;
