@@ -88,8 +88,7 @@ const CompanyBarChart = () => {
 
       {/* Fixed-height container for the bar chart */}
       <div className="relative mt-14 w-full max-w-sm h-[400px] mx-auto">
-        {/* Centered absolute container for the bars */}
-        <div className="absolute inset-x-0 bottom-0 flex justify-center gap-10 items-end">
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex gap-20 items-end">
           {sorted.map((company, index) => {
             const heightPx = (company.totalPoints / maxScore) * maxBarHeight;
 
