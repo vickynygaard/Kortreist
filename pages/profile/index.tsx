@@ -97,16 +97,16 @@ export default function Profile() {
 
   function getTierStyles(tier: number): string {
     switch (tier) {
-      case 1: return "border-bronze bg-gradient-to-br from-[#fff4e1] to-[#e5a66a]"; // Bronze
-      case 2: return "border-silver bg-gradient-to-br from-[#f2f2f2] to-[#b4b4b4]"; // Silver
-      case 3: return "border-gold bg-gradient-to-br from-yellow-400 to-yellow-600"; // Gold
-      default: return "border-gray-300 bg-white/50"; // For tier 0 or unknown
+      case 1: return "border-[#BD824A] border-2 bg-[linear-gradient(135deg,_#F0C59D_0%,_#F0C59D_35%,_#E6AE7D_35%,_#E6AE7D_100%)] text-yellow-900"; //Bronze
+      case 2: return "border-[#92A7BA] border-2 bg-[linear-gradient(135deg,_#E4F1FA_0%,_#E4F1FA_35%,_#D6E4EF_35%,_#D6E4EF_100%)] text-slate-900"; //Silveßr
+      case 3: return "border-[#FA9702] border-2 bg-[linear-gradient(135deg,_#FEE332_0%,_#FEE332_35%,_#FED602_35%,_#FED602_100%)] text-yellow-800"; //Gold
+      default: return "border-gray-300 bg-white/50"; //Unknown/Unlocked
     }
   }
   
 
   function getBaseIcon(name: string): JSX.Element {
-    const base = name.split(" ")[0]; // Extract "Turgåer" from "Turgåer I"
+    const base = name.split(" ")[0]; //Extract "Turgåer" from "Turgåer I"
   
     const iconMap: Record<string, JSX.Element> = {
       "Turgåer": <Footprints size={24} />,
@@ -155,20 +155,20 @@ export default function Profile() {
 
           </div>
         {/* Stats boks */}
-        <div className="grid grid-cols-3 gap-2 bg-customYellow2 border-2 border-customViolet rounded-2xl mt-2 py-3 shadow-sm">
+        <div className="grid grid-cols-3 gap-2 bg-customYellow2 border-2 border-customViolet rounded-2xl mt-4 py-3 shadow-sm">
             {[
               {
-                icon: <Star size={22} className="text-yellow-500 mb-1" />,
+                icon: <Star size={20} className="text-yellow-500 mb-2" />,
                 value: overview?.user.totalScore ?? 0,
                 label: "Poeng",
               },
               {
-                icon: <Flag size={22} className="text-pink-400 mb-1" />,
+                icon: <Flag size={20} className="text-pink-400 mb-2" />,
                 value: overview?.completedChallenges ?? 0,
                 label: "Utfordringer",
               },
               {
-                icon: <MapPin size={22} className="text-sky-400 mb-1" />,
+                icon: <MapPin size={20} className="text-customGreen mb-2" />,
                 value: overview?.totalTravels ?? 0,
                 label: "Reiser",
               },
@@ -180,8 +180,8 @@ export default function Profile() {
                 }`}
               >
                 {stat.icon}
-                <p className="text-lg font-bold text-customViolet leading-none">{stat.value}</p>
-                <p className="text-xs text-customViolet mt-0.5">{stat.label}</p>
+                <p className="text-lg font-bold text-black-100 leading-none">{stat.value}</p>
+                <p className="text-xs text-gray-600 mt-0.5">{stat.label}</p>
               </div>
             ))}
           </div>
@@ -189,10 +189,10 @@ export default function Profile() {
       </div>
 
       {/* CO₂ & penger spart */}
-      <div className="w-full flex flex-col items-center mt-10 justify-center">
-      <div className="relative w-36 h-36 rounded-full bg-gradient-to-br from-white to-gray-100 shadow-inner flex items-center justify-center">
+      <div className="w-full flex flex-col items-center mt-8 justify-center">
+      <div className="relative w-36 h-36 rounded-full bg-gradient-to-br from-customYellow2 to-gray-100 shadow-inner flex items-center justify-center">
       <div className={`absolute w-full h-full rounded-full animate-pulse
-        ${selectedStat === "co2" ? "shadow-[0_0_15px_#22c55e]" : "shadow-[0_0_15px_#facc15]"}`}>
+        ${selectedStat === "co2" ? "shadow-[0_0_25px_#1D8800]" : "shadow-[0_0_25px_#ffb508]"}`}>
       </div>
         <div className="z-10 flex flex-col items-center">
           <p className="text-xl font-bold text-gray-800">
@@ -203,13 +203,13 @@ export default function Profile() {
       </div>
 
         {/* Velg mellom - CO₂ & penger */}
-        <div className="flex w-[75%] max-w-xs items-center justify-center space-x-2 bg-customYellow2 rounded-2xl mt-4 p-2 border-2 border-violet-900 shadow-sm">
+        <div className="flex w-[75%] max-w-xs items-center justify-center space-x-2 bg-customYellow2 rounded-2xl mt-8 p-2 border-2 border-violet-900 shadow-sm">
         {["co2", "money"].map((stat) => (
           <button
             key={stat}
             className={`flex-1 py-2 rounded-xl flex items-center justify-center transition-all duration-200 ease-in-out 
               ${selectedStat === stat ? 
-                stat === "co2" ? "bg-green-500 text-white shadow-md" : "bg-yellow-500 text-white shadow-md"
+                stat === "co2" ? "bg-customGreen text-white shadow-md" : "bg-yellow-500 text-white shadow-md"
               : "bg-gray-100 text-gray-600"}`}
             onClick={() => setSelectedStat(stat as "co2" | "money")}
           >
@@ -228,7 +228,7 @@ export default function Profile() {
     {overview?.achievements.map((badge) => (
       <button
         key={badge.achievementId}
-        className={`w-14 h-14 flex items-center justify-center border-2 rounded-xl shadow-sm transition-all duration-200 text-gray-700
+        className={`w-14 h-14 flex items-center justify-center rounded-xl shadow-sm transition-all duration-200 text-gray-700
           ${getTierStyles(badge.tier)} }`}
         onClick={() =>
           setSelectedBadge({
