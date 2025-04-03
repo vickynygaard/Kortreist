@@ -19,11 +19,12 @@ export default function OnboardingPage() {
   const router = useRouter();
   const { userData, loading, error } = useUserAuth();
 
-  const { data: existingTeams, isLoading: teamsLoading, error: teamsError } = useApi<Team[]>(
-    userData?.accessToken ? "/api/Team/company" : null,
-    userData?.accessToken,
-    { refreshInterval: 30000 }
-  );
+
+    const { data: existingTeams, isLoading: teamsLoading, error: teamsError } = useApi<Team[]>(
+      "/api/Team/company",
+      userData?.accessToken,
+      { refreshInterval: 30000, enabled: !!userData?.accessToken }
+    );
 
   // Combine loading states
   if (loading || teamsLoading) {

@@ -26,12 +26,31 @@ export default function TravelForm() {
   const { userData } = useUserAuth();
   const router = useRouter();
 
-  const endpoint = userData?.accessToken ? "/api/Profile/getUser" : null;
-  const { data: userProfile, isLoading, error } = useApi<UserProfile>(
-    endpoint,
-    userData?.accessToken,
-    { refreshInterval: 30000 }
-  );
+    // Retrieve cached profile data from localStorage
+    let fallbackProfile: UserProfile | undefined;
+    if (typeof window !== "undefined") {
+      const cached = localStorage.getItem("travelProfile");
+      if (cached) {
+        try {
+          fallbackProfile = JSON.parse(cached);
+        } catch (error) {
+          console.error("Failed to parse cached travel profile:", error);
+        }
+      }
+    }
+
+    const { data: userProfile, isLoading, error } = useApi<UserProfile>(
+      "/api/Profile/getUser",
+      userData?.accessToken,
+      { fallbackData: fallbackProfile, revalidateOnMount: true, refreshInterval: 30000, enabled: !!userData?.accessToken }
+    );
+
+  // Save fetched profile data to localStorage
+  useEffect(() => {
+    if (userProfile && typeof window !== "undefined") {
+      localStorage.setItem("travelProfile", JSON.stringify(userProfile));
+    }
+  }, [userProfile]);
 
   // Local state for address and transport selection
   const [address, setAddress] = useState("");

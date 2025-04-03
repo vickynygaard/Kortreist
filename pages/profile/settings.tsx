@@ -27,14 +27,12 @@ interface UserProfile {
 export default function Settings() {
   const router = useRouter();
   const { instance } = useMsal();
-  const { userData } = useUserAuth();
+  const { userData } = useUserAuth();;
 
-  // Use the unified API hook for fetching user profile data
-  const endpoint = userData?.accessToken ? "/api/Profile/getUser" : null;
-  const { data: fetchedProfile, isLoading, error } = useApi<UserProfile>(
-    endpoint,
+  const { data: fetchedProfile, isLoading: isLoading, error } = useApi<UserProfile>(
+    "/api/Profile/getUser",
     userData?.accessToken,
-    { refreshInterval: 30000 }
+    { refreshInterval: 30000,   revalidateOnMount: true, enabled: !!userData?.accessToken }
   );
 
   // Profile data states
