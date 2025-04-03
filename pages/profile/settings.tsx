@@ -217,23 +217,6 @@ export default function Settings() {
           <AddressAutocomplete selectedAddress={address} setSelectedAddress={setAddress} />
         </div>
 
-        {/* Notifications */}
-        <div className="mt-6 w-full max-w-md flex items-center justify-between p-4 bg-white rounded-lg shadow-md">
-          <span className="text-gray-900 text-sm font-semibold">Varslinger</span>
-          <button
-            onClick={() => setNotificationsEnabled(!notificationsEnabled)}
-            className={`w-12 h-6 flex items-center rounded-full transition ${
-              notificationsEnabled ? "bg-green-500" : "bg-gray-400"
-            }`}
-          >
-            <span
-              className={`w-6 h-6 bg-white rounded-full shadow-md transform transition ${
-                notificationsEnabled ? "translate-x-6" : "translate-x-0"
-              }`}
-            ></span>
-          </button>
-        </div>
-
         {/* Points Info */}
         <div className="mt-6 w-full max-w-md">
           <button
@@ -297,7 +280,7 @@ export default function Settings() {
         {/* Logout */}
         <button
           onClick={handleLogout}
-          className="mt-6 w-full max-w-md py-3 bg-customRed text-white font-semibold rounded-lg shadow-md transition self-center"
+          className="mt-10 w-full max-w-md py-3 bg-customRed text-white font-semibold rounded-lg shadow-md transition self-center"
         >
           Logg ut
         </button>
