@@ -86,7 +86,7 @@ const ChallengePage: React.FC = () => {
       <header className="self-start">
         <ReturnButton onClick={() => router.back()} />
       </header>
-      <div className="flex justify-center w-full font-bold font-mono text-3xl text-violet-950 pb-6">
+      <div className="flex justify-center w-full font-bold text-3xl text-violet-950 pb-6">
         Ukens utfordringer
       </div>
 
