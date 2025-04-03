@@ -19,7 +19,6 @@ export default function Document() {
 					media='(prefers-color-scheme: #FDF8F2)'
 				/>
 				<meta name='theme-color' content='#FDF8F2' />
-				<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 				<link rel='apple-touch-icon' href={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/favicon/icon-192.png`} />
 				<link rel='manifest' href={`${process.env.NEXT_PUBLIC_BASE_PATH}/manifest.json`} />
 			</Head>

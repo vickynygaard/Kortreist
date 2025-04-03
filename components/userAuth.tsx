@@ -1,4 +1,3 @@
-// useUserAuth.tsx
 import { useEffect, useState } from "react";
 import { useMsal } from "@azure/msal-react";
 import { loginRequest } from "@/msalConfig";
@@ -22,30 +21,17 @@ export interface UserData {
   accessToken: string;
 }
 
-const getInitialUserData = (): UserData | null => {
-  if (typeof window !== "undefined") {
-    const stored = localStorage.getItem("userData");
-    if (stored) {
-      try {
-        return JSON.parse(stored);
-      } catch (e) {
-        console.error("Failed to parse userData from localStorage", e);
-      }
-    }
-  }
-  return null;
-};
-
 export const useUserAuth = (): {
   userData: UserData | null;
   loading: boolean;
   error: string | null;
 } => {
   const { instance, accounts } = useMsal();
-  const [userData, setUserData] = useState<UserData | null>(getInitialUserData);
-  const [loading, setLoading] = useState<boolean>(!userData);
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Function to update user data based on the account info
   const updateUserData = async (account: AccountInfo) => {
     try {
       const response = await instance.acquireTokenSilent({
@@ -64,10 +50,6 @@ export const useUserAuth = (): {
         accessToken: response.accessToken,
       };
       setUserData(data);
-      // Persist to localStorage so that it's instantly available next time
-      if (typeof window !== "undefined") {
-        localStorage.setItem("userData", JSON.stringify(data));
-      }
     } catch (tokenError) {
       if (tokenError instanceof InteractionRequiredAuthError) {
         try {
@@ -106,4 +88,4 @@ export const useUserAuth = (): {
   }, [instance]);
 
   return { userData, loading, error };
-};
+}
