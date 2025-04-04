@@ -102,13 +102,13 @@ export default function Profile() {
   function getTierStyles(tier: number, earned: boolean): string {
     if (tier === 3) {
       if (earned) {
-        return "border-gold bg-gradient-to-br from-[#ffecb3] via-[#ffd700] to-[#c9a200]";
+        return "border-[#FA9702] border-2 bg-[linear-gradient(135deg,_#FEE332_0%,_#FEE332_35%,_#FED602_35%,_#FED602_100%)] text-yellow-800"; // Gold
       }
-      return "border-silver bg-gradient-to-br from-[#f2f2f2] to-[#b4b4b4]"; // Sølv Tier 3
+      return "border-[#92A7BA] border-2 bg-[linear-gradient(135deg,_#E4F1FA_0%,_#E4F1FA_35%,_#D6E4EF_35%,_#D6E4EF_100%)] text-slate-900"; // Silver
     }
 
     if (tier === 2) {
-      return "border-bronze bg-gradient-to-br from-[#fff4e1] to-[#e5a66a]"; // Bronse
+      return "border-[#BD824A] border-2 bg-[linear-gradient(135deg,_#F0C59D_0%,_#F0C59D_35%,_#E6AE7D_35%,_#E6AE7D_100%)] text-yellow-900"; // Bronze
     }
   
     if (tier === 1) {
@@ -116,18 +116,6 @@ export default function Profile() {
     }
   
     return "border-gray-300 bg-white/50"; // Fallback
-  }
-
-  function getBadgeRingStyle(progress: number, total: number, earned: boolean): React.CSSProperties {
-    if (earned) return {}; // No show if earned
-  
-    const percentage = Math.min(progress / total, 1) * 100;
-  
-    return {
-      background: `conic-gradient(#7c3aed ${percentage}%, #e5e7eb ${percentage}%)`,
-      borderRadius: "9999px",
-      padding: "3px", 
-    };
   }
 
   function getBaseIcon(name: string): JSX.Element {
