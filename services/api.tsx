@@ -1,7 +1,7 @@
 import router from "next/router";
 import toast from "react-hot-toast";
 
-const BASE_URL = 'https://bouvetapi-frbah7fhh5cjdpfy.swedencentral-01.azurewebsites.net';
+const BASE_URL = 'https://kortreistapi-h7e9d7gsb3bcgwhd.norwayeast-01.azurewebsites.net';
 
 export async function fetcher(endpoint: string, token?: string) {
   const headers: Record<string, string> = {
