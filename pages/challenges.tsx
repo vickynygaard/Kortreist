@@ -36,7 +36,7 @@ const ChallengePage: React.FC = () => {
   const handleCustomChallengeCompletion = async (challengeId: number) => {
     setLoadingChallengeId(challengeId);
     const response = await fetch(
-      "https://bouvetapi-frbah7fhh5cjdpfy.swedencentral-01.azurewebsites.net/api/challenge/custom/complete",
+      "https://kortreistapi-h7e9d7gsb3bcgwhd.norwayeast-01.azurewebsites.net/api/challenge/custom/complete",
       {
         method: "POST",
         headers: {

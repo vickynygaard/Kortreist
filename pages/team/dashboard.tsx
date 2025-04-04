@@ -100,7 +100,7 @@ export default function DashboardPage() {
     if (!userData?.accessToken) return;
     try {
       const response = await fetch(
-        "https://bouvetapi-frbah7fhh5cjdpfy.swedencentral-01.azurewebsites.net/api/team/leave",
+        "https://kortreistapi-h7e9d7gsb3bcgwhd.norwayeast-01.azurewebsites.net/api/team/leave",
         {
           method: "PUT",
           headers: {
