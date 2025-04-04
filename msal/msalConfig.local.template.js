@@ -1,24 +1,42 @@
 export const msalConfig = {
-    auth: {
-      //Default: 640cd4bc-39b6-425f-befb-3a7ac41eb14e
-      //Ngrok: b6479e0f-bf41-4306-8ac9-ec83012a11c4
-      clientId: "640cd4bc-39b6-425f-befb-3a7ac41eb14e",
-      authority: "https://bouvetB2Ctenant.b2clogin.com/bouvetB2Ctenant.onmicrosoft.com/B2C_1_SignUpSignIn",
-      knownAuthorities: ["bouvetB2Ctenant.b2clogin.com"],
+  auth: {
 
-      //Default: http://localhost:3000/login/
-      //Ngrok: https://DIN-LENKE-NGROK.app/login/
-      //ngrok http 3000 --url https://DIN-LENKE-NGROK.ngrok-free.app
-      redirectUri: "http://localhost:3000/login/",
-      postLogoutRedirectUri: "http://localhost:3000/login/",
-    },
-    cache: {
-      cacheLocation: "sessionStorage",
-      storeAuthStateInCookie: false,
-    }
-  };
+    //Default: 45b5bd46-89bd-41ac-a235-7762e00b197e
+    //LocalTunnel: bb5c02f9-84c2-41ac-86ee-e34d818257cb
+
+    //clientId: "bb5c02f9-84c2-41ac-86ee-e34d818257cb",
+    clientId: "45b5bd46-89bd-41ac-a235-7762e00b197e",
+    authority: "https://kortreist.b2clogin.com/kortreist.onmicrosoft.com/B2C_1_SignUpSignIn",
+    knownAuthorities: ["kortreist.b2clogin.com"],
+    
+  // lt --port 3000 --subdomain DIN-LOCAL-TUNNEL-LINK
+
+      //LocalTunnel: https://DIN-LOCAL-TUNNEL-LINK.loca.lt/login/
+      //Default: http://localhost:3000/login/  
+    
+    redirectUri: "http://localhost:3000/login/",
+    postLogoutRedirectUri: "http://localhost:3000/login/",
+    //redirectUri: "https://DIN-LOCAL-TUNNEL-LINK.loca.lt/login/",
+    //postLogoutRedirectUri: "https://DIN-LOCAL-TUNNEL-LINK.loca.lt/login/",
   
-  export const loginRequest = {
-    scopes: ["openid", "profile", "email", "https://bouvetB2Ctenant.onmicrosoft.com/user_impersonation/user_impersonation" 
-  ]
-  };
+  },
+  cache: {
+    cacheLocation: "localStorage",
+    storeAuthStateInCookie: false,
+  }
+};
+
+export const loginRequest = {
+  scopes: ["openid", "profile", "email", "https://kortreist.onmicrosoft.com/user_impersonation/user_impersonation" 
+]
+};
+
+export const signupRequest = {
+  scopes: [
+    "openid",
+    "profile",
+    "email",
+    "https://kortreist.onmicrosoft.com/user_impersonation/user_impersonation"
+  ],
+  authority: "https://kortreist.b2clogin.com/kortreist.onmicrosoft.com/B2C_1_SignUp"
+};
