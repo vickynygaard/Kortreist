@@ -24,7 +24,7 @@ const [error, setError] = useState<string | null>(null);
       setUpserting(true);
       try {
         const response = await fetch(
-          `https://bouvetapi-frbah7fhh5cjdpfy.swedencentral-01.azurewebsites.net/api/Users/upsert`,
+          `https://kortreistapi-h7e9d7gsb3bcgwhd.norwayeast-01.azurewebsites.net/api/Users/upsert`,
           {
             method: "POST",
             headers: {

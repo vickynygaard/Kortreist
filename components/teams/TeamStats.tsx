@@ -41,7 +41,7 @@ export default function TeamStats({ teamName, totalScore, teamProfilePicture, ac
     if (!accessToken || !teamId) return;
 
     try {
-      const res = await fetch("https://bouvetapi-frbah7fhh5cjdpfy.swedencentral-01.azurewebsites.net/api/team/editTeam", {
+      const res = await fetch("https://kortreistapi-h7e9d7gsb3bcgwhd.norwayeast-01.azurewebsites.net/api/team/editTeam", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

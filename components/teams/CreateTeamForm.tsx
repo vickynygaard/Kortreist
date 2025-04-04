@@ -31,7 +31,7 @@ export default function CreateTeamForm({
 
     try {
       const response = await fetch(
-        "https://bouvetapi-frbah7fhh5cjdpfy.swedencentral-01.azurewebsites.net/api/team/upsert",
+        "https://kortreistapi-h7e9d7gsb3bcgwhd.norwayeast-01.azurewebsites.net/api/team/upsert",
         {
           method: "POST",
           headers: {
