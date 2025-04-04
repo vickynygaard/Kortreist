@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Home, Footprints, Goal, Users, Trophy, User, Coins, Leaf, Bus, Bike, Car, Crown, Globe, Settings, X, UnlockIcon, Star, Flag, MapPin } from "lucide-react";
+import { Home, Footprints, Goal, Users, Trophy, User, Coins, Leaf, Bus, Bike, Car, Crown, Globe, Settings, X, UnlockIcon, Star, Flag, MapPin, Eraser } from "lucide-react";
 import { useUserAuth } from "@/components/userAuth";
 import Section from "@/components/section";
 import Page from "@/components/page";
@@ -24,6 +24,7 @@ interface UserAchievement {
   progress: number;
   earnedAt: string | null;
   tier: number;
+  isMaxTier: boolean;
 }
 
 interface ProfileOverview {
@@ -65,6 +66,8 @@ export default function Profile() {
         enabled: !!userData?.accessToken }
     );
 
+    console.log("overview", overview);
+
     useEffect(() => {
       if (overview && typeof window !== "undefined") {
         localStorage.setItem("profileOverview", JSON.stringify(overview));
@@ -95,15 +98,37 @@ export default function Profile() {
     money: { value: Math.floor(overview?.totalMoneySaved ?? 0), unit: "kr", label: "Penger spart" },
   };  
 
-  function getTierStyles(tier: number): string {
-    switch (tier) {
-      case 1: return "border-bronze bg-gradient-to-br from-[#fff4e1] to-[#e5a66a]"; // Bronze
-      case 2: return "border-silver bg-gradient-to-br from-[#f2f2f2] to-[#b4b4b4]"; // Silver
-      case 3: return "border-gold bg-gradient-to-br from-yellow-400 to-yellow-600"; // Gold
-      default: return "border-gray-300 bg-white/50"; // For tier 0 or unknown
+  // Which color should the badges be
+  function getTierStyles(tier: number, earned: boolean): string {
+    if (tier === 3) {
+      if (earned) {
+        return "border-gold bg-gradient-to-br from-[#ffecb3] via-[#ffd700] to-[#c9a200]";
+      }
+      return "border-silver bg-gradient-to-br from-[#f2f2f2] to-[#b4b4b4]"; // Sølv Tier 3
     }
-  }
+
+    if (tier === 2) {
+      return "border-bronze bg-gradient-to-br from-[#fff4e1] to-[#e5a66a]"; // Bronse
+    }
   
+    if (tier === 1) {
+      return "border-[#f0e3c0] bg-gradient-to-br from-[#fef9e7] to-[#f0e3c0]";
+    }
+  
+    return "border-gray-300 bg-white/50"; // Fallback
+  }
+
+  function getBadgeRingStyle(progress: number, total: number, earned: boolean): React.CSSProperties {
+    if (earned) return {}; // No show if earned
+  
+    const percentage = Math.min(progress / total, 1) * 100;
+  
+    return {
+      background: `conic-gradient(#7c3aed ${percentage}%, #e5e7eb ${percentage}%)`,
+      borderRadius: "9999px",
+      padding: "3px", 
+    };
+  }
 
   function getBaseIcon(name: string): JSX.Element {
     const base = name.split(" ")[0]; // Extract "Turgåer" from "Turgåer I"
@@ -229,7 +254,8 @@ export default function Profile() {
       <button
         key={badge.achievementId}
         className={`w-14 h-14 flex items-center justify-center border-2 rounded-xl shadow-sm transition-all duration-200 text-gray-700
-          ${getTierStyles(badge.tier)} }`}
+        ${getTierStyles(badge.tier, badge.earnedAt !== null)}
+ }`}
         onClick={() =>
           setSelectedBadge({
             id: badge.achievementId,
