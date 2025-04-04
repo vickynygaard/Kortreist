@@ -152,7 +152,7 @@ export default function Profile() {
 
 
         {/* Profile info boks */}
-        <div className="w-full px-4">
+        <div className="w-full">
         <div className="w-full bg-customYellow2 p-4 rounded-2xl flex flex-col">
           {/* Profilbilde og navn */}
           <div className="flex items-center gap-4">
