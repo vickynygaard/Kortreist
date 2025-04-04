@@ -1,8 +1,8 @@
 export const msalConfig = {
     auth: {
-      clientId: "640cd4bc-39b6-425f-befb-3a7ac41eb14e",
-      authority: "https://bouvetB2Ctenant.b2clogin.com/bouvetB2Ctenant.onmicrosoft.com/B2C_1_SignUpSignIn",
-      knownAuthorities: ["bouvetB2Ctenant.b2clogin.com"],
+      clientId: "45b5bd46-89bd-41ac-a235-7762e00b197e",
+      authority: "https://kortreist.b2clogin.com/kortreist.onmicrosoft.com/B2C_1_SignUpSignIn",
+      knownAuthorities: ["kortreist.b2clogin.com"],
       redirectUri: "https://vickynygaard.github.io/Kortreist/login/",
       postLogoutRedirectUri: "https://vickynygaard.github.io/Kortreist/login/",
     },
@@ -13,7 +13,7 @@ export const msalConfig = {
   };
   
   export const loginRequest = {
-    scopes: ["openid", "profile", "email", "https://bouvetB2Ctenant.onmicrosoft.com/user_impersonation/user_impersonation" 
+    scopes: ["openid", "profile", "email", "https://kortreist.onmicrosoft.com/user_impersonation/user_impersonation" 
   ]
   };
 
@@ -22,7 +22,7 @@ export const msalConfig = {
       "openid",
       "profile",
       "email",
-      "https://bouvetB2Ctenant.onmicrosoft.com/user_impersonation/user_impersonation"
+      "https://kortreist.onmicrosoft.com/user_impersonation/user_impersonation"
     ],
-    authority: "https://bouvetB2Ctenant.b2clogin.com/bouvetB2Ctenant.onmicrosoft.com/B2C_1_SignUp"
+    authority: "https://kortreist.b2clogin.com/kortreist.onmicrosoft.com/B2C_1_SignUp"
   };
