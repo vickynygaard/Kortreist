@@ -1,6 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/router";
-import { ArrowLeft } from "lucide-react";
 import { useMsal } from "@azure/msal-react";
 import { useUserAuth } from "@/components/userAuth";
 import AddressAutocomplete from "@/components/addressAutocomplete";
@@ -12,10 +11,10 @@ import { mutate } from "swr";
 import ReturnButton from "@/components/buttons/returnButton";
 
 const availableAvatars = [
-  "avatar1.png", "avatar2.png", "avatar3.png", "avatar4.png",
-  "avatar5.png", "avatar6.png", "avatar7.png", "avatar8.png",
-  "avatar9.png", "avatar10.png", "avatar11.png", "avatar12.png",
-  "avatar13.png", "avatar14.png", "avatar15.png", "avatar16.png",
+  "Avatar1.png", "Avatar2.png", "Avatar3.png", "Avatar4.png",
+  "Avatar5.png", "Avatar6.png", "Avatar7.png", "Avatar8.png",
+  "Avatar9.png", "Avatar10.png", "Avatar11.png", "Avatar12.png",
+  "Avatar13.png", "Avatar14.png", "Avatar15.png", "Avatar16.png",
 ];
 
 interface UserProfile {
@@ -66,7 +65,6 @@ export default function Settings() {
       setAddress(fetchedProfile.address);
       setNickNameError(validateName(fetchedProfile.nickName));
   
-      // This is what was missing
       setInitialProfileData({
         nickName: fetchedProfile.nickName,
         profilePicture: fetchedProfile.profilePicture,
@@ -188,7 +186,7 @@ export default function Settings() {
         {/* Profile Picture */}
         <div className="flex flex-col items-center justify-center mt-4">
           <img
-            src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/profile-pictures/${profilePicture || "avatar1.png"}`}
+            src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/avatars/${profilePicture || "Avatar1.png"}`}
             alt="Profile"
             onClick={() => setShowAvatarModal(true)}
             className="w-24 h-24 rounded-full object-cover border-2 border-customViolet cursor-pointer hover:opacity-80 transition"
@@ -299,7 +297,7 @@ export default function Settings() {
               {availableAvatars.map((avatar) => (
                 <img
                   key={avatar}
-                  src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/profile-pictures/${avatar || "avatar1.png"}`}
+                  src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/avatars/${avatar || "Avatar1.png"}`}
                   alt={avatar}
                   onClick={() => {
                     setProfilePicture(avatar);
