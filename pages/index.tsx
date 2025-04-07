@@ -73,7 +73,7 @@ const Dashboard = () => {
     <div className="flex flex-col w-full justify-between">
       <main className="flex flex-col w-full gap-4 p-4">
         <DashboardHeader 
-          profilePic={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/profile-pictures/${user?.profilePicture || "avatar1.png"}`}
+          profilePic={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/avatars/${user?.profilePicture || "Avatar1.png"}`}
           name={user?.name ?? "Bruker"}
           points={user?.totalScore?.toString() ?? "0"}
         />

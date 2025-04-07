@@ -15,8 +15,8 @@ const LeaderboardItem = ({
   type = "user",
   isCurrentUser = false,
 }: LeaderboardItemProps) => {
-  const folder = type === "team" ? "team-pictures" : "profile-pictures";
-  const fallback = type === "team" ? "teamAvatar1.png" : "avatar1.png";
+  const folder = type === "team" ? "team-pictures" : "avatars";
+  const fallback = type === "team" ? "teamAvatar1.png" : "Avatar1.png";
 
   return (
     <div
