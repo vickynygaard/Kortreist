@@ -182,7 +182,7 @@ export default function Settings() {
       <header className="self-start">
         <ReturnButton onClick={() => router.back()} />
       </header>
-      <div className="font-bold text-3xl text-violet-950 pb-6">Instillinger</div></div>
+      <div className="font-bold text-3xl text-violet-950 pb-6">Innstillinger</div></div>
 
 
         {/* Profile Picture */}

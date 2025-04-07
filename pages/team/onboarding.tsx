@@ -50,7 +50,7 @@ export default function OnboardingPage() {
   return (
     <main className="flex flex-col items-center px-4">
       <div className="w-full text-center text-2xl font-medium pb-4">
-        <h1>Velg et Lag</h1>
+        <h1>Velg et lag</h1>
       </div>
 
       <div className="w-full max-w-xs sm:max-w-md flex flex-col gap-4 mt-6 text-center">
@@ -63,7 +63,7 @@ export default function OnboardingPage() {
           {existingTeams?.length === 0 ? (
             <p>Det finnes ingen lag ennå. Du kan være den første til å lage ett!</p>
           ) : (
-            <p>Velg et lag å bli med i, eller opprett ditt eget.</p>
+            <p>Bli med i et lag, eller opprett ditt eget.</p>
           )}
           <TeamOptions onCreate={() => setStep("create")} />
         </>

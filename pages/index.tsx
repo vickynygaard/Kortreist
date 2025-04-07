@@ -88,7 +88,7 @@ const Dashboard = () => {
             href="/team"
             image={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/RegistrerReise.svg`}
             title="Ditt lag"
-            description="Se lagstatistikk, medlemmer..."
+            description="Se en oversikt over lagstatistikk og medlemmer"
           />
           <DashboardButton
             href="challenges"
