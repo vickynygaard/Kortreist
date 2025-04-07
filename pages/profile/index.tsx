@@ -94,7 +94,7 @@ export default function Profile() {
   }
 
   const stats = {
-    co2: { value: (overview?.totalCo2Savings ?? 0).toFixed(4), unit: "kg", label: "CO₂ spart" },
+    co2: { value: (overview?.totalCo2Savings ?? 0).toFixed(2), unit: "kg", label: "CO₂ spart" },
     money: { value: Math.floor(overview?.totalMoneySaved ?? 0), unit: "kr", label: "Penger spart" },
   };  
 
@@ -145,7 +145,7 @@ export default function Profile() {
       <div className="w-full px-4 flex text-center items-center justify-between"> 
         <h1 className="font-bold text-3xl text-violet-950 pb-6">Min Profil</h1>
         {/* Settings Ikon */}
-        <Link href="/profile/settings" className="text-black">
+        <Link href="/profile/settings" className="text-violet-950">
           <Settings size={28} strokeWidth={2}/>
         </Link>
       </div>
