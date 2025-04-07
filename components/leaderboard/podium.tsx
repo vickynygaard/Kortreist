@@ -29,8 +29,8 @@ const Podium = ({
     3: "border-amber-600",
   };
 
-  const folder = type === "team" ? "team-pictures" : "profile-pictures";
-  const fallback = type === "team" ? "teamAvatar1.png" : "avatar1.png";
+  const folder = type === "team" ? "team-pictures" : "avatars";
+  const fallback = type === "team" ? "teamAvatar1.png" : "Avatar1.png";
 
   return (
     <motion.div
