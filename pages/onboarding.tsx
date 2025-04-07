@@ -79,7 +79,6 @@ export default function OnboardingPage() {
           throw new Error(`Feil ved henting av brukerdata: ${response.statusText}`);
         }
         const data = await response.json();
-        console.log("Fetched user profile:", data);
 
         setUser(data);
         if (data.companyId) setSelectedCompanyId(data.companyId);

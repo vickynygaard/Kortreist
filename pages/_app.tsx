@@ -153,7 +153,6 @@ useEffect(() => {
     }, []);
 
 	return (
-		<MsalProvider instance={msalInstance}>
 		<>
 		<Head>
 			<title>Kortreist</title>
@@ -161,13 +160,13 @@ useEffect(() => {
 			<link rel='manifest' href={`${process.env.NEXT_PUBLIC_BASE_PATH}/manifest.json`} />
 		</Head>
 		
+    <RequireAuth>
 		<ThemeProvider
 		attribute="class"
 		defaultTheme="light"
 		enableSystem={false} 
 		disableTransitionOnChange
 		>
-    <RequireAuth>
       <Page>
         <Section>
       
@@ -177,15 +176,14 @@ useEffect(() => {
       <Footer />
       </Page>
 
-      </RequireAuth>
 		</ThemeProvider>
+    </RequireAuth>
       
       {/* Only render the Navbar if showNavbar is true */}
 			{showNavbar && <Navbar />}
       <Toaster /> 
 
 		</>
-		</MsalProvider>
 	)
 }
 

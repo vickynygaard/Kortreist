@@ -66,8 +66,6 @@ export default function Profile() {
         enabled: !!userData?.accessToken }
     );
 
-    console.log("overview", overview);
-
     useEffect(() => {
       if (overview && typeof window !== "undefined") {
         localStorage.setItem("profileOverview", JSON.stringify(overview));
