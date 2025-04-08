@@ -15,8 +15,8 @@ export default function ConfirmationModal({
 }: ConfirmationModalProps) {
   const confirmButtonClasses =
     confirmColor === "red"
-      ? "px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition"
-      : "px-4 py-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition";
+      ? "px-4 py-2 bg-customRed text-white rounded-full hover:bg-red-600 transition"
+      : "px-4 py-2 bg-customGreen text-white rounded-full hover:bg-green-600 transition";
 
     return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
