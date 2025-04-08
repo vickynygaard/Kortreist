@@ -87,7 +87,7 @@ export default function TeamStats({ teamName, totalScore, teamProfilePicture, ac
 
   const onNameChange = (value: string) => {
     setLocalName(value);
-    setNameError(validateName(value, { maxLength: 15, label: "Lagnavn" }));
+    setNameError(validateName(value, { maxLength: 12, label: "Lagnavn" }));
   };
   
   const handleNameBlur = (e: React.FocusEvent<HTMLInputElement>) => {

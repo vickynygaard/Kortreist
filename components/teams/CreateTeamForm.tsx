@@ -23,7 +23,7 @@ export default function CreateTeamForm({
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setTeamName(value);
-    setNameError(validateName(value, { maxLength: 8, label: "Lagnavn" }));
+    setNameError(validateName(value, { maxLength: 12, label: "Lagnavn" }));
   };
 
   const handleCreate = async () => {
