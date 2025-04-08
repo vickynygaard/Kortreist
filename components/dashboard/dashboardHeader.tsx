@@ -14,13 +14,13 @@ interface ProfileProps {
     {/*Grid for ikon og navn-melding */}
     <div className="row-span-3 grid grid-cols-5 gap-2">
         <div className="flex items-center justify-center h-full">
-            <div className="w-16 h-16 rounded-full overflow-hidden">
+            <div className="w-16 h-16 rounded-full border-2 border-customViolet overflow-hidden">
                 <Image 
                     src={profilePic} 
                     alt="Profilbilde" 
                     width={64} 
                     height={64} 
-                    objectFit="cover" 
+                    objectFit="object-cover" 
                 />
             </div>
         </div>
