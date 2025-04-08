@@ -8,6 +8,10 @@ interface ChallengeProps {
   total: number;
   challengeType: "Standard" | "Distance" | "Custom";
   challengePoints: number;
+  isCustom?: boolean;
+  isCompleted?: boolean;
+  onComplete?: () => void;
+  isLoading?: boolean;
 }
 
 const Challenge: React.FC<ChallengeProps> = ({
@@ -16,10 +20,13 @@ const Challenge: React.FC<ChallengeProps> = ({
   current,
   total,
   challengeType,
-  challengePoints
+  challengePoints,
+  isCustom,
+  isCompleted,
+  onComplete,
+  isLoading
 }) => {
   const percentage = Math.min((current / total) * 100, 100);
-  const isCompleted = current >= total;
 
   // Label dynamically based on challengeType
   const progressLabel =
@@ -28,54 +35,71 @@ const Challenge: React.FC<ChallengeProps> = ({
       : `${current}/${total}`;
 
   return (
-    <div className="grid bg-customYellow2 w-full max-h-40 grid-cols-3 grid-rows-2 gap-2 rounded-xl border-2 border-violet-900 p-4">
-      {/* Title */}
-      <div className="col-span-2 self-start font-bold text-lg p-2">
-        {title}
+<div
+  className={`relative flex bg-customYellow2 w-full rounded-xl border-2 p-4 gap-4 ${
+    challengeType === "Custom"
+      ? "border-orange-400"
+      : challengeType === "Distance"
+      ? "border-green-600"
+      : "border-blue-600"
+  }`}
+>
+{/* Left side: text + button */}
+  <div className="flex-1 flex flex-col justify-between">
+    <div>
+      <div className="font-bold text-lg mb-1">{title}</div>
+      <div className="text-sm">
+        <strong>{progressLabel}</strong>
       </div>
+      <div className="text-sm">{isCompleted ? "Fullført" : "Pågår"}</div>
+    </div>
 
-      {/* Spinner & Points (right column, spans 2 rows) */}
-      <div className="row-span-2 flex flex-col items-center justify-center pl-4">
-        {/* Progress Wheel */}
-        <div className="relative w-24 h-24">
-          <CircularProgressbar
-            value={percentage}
-            styles={buildStyles({
-              strokeLinecap: 'round',
-              textSize: '14px',
-              pathColor: '#2F0D68',
-              textColor: '#1f2937',
-              trailColor: '#d1d5db',
-            })}
-          />
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-xs text-gray-800 leading-tight">
-            {challengeType === "Distance" ? (
-              <>
-                <span className="text-base">{`${current.toFixed(1)}km`}</span>
-                <span className="text-sm">{`/ ${total}km`}</span>
-              </>
-            ) : (
-              <span className="text-base">{`${current}/${total}`}</span>
-            )}
-          </div>
-        </div>
+    {isCustom && !isCompleted && onComplete && (
+      <button
+        onClick={onComplete}
+        disabled={isLoading}
+        className="mt-2 w-fit px-3 py-1 text-xs bg-violet-700 text-white rounded hover:bg-violet-800 disabled:opacity-50"
+      >
+        {isLoading ? "Registrerer..." : "Fullfør aktivitet"}
+      </button>
+    )}
+  </div>
 
-        {/* Points Below Spinner */}
-        {!isCompleted ? <div className="mt-2 bg-customViolet text-white text-xs font-bold px-2 py-1 rounded"> {challengePoints} poeng
-        </div> : <div className="mt-2 bg-customGreen text-white text-xs font-bold px-2 py-1 rounded"> {challengePoints} poeng
-        </div> }
-        
-
-      </div>
-
-      {/* Progress Details (bottom-left) */}
-      <div className="col-span-2 self-start flex flex-col pl-4">
-        <div className="">
-          <strong>{progressLabel}</strong>
-        </div>
-        <div>{isCompleted ? "Fullført" : "Pågår"}</div>
+  {/* Right side: progress + points */}
+  <div className="flex flex-col items-center justify-center">
+    <div className="relative w-20 h-20">
+      <CircularProgressbar
+        value={percentage}
+        styles={buildStyles({
+          strokeLinecap: "round",
+          textSize: "14px",
+          pathColor: "#2F0D68",
+          textColor: "#1f2937",
+          trailColor: "#d1d5db",
+        })}
+      />
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-xs text-gray-800 leading-tight">
+        {challengeType === "Distance" ? (
+          <>
+            <span className="text-base">{`${current.toFixed(1)}km`}</span>
+            <span className="text-sm">{`/ ${total}km`}</span>
+          </>
+        ) : (
+          <span className="text-base">{`${current}/${total}`}</span>
+        )}
       </div>
     </div>
+
+    <div
+      className={`mt-2 text-white text-xs font-bold px-2 py-1 rounded ${
+        isCompleted ? "bg-customGreen" : "bg-customViolet"
+      }`}
+    >
+      {challengePoints} poeng
+    </div>
+  </div>
+</div>
+
   );
 };
 

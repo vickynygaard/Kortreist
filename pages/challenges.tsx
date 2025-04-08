@@ -94,14 +94,12 @@ const ChallengePage: React.FC = () => {
           <Challenge
             title={challenge.description}
             type={challenge.method}
-            current={
-              Math.min(
-                challenge.userProgress,
-                challenge.type === "Distance"
-                  ? challenge.requiredDistanceKm!
-                  : challenge.requiredCount!
-              )
-            }
+            current={Math.min(
+              challenge.userProgress,
+              challenge.type === "Distance"
+                ? challenge.requiredDistanceKm!
+                : challenge.requiredCount!
+            )}
             total={
               challenge.type === "Distance"
                 ? challenge.requiredDistanceKm!
@@ -109,22 +107,32 @@ const ChallengePage: React.FC = () => {
             }
             challengeType={challenge.type}
             challengePoints={challenge.points}
+            isCustom={challenge.method === "custom"}
+            isCompleted={
+              challenge.type === "Distance"
+                ? challenge.userProgress >= challenge.requiredDistanceKm!
+                : challenge.userProgress >= challenge.requiredCount!
+            }
+            isLoading={loadingChallengeId === challenge.challengeId}
+            onComplete={() => setConfirmChallengeId(challenge.challengeId)}
           />
-          {challenge.method === "custom" &&
-            challenge.requiredCount !== undefined &&
-            challenge.userProgress < challenge.requiredCount && (
-              <button
-                disabled={loadingChallengeId === challenge.challengeId}
-                className="mt-2 px-4 py-2 rounded bg-violet-700 text-white hover:bg-violet-800"
-                onClick={() => setConfirmChallengeId(challenge.challengeId)}
-              >
-                {loadingChallengeId === challenge.challengeId
-                  ? "Registrerer..."
-                  : "Fullfør aktivitet"}
-              </button>
-            )}
         </div>
       ))}
+
+    <div className="bg-customYellow2 opacity-90 text-violet-900 text-sm p-3 rounded-lg border border-violet-300 w-full text-left">
+        <p className="mb-1 font-semibold">Hva betyr fargene?</p>
+        <ul className="text-xs list-disc list-inside space-y-1 list-none">
+          <li>
+            <span className="text-blue-700 font-medium">Blå ramme</span>: Standard utfordring - spores automatisk.
+          </li>
+          <li>
+            <span className="text-green-700 font-medium">Grønn ramme</span>: Avstandsutfordring - spores automatisk basert på kilometer.
+          </li>
+          <li>
+            <span className="text-orange-700 font-medium">Oransje ramme</span>: Spesialutfordring - må fullføres manuelt.
+          </li>
+        </ul>
+      </div>
 
       {/* Confirm complete */}
       {confirmChallengeId !== null && (
