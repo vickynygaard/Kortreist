@@ -176,7 +176,7 @@ export default function Settings() {
   return (
     <div className="flex justify-center w-full">
     <div className="w-full max-w-md flex flex-col mx-auto px-4">
-      <div className="flex flex-col items-center px-4">
+      <div className="flex flex-col items-center">
       <header className="self-start">
         <ReturnButton onClick={() => router.back()} />
       </header>
@@ -219,40 +219,32 @@ export default function Settings() {
             onClick={() => setShowPointsInfo(!showPointsInfo)}
             className="w-full flex justify-between items-center p-4 bg-white rounded-lg shadow-md"
           >
-            <span className="text-gray-900 text-sm font-semibold">Poengsystem Forklaring</span>
+            <span className="text-gray-900 text-sm font-semibold">Forklaring</span>
             <span className="text-gray-500">{showPointsInfo ? "▲" : "▼"}</span>
           </button>
           {showPointsInfo && (
             <div className="p-4 bg-gray-50 rounded-lg mt-2 text-sm text-gray-600">
+              Velkommen til Kortreist!
+              <br />
+              <br />
+              Appens formål er å oppmuntre ansatte til å reise mer bærekraftig til og fra jobb. Registrer reisemåten din for å tjene 
+              poeng, fullfør ukentlige utfordringer, og konkurrer sammen med kollegaer.
+              <br />
+              <br />
               Tjen poeng for hvert bærekraftige reisevalg:
               <br />
-              - 100 poeng for å gå
-              <br />
-              - 80 poeng for å sykle
-              <br />
-              - 60 poeng for å ta buss
-              <br />
-              - 50 poeng for å samkjøre
-              <br />
-              - 10 poeng for å kjøre bil
+              - 100 poeng for bil osv
               <br />
               <br />
               Lengre distanse gir flere poeng:
               <br />
-              - 0 - 2 km = 20 poeng
-              <br />
-              - 2 - 5 km = 50 poeng
-              <br />
-              - 5 - 10 km = 80 poeng
-              <br />
-              - 10 - 15 km = 100 poeng
-              <br />
-              - 15 - 25 km = 150 poeng
-              <br />
-              - 25 km + = 200 poeng
+              - 1km gir flere poen blah blah
               <br />
               <br />
-              Fullfør utfordringer og opptjen "badges" for å samle enda flere poeng!
+              Fullfør utfordringer og tjen merker for å samle enda flere poeng!
+              <br />
+              <br />
+              Lykke til!
             </div>
           )}
         </div>

@@ -20,7 +20,7 @@ interface ButtonProps {
       >
       
       {/* Grid for Ikon-Tittel-Beskrivelse */}
-      <div className="col-span-4 row-span-2 grid grid-cols-3 grid-rows-4 py-2">
+      <div className="col-span-4 row-span-2 grid grid-cols-3 grid-rows-4 py-2 pb-4">
         <div className="row-span-4 flex items-center justify-center"><Image src={image} alt={title} width={64} height={64} /></div>
         <div className="col-span-2 row-span-2 flex items-center justify-start text-xl font-bold truncate">{title}</div>
         <div className="col-span-2 row-span-2 flex items-center justify-start text-sm text-left">{description}</div>
