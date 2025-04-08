@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Home, Footprints, Goal, Users, Trophy, User, Coins, Leaf, Bus, Bike, Car, Crown, Globe, Settings, X, UnlockIcon, Star, Flag, MapPin, Eraser } from "lucide-react";
+import { Home, Footprints, Goal, Users, Trophy, User, Coins, Leaf, Bus, Bike, Car, Crown, Globe, Swords, Settings, X, UnlockIcon, Star, MapPin, Eraser } from "lucide-react";
 import { useUserAuth } from "@/components/userAuth";
 import Section from "@/components/section";
 import Page from "@/components/page";
@@ -174,7 +174,7 @@ export default function Profile() {
                 label: "Poeng",
               },
               {
-                icon: <Flag size={20} className="text-pink-400 mb-2" />,
+                icon: <Swords size={20} className="text-pink-400 mb-2" />,
                 value: overview?.completedChallenges ?? 0,
                 label: "Utfordringer",
               },
