@@ -115,7 +115,7 @@ export default function AddressAutocomplete({
           }}
           onFocus={() => setIsFocused(true)}
           onBlur={handleBlur}
-          className={`w-full p-3 rounded border ${inputBgClass} focus:outline-none focus:ring-2 focus:ring-customViolet`}
+          className={`w-full p-3 rounded border border-gray-300 ${inputBgClass} focus:outline-none focus:ring-2 focus:ring-customViolet`}
         />
         {typedAddress && (
           <button

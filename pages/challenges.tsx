@@ -122,14 +122,14 @@ const ChallengePage: React.FC = () => {
     <div className="bg-customYellow2 opacity-90 text-customViolet text-sm p-3 rounded-lg border border-customViolet w-full text-left">
         <p className="mb-1 font-semibold">Hva betyr fargene?</p>
         <ul className="text-xs list-disc list-inside space-y-1 list-none">
+        <li>
+            <span className="text-orange-500 font-medium">Oransje ramme</span>: Spesialutfordring - må fullføres manuelt.
+          </li>
           <li>
-            <span className="text-blue-700 font-medium">Blå ramme</span>: Standard utfordring - spores automatisk.
+            <span className="text-blue-700 font-medium">Blå ramme</span>: Standardutfordring - spores automatisk.
           </li>
           <li>
             <span className="text-green-500 font-medium">Grønn ramme</span>: Avstandsutfordring - spores automatisk basert på kilometer.
-          </li>
-          <li>
-            <span className="text-orange-500 font-medium">Oransje ramme</span>: Spesialutfordring - må fullføres manuelt.
           </li>
         </ul>
       </div>
