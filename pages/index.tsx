@@ -82,7 +82,7 @@ const Dashboard = () => {
             href="travelForm"
             image={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/RegistrerReise.svg`}
             title="Registrer reise"
-            description="Samle poeng for å reise bærekraftig til jobb"
+            description="Samle poeng for å reise bærekraftig til og fra jobb"
           />
           <DashboardButton
             href="/team"
