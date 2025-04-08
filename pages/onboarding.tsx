@@ -167,7 +167,7 @@ export default function OnboardingPage() {
           placeholder="F.eks. SuperPer"
         />
         {nickNameError && (
-          <p className="text-red-600 text-sm mb-4">{nickNameError}</p>
+          <p className="text-customRed text-sm mb-4">{nickNameError}</p>
         )}
 
         <label className="block mb-2 font-medium text-gray-700">Adresse:</label>

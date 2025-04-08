@@ -83,7 +83,7 @@ const [error, setError] = useState<string | null>(null);
   if (error) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <p className="text-red-600 text-lg">{error}</p>
+        <p className="text-customRed text-lg">{error}</p>
       </div>
     );
   }

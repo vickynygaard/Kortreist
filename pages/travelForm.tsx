@@ -157,7 +157,7 @@ export default function TravelForm() {
         {/* Address */}
         <div className="w-full">
           <AddressAutocomplete selectedAddress={address} setSelectedAddress={setAddress} />
-          {addressError && <p className="text-red-800 text-sm py-2">{addressError}</p>}
+          {addressError && <p className="text-customRed text-sm py-2">{addressError}</p>}
         </div>
         {/* Reisemåte */}
         <div className="w-full">
@@ -174,7 +174,7 @@ export default function TravelForm() {
               />
             ))}
           </div>
-          {transportError && <p className="text-red-800 text-sm py-2">{transportError}</p>}
+          {transportError && <p className="text-customRed text-sm py-2">{transportError}</p>}
         </div>
         {/* Submit Button */}
         <div id="submit" className="w-full mt-8">

@@ -118,8 +118,8 @@ export default function TeamStats({ teamName, totalScore, teamProfilePicture, ac
         onClick={() => setShowAvatarModal(true)}
         className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-4 border-customViolet shadow-md mb-4 cursor-pointer hover:opacity-80 transition"
       />
-      <p className="text-xs text-gray-500 -mt-2">Trykk for å endre lagbilde</p>
-
+      <p className="text-sm text-gray-500 -mt-2">Trykk for å endre lagbilde</p>
+ <br/>
       {/* Lagnavn */}
       {editingName ? (
       <div className="flex flex-col items-center mt-2 w-full">
@@ -133,7 +133,7 @@ export default function TeamStats({ teamName, totalScore, teamProfilePicture, ac
             autoFocus
           />
           {nameError && (
-            <p className="mt-2 text-md text-red-600 text-center">{nameError}</p>
+            <p className="mt-2 text-md text-customRed text-center">{nameError}</p>
           )}
         </div>
 

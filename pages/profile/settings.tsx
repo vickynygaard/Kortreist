@@ -191,12 +191,12 @@ export default function Settings() {
             onClick={() => setShowAvatarModal(true)}
             className="w-24 h-24 rounded-full object-cover border-2 border-customViolet cursor-pointer hover:opacity-80 transition"
           />
-          <p className="text-sm text-gray-500 mt-1">Trykk for å endre bilde</p>
+          <p className="text-sm text-gray-500 mt-2">Trykk for å endre profilbilde</p>
         </div>
 
         {/* Nickname */}
         <div className="mt-6 w-full max-w-md">
-          <label className="block text-gray-700 text-sm font-semibold mb-1">Endre Kallenavn:</label>
+          <label className="block text-gray-500 text-sm mb-2">Endre kallenavn:</label>
           <input
             type="text"
             value={nickName}
@@ -204,7 +204,7 @@ export default function Settings() {
             className={`w-full p-3 rounded border border-gray-300 focus:outline-none focus:border-customViolet focus:ring-1 focus:ring-customViolet`}
             />
           {nickNameError && (
-            <p className="text-red-600 text-sm mt-1">{nickNameError}</p>
+            <p className="text-customRed text-sm mt-1">{nickNameError}</p>
           )}
         </div>
 
@@ -214,16 +214,16 @@ export default function Settings() {
         </div>
 
         {/* Points Info */}
-        <div className="mt-6 w-full max-w-md">
+        <div className="mt-4 w-full max-w-md">
           <button
             onClick={() => setShowPointsInfo(!showPointsInfo)}
-            className="w-full flex justify-between items-center p-4 bg-white rounded-lg shadow-md"
+            className="w-full flex justify-between items-center p-3 bg-white rounded border border-gray-300"
           >
-            <span className="text-gray-900 text-sm font-semibold">Forklaring</span>
+            <span className="text-black text-base">Forklaring</span>
             <span className="text-gray-500">{showPointsInfo ? "▲" : "▼"}</span>
           </button>
           {showPointsInfo && (
-            <div className="p-4 bg-gray-50 rounded-lg mt-2 text-sm text-gray-600">
+            <div className="p-3 bg-white rounded mt-2 text-sm text-gray-500 border border-gray-300">
               Velkommen til Kortreist!
               <br />
               <br />

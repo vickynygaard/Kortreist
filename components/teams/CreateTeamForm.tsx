@@ -72,7 +72,7 @@ export default function CreateTeamForm({
         placeholder="Skriv inn lagnavn..."
         className="p-2 border border-gray-400 rounded-md"
       />
-      {nameError && <p className="text-red-600 text-sm">{nameError}</p>}
+      {nameError && <p className="text-customRed text-sm">{nameError}</p>}
 
       <button
         onClick={handleCreate}
