@@ -145,8 +145,8 @@ export default function TeamStats({ teamName, totalScore, teamProfilePicture, ac
           disabled={localName === initialName}
           className={`text-sm px-4 py-1 rounded-full font-medium transition ${
             localName === initialName
-              ? "bg-gray-400 text-white cursor-not-allowed"
-              : "bg-green-600 text-white hover:bg-green-700"
+              ? "bg-gray-500 text-white cursor-not-allowed"
+              : "bg-customGreen text-white"
           }`}
         >
           Lagre

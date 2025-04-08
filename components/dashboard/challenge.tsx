@@ -38,10 +38,10 @@ const Challenge: React.FC<ChallengeProps> = ({
 <div
   className={`relative flex bg-customYellow2 w-full rounded-xl border-2 p-4 gap-4 ${
     challengeType === "Custom"
-      ? "border-orange-400"
+      ? "border-orange-500"
       : challengeType === "Distance"
-      ? "border-green-600"
-      : "border-blue-600"
+      ? "border-green-500"
+      : "border-blue-500"
   }`}
 >
 {/* Left side: text + button */}
@@ -58,7 +58,7 @@ const Challenge: React.FC<ChallengeProps> = ({
       <button
         onClick={onComplete}
         disabled={isLoading}
-        className="mt-2 w-fit px-3 py-1 text-xs bg-violet-700 text-white rounded hover:bg-violet-800 disabled:opacity-50"
+        className="mt-2 w-fit px-3 py-1 text-xs bg-orange-500 text-white rounded hover:bg-violet-800 disabled:opacity-50"
       >
         {isLoading ? "Registrerer..." : "Fullfør aktivitet"}
       </button>
