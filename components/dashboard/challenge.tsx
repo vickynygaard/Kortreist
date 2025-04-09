@@ -58,12 +58,12 @@ const Challenge: React.FC<ChallengeProps> = ({
       <button
         onClick={onComplete}
         disabled={isLoading}
-        className="mt-2 w-fit px-3 py-1 text-xs bg-orange-500 text-white rounded hover:bg-violet-800 disabled:opacity-50"
+        className="mt-2 w-fit px-3 py-1 text-xs bg-orange-500 text-white rounded transition-opacity hover:opacity-80 active:opacity-60 disabled:opacity-50"
       >
         {isLoading ? "Registrerer..." : "Fullfør aktivitet"}
       </button>
     )}
-  </div>
+  </div>  
 
   {/* Right side: progress + points */}
   <div className="flex flex-col items-center justify-center">
@@ -73,8 +73,8 @@ const Challenge: React.FC<ChallengeProps> = ({
         styles={buildStyles({
           strokeLinecap: "round",
           textSize: "14px",
-          pathColor: "#2F0D68",
-          textColor: "#1f2937",
+          pathColor: "#311687",
+          textColor: "#000000",
           trailColor: "#d1d5db",
         })}
       />
@@ -92,7 +92,7 @@ const Challenge: React.FC<ChallengeProps> = ({
 
     <div
       className={`mt-2 text-white text-xs font-bold px-2 py-1 rounded ${
-        isCompleted ? "bg-customGreen" : "bg-customViolet"
+        isCompleted ? "bg-customViolet" : "bg-gray-300"
       }`}
     >
       {challengePoints} poeng
