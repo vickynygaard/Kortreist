@@ -15,13 +15,13 @@ interface ButtonProps {
     return (
       <button 
         onClick={() => router.push(href)} 
-        className="grid grid-cols-5 h-24 w-full rounded-2xl bg-customYellow2 border-2 border-violet-900
+        className="grid grid-cols-5 items-center w-full h-24 px-3 rounded-2xl bg-customYellow2 border-2 border-violet-900
                 focus:ring focus:ring-violet-600"
       >
       
         {/*Ikon*/}
-        <div className="col-span-1 px-3 flex items-center justify-center">
-          <Image src={image} alt={title} width={64} height={64} />
+        <div className="col-span-1 flex items-center justify-center w-16 h-16">
+          <Image src={image} alt={title} width={48} height={48} className="object-contain" />
         </div>
 
         {/*Tittel og beskrivelse */}
@@ -35,7 +35,7 @@ interface ButtonProps {
         </div>
 
         {/* Pil-ikon */}
-        <div className="col-span-1 flex items-center justify-center">
+        <div className="col-span-1 flex items-center justify-center h-full">
             <ArrowRight size={24} strokeWidth={2} />
         </div>
     </button>
