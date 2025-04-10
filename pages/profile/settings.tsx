@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 import { validateName } from "@/services/validateName";
 import { mutate } from "swr";
 import ReturnButton from "@/components/buttons/returnButton";
-
+import ConfirmationModal from "@/components/modalConfirm";
 
 const availableAvatars = [
   "Avatar1.png", "Avatar2.png", "Avatar3.png", "Avatar4.png",
@@ -34,6 +34,13 @@ export default function Settings() {
     userData?.accessToken,
     { refreshInterval: 30000,   revalidateOnMount: true, enabled: !!userData?.accessToken }
   );
+
+  const [showConfirm, setShowConfirm] = useState(false);
+
+const confirmLogout = () => {
+  sessionStorage.removeItem("userUpserted");
+  instance.logoutRedirect();
+};
 
   // Profile data states
   const [profilePicture, setProfilePicture] = useState<string | null>(null);
@@ -269,12 +276,22 @@ export default function Settings() {
 
         {/* Logout */}
         <button
-          onClick={handleLogout}
+          onClick={() => setShowConfirm(true)}
           className="mt-10 w-full max-w-md py-3 bg-customRed text-white font-semibold rounded-lg shadow-md transition self-center"
         >
           Logg ut
         </button>
       </div>
+
+      {/* Confirm logout modal */}
+{showConfirm && (
+  <ConfirmationModal
+    message="Er du sikker på at du vil logge ut?"
+    onConfirm={confirmLogout}
+    onCancel={() => setShowConfirm(false)}
+    confirmColor="red"
+  />
+)}
 
       {showAvatarModal && (
         <div
