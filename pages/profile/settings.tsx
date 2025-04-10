@@ -10,6 +10,7 @@ import { validateName } from "@/services/validateName";
 import { mutate } from "swr";
 import ReturnButton from "@/components/buttons/returnButton";
 
+
 const availableAvatars = [
   "Avatar1.png", "Avatar2.png", "Avatar3.png", "Avatar4.png",
   "Avatar5.png", "Avatar6.png", "Avatar7.png", "Avatar8.png",
@@ -233,12 +234,13 @@ export default function Settings() {
               <br />
               Tjen poeng for hvert bærekraftige reisevalg:
               <br />
-              - 100 poeng for bil osv
+              - ca. 120 poeng pr km for å gå. Maks 500 poeng.
               <br />
+              - ca. 120 poeng pr km for å sykkle. Maks 500 poeng.
               <br />
-              Lengre distanse gir flere poeng:
+              - ca. 50 poeng pr km for å ta buss. Maks 300 poeng.
               <br />
-              - 1km gir flere poen blah blah
+              - ca. 60 poeng pr km for å samkjøre. Maks 200 poeng.
               <br />
               <br />
               Fullfør utfordringer og tjen merker for å samle enda flere poeng!
