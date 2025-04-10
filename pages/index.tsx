@@ -86,13 +86,13 @@ const Dashboard = () => {
           />
           <DashboardButton
             href="/team"
-            image={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/RegistrerReise.svg`}
+            image={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/TeamIcon.png`}
             title="Ditt lag"
             description="Se en oversikt over lagstatistikk og medlemmer"
           />
           <DashboardButton
             href="challenges"
-            image={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/RegistrerReise.svg`}
+            image={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/ChallengeIcon.png`}
             title="Ukens utfordringer"
             description="Fullfør utfordringer for å samle poeng"
           />
