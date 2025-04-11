@@ -136,6 +136,20 @@ export default function Profile() {
     return iconMap[base] || iconMap.default;
   }
 
+  function toRomanTier(tier: number, earned: boolean): string {
+    const romanMap: { [key: number]: string } = {
+      1: "I",
+      2: "II",
+      3: "III",
+    };
+  
+    if (tier === 1 && !earned) return "";
+    if (tier === 2 && !earned) return "I";
+    if (tier === 3 && !earned) return "II";
+  
+    return romanMap[tier] ?? tier.toString();
+  }  
+  
   return (
     <div className="flex flex-col items-center">
             
@@ -245,7 +259,8 @@ export default function Profile() {
         onClick={() =>
           setSelectedBadge({
             id: badge.achievementId,
-            name: badge.name,
+           name: badge.name + (toRomanTier(badge.tier, badge.earnedAt !== null) ? " " + toRomanTier(badge.tier, badge.earnedAt !== null) : ""),
+
             description: badge.description,
             progress: badge.progress,
             total: badge.total,
@@ -278,7 +293,9 @@ export default function Profile() {
           >
             <X size={24} />
           </button>
-          <h3 className="font-semibold text-lg">{selectedBadge.name}</h3>
+          <h3 className="font-semibold text-lg">
+            {selectedBadge.name} 
+          </h3>
           <p className="text-gray-600">{selectedBadge.description}</p>
 
           {/* Progress Bar */}
