@@ -133,7 +133,10 @@ export default function TravelForm() {
       const result = await response.json();
       console.log("Registrering vellykket:", result);
 
-      toast.success("Reise registrert!");
+      if (typeof window !== "undefined" && result.calculatedPoints) {
+        sessionStorage.setItem("pointsEarned", result.calculatedPoints.toString());
+      }
+
       router.push("/");
     } catch (error) {
         return (

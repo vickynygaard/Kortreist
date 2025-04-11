@@ -3,12 +3,13 @@ import DashboardHeader from '@/components/dashboard/dashboardHeader';
 import { useUserAuth } from '@/components/userAuth';
 import CustomSpinner from '@/components/dashboard/customSpinner';
 import { useApi } from '@/hooks/useApi';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { mutate } from 'swr';
 import { fetcher } from '@/services/api';
 import { usePrefetchMainRoutes } from '@/services/preFetch';
 import { useDelayedLoading } from '@/services/useDelayedLoading';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface User {
   userId: number;
@@ -68,10 +69,42 @@ const Dashboard = () => {
       </div>
     );
   }
+
+  const [earnedPoints, setEarnedPoints] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (user && typeof window !== 'undefined') {
+      localStorage.setItem("indexData", JSON.stringify(user));
+  
+      const storedPoints = sessionStorage.getItem("pointsEarned");
+      if (storedPoints) {
+        setEarnedPoints(Number(storedPoints));
+        sessionStorage.removeItem("pointsEarned");
+  
+        // Auto hide after 4 seconds
+        setTimeout(() => setEarnedPoints(null), 4000);
+      }
+    }
+  }, [user]);
   
   return (
     <div className="flex flex-col w-full justify-between">
+      <AnimatePresence>
+        {earnedPoints !== null && (
+          <motion.div
+          className="absolute top-4 left-0 right-0 mx-auto w-fit z-50 bg-yellow-100 border border-yellow-500 text-yellow-900 
+          px-6 py-3 rounded-xl shadow-md text-base font-semibold flex items-center gap-2 pointer-events-none"
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.4 }}
+        >
+          🎉 <span className="text-black">+{earnedPoints} poeng!</span>
+        </motion.div>
+        )}
+      </AnimatePresence>
       <main className="flex flex-col w-full gap-4 p-4">
+
         <DashboardHeader 
           profilePic={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/avatars/${user?.profilePicture || "Avatar1.png"}`}
           name={user?.name ?? "Bruker"}
