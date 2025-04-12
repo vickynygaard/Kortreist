@@ -9,6 +9,9 @@ export default function Document() {
 				<link rel="icon" type="image/png" sizes="32x32" href={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/favicon/favicon-32x32.png`} />
 				<link rel="shortcut icon" href={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/favicon/favicon.ico`} />
 
+				<meta name="apple-mobile-web-app-capable" content="yes" />
+ 				<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
 				<meta
 					name='viewport'
 					content='width=device-width, initial-scale=1, user-scalable=0, viewport-fit=cover'

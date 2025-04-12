@@ -122,7 +122,7 @@ export default function DashboardPage() {
     <div className="flex flex-col items-center px-4">
       <div className="w-full max-w-xs sm:max-w-md relative">
         <div className="fixed top-0 left-0 w-full bg-customYellow2 z-30 h-18 overflow-hidden">
-          <div className="w-full max-w-xs sm:max-w-md mx-auto">
+          <div className="w-full max-w-xs sm:max-w-md mx-auto pt-safe">
             <div className="flex items-center border-4 border-customViolet rounded-full mt-4 p-1">
               <button
                 className={`w-[50%] px-4 py-3 text-center text-lg font-semibold rounded-full transition-all ${
