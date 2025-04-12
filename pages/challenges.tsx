@@ -29,6 +29,7 @@ const ChallengePage: React.FC = () => {
     );
 
   const [loadingChallengeId, setLoadingChallengeId] = useState<number | null>(null);
+  const [showChallengeInfo, setShowChallengeInfo] = useState<boolean>(false);
 
   // State to track which custom challenge needs confirmation
   const [confirmChallengeId, setConfirmChallengeId] = useState<number | null>(null);
@@ -119,20 +120,29 @@ const ChallengePage: React.FC = () => {
         </div>
       ))}
 
-    <div className="bg-customYellow2 opacity-90 text-customViolet text-sm p-3 rounded-lg border border-customViolet w-full text-left">
-        <p className="mb-1 font-semibold">Hva betyr fargene?</p>
-        <ul className="text-xs list-disc list-inside space-y-1 list-none">
-        <li>
-            <span className="text-orange-500 font-medium">Oransje ramme</span>: Spesialutfordring - må fullføres manuelt.
-          </li>
-          <li>
-            <span className="text-blue-700 font-medium">Blå ramme</span>: Standardutfordring - spores automatisk.
-          </li>
-          <li>
-            <span className="text-green-500 font-medium">Grønn ramme</span>: Avstandsutfordring - spores automatisk basert på kilometer.
-          </li>
-        </ul>
-      </div>
+    <button 
+  className="w-32 h-10 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded shadow-lg transition-colors flex items-center justify-center"
+  onClick={() => setShowChallengeInfo(prev => !prev)}
+    >
+      <span>Se detaljer</span>
+      <span className="ml-2">{showChallengeInfo ? "▲" : "▼"}</span>
+    </button>    
+    {showChallengeInfo && (
+  <div className="bg-customYellow2 opacity-90 text-customViolet text-base md:text-lg p-3 rounded-lg border border-customViolet w-full text-left">
+    <p className="mb-1 font-semibold">Hva betyr fargene?</p>
+    <ul className="text-sm list-disc list-inside space-y-1">
+      <li>
+        <span className="text-orange-500 font-medium">Oransje ramme</span>: Spesialutfordring - må fullføres manuelt.
+      </li>
+      <li>
+        <span className="text-blue-700 font-medium">Blå ramme</span>: Standardutfordring - spores automatisk.
+      </li>
+      <li>
+        <span className="text-green-500 font-medium">Grønn ramme</span>: Avstandsutfordring - spores automatisk basert på kilometer.
+      </li>
+    </ul>
+  </div>
+)}
 
       {/* Confirm complete */}
       {confirmChallengeId !== null && (

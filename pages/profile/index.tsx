@@ -185,7 +185,7 @@ export default function Profile() {
             {[
               {
                 icon: <Star size={20} className="text-yellow-500 mb-2" />,
-                value: overview?.user.totalScore ?? 0,
+                value: overview?.user.totalScore.toLocaleString("no-NO") ?? 0,
                 label: "Poeng",
               },
               {

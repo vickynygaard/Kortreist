@@ -182,7 +182,7 @@ export default function DashboardPage() {
                   </div>
                   <div className="mt-auto flex flex-col items-center">
                   <p className="text-sm text-gray-700">Poeng</p>
-                  <p className="text-lg font-bold text-customViolet">{member.points}</p>
+                  <p className="text-lg font-bold text-customViolet">{member.points.toLocaleString("no-NO")}</p>
                 </div>
                 </div>
               ))}
@@ -221,14 +221,14 @@ export default function DashboardPage() {
                         alt={member.NickName}
                         className="w-12 h-12 rounded-full object-cover border-2 border-customViolet"
                       />
-                      <p className="text-base font-medium text-black break-all line-clamp-1 max-w-[18rem]">
+                      <p className="line-clamp-2 break-all leading-tight text-base font-medium text-customViolet max-w-[9rem] sm:max-w-[15rem]">
                         {member.NickName}
                       </p>
                     </div>
                     <div className="text-right">
                       <p className="text-sm text-gray-600">Poeng</p>
                       <p className="text-lg font-bold text-customViolet">
-                        {member.points}
+                        {member.points.toLocaleString("no-NO")}
                       </p>
                     </div>
                   </div>

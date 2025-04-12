@@ -74,7 +74,7 @@ const Podium = ({
         )} bg-violet-900 text-white rounded-t-2xl pt-8 pb-2`}
       >
         <span className="text-xl font-bold">{rank}</span>
-        <span className="text-base">{score}</span>
+        <span className="text-base">{score.toLocaleString("no-NO")}</span>
       </div>
 
       {/* Nickname */}

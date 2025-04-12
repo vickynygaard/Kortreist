@@ -13,11 +13,11 @@ export default function Leaderboard() {
   usePrefetchMainRoutes();
 
   return (
-    <div className='flex flex-col  w-full'>
+    <div className='flex flex-col w-full'>
       
       {/*Overskrift*/}
       <div className='w-full text-center'>
-      <div className="font-bold text-3xl text-violet-950 pb-6">Ledertavle</div>
+      <div className="font-bold text-3xl text-violet-950 pb-6">Toppliste</div>
       </div>
       <LeaderboardMenu />
 
