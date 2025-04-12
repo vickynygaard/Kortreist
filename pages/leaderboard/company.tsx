@@ -81,7 +81,7 @@ const CompanyBarChart = () => {
     <div className="flex flex-col items-center w-full">
       {/* Title */}
       <div className="font-bold text-3xl text-violet-950 pb-6">
-        Ledertavle
+        Toppliste
       </div>
 
       <LeaderboardMenu />
@@ -147,7 +147,7 @@ const CompanyBarChart = () => {
                     {company.name}
                   </p>
                   <p className="text-xs text-gray-600">
-                    {company.totalPoints.toLocaleString()} poeng
+                    {company.totalPoints.toLocaleString("no-NO")} poeng
                   </p>
                 </div>
               </div>

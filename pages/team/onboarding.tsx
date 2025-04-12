@@ -49,8 +49,8 @@ export default function OnboardingPage() {
 
   return (
     <main className="flex flex-col items-center px-4">
-      <div className="w-full text-center text-2xl font-medium pb-4">
-        <h1>Velg et lag</h1>
+      <div className='w-full text-center'>
+        <div className="font-bold text-3xl text-violet-950">Velg Lag</div>
       </div>
 
       <div className="w-full max-w-xs sm:max-w-md flex flex-col gap-4 mt-6 text-center">

@@ -5,6 +5,7 @@ import { useUserAuth } from '../userAuth';
 import { useApi } from '@/hooks/useApi';
 import CustomSpinner from '../dashboard/customSpinner';
 import { useDelayedLoading } from '@/services/useDelayedLoading';
+import LeaderboardUserCard from './LeaderboardUserCard';
 
 interface User {
   rank: number;
@@ -37,9 +38,10 @@ interface LeaderboardContainerProps {
   }
 
 const LeaderboardContainer = ({ users, loadingOverride = false }: LeaderboardContainerProps) => {
+  const { userData, loading: authLoading } = useUserAuth();
   const [topThree, setTopThree] = useState<User[]>([]);
   const [restOfBoard, setRestOfBoard] = useState<User[]>([]);
-  const { userData, loading: authLoading } = useUserAuth();
+  const [rankedData, setRankedData] = useState<(User & { rank: number })[]>([]);
 
   const { data, isLoading: apiLoading, error } = useApi<User[]>(
     "/api/users/all",
@@ -79,6 +81,7 @@ const LeaderboardContainer = ({ users, loadingOverride = false }: LeaderboardCon
       currentRank++;
     }
 
+    setRankedData(ranked);
     setTopThree(ranked.slice(0, 3));
     setRestOfBoard(ranked.slice(3));
   }, [combinedData]);
@@ -105,6 +108,7 @@ const LeaderboardContainer = ({ users, loadingOverride = false }: LeaderboardCon
   // Define the visual order for podium placement.
   const visualOrder = [2, 1, 3];
   const currentUserId = currentUserData?.userId;
+  const currentUserItem = rankedData.find(u => u.userId === currentUserId);
 
   return (
     <div className="flex flex-col">
@@ -126,21 +130,43 @@ const LeaderboardContainer = ({ users, loadingOverride = false }: LeaderboardCon
         })}
       </div>
 
-      <div className="mt-4 w-full rounded-t-lg bg-customYellow2/50 backdrop-blur-md">
-        {restOfBoard.map((user) => (
-          <LeaderboardItem
-            key={user.userId}
-            rank={user.rank}
-            nickName={user.nickName}
-            score={user.totalScore}
-            profilePicture={user.profilePicture}
-            type={user.type ?? "user"}
-            isCurrentUser={user.userId === currentUserId} // highlight current user
+      {/* Static current user item below the podium */}
+      {currentUserItem && (
+        <div className="mt-4 px-8">
+          <LeaderboardUserCard 
+            userId={currentUserItem.userId}
+            nickName={currentUserItem.nickName}
+            score={currentUserItem.totalScore}
+            rank={currentUserItem.rank}
+            profilePicture={currentUserItem.profilePicture}
+            type={currentUserItem.type ?? "user"}
           />
-        ))}
-      </div>
+        </div>
+      )}
+        {restOfBoard.length > 0 && (
+          <>
+            <div className="flex mt-4 px-8 justify-between items-center">
+              <h2 className="font-bold text-customViolet mb-2">Deltakere</h2>
+              <h2 className="font-bold text-customViolet mb-2">Poeng</h2>
+            </div>
+            <div className=" w-full rounded-t-lg bg-customYellow2/50 backdrop-blur-md">
+              {restOfBoard.map((user) => (
+                <LeaderboardItem
+                  key={user.userId}
+                  userId={user.userId} 
+                  rank={user.rank}
+                  nickName={user.nickName}
+                  score={user.totalScore}
+                  profilePicture={user.profilePicture}
+                  type={user.type ?? "user"}
+                  isCurrentUser={user.userId === currentUserId}
+                />
+              ))}
+            </div>
+          </>
+        )}
     </div>
   );
-};
+}
 
 export default LeaderboardContainer;

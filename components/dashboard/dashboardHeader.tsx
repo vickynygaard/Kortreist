@@ -31,7 +31,7 @@ interface ProfileProps {
     
     {/*Poeng-melding*/}
     <div className="row-span-2 flex items-center justify-start text-lg">
-        <p>Du har samlet inn <strong>{points} poeng</strong> <br/>Stå på!</p>
+        <p>Du har samlet inn <strong>{Number(points).toLocaleString("no-NO")} poeng</strong> <br/>Stå på!</p>
       </div>
   </div>
     );
