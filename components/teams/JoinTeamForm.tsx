@@ -77,7 +77,11 @@ export default function JoinTeamForm({
                 : "bg-gray-400 cursor-not-allowed"
             }`}
           >
-            {isLoading ? "Bli med..." : "Bli med i laget"}
+              {isLoading
+              ? "Bli med..."
+              : team.memberCount >= 5
+              ? "Lag fullt"
+              : "Bli med i laget"}
           </button>
         </div>
       ))}

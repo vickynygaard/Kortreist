@@ -158,6 +158,12 @@ useEffect(() => {
 			<title>Kortreist</title>
 			<meta name="description" content="Kortreist hjelper deg å velge en grønnere reise til jobb." />
 			<link rel='manifest' href={`${process.env.NEXT_PUBLIC_BASE_PATH}/manifest.json`} />
+      <link
+        rel="preload"
+        as="image"
+        href={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/Scenery.png`}
+        type="image/png"
+      />
 		</Head>
 		
     <RequireAuth>

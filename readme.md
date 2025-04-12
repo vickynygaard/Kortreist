@@ -1,56 +1,57 @@
 <p align="center">
-	<img alt="Rice Bowl" src="public/images/icon-512.png" width="90">
-	<h2 align="center">Next PWA Template</h2>
+  <img alt="App Icon" src="public/images/favicon/icon-512.png" width="90" />
 </p>
 
-<p align="center">Fluffless app template to inspire less</p>
+<h2 align="center">🌍 Green Commute</h2>
+
+<p align="center">A PWA for sustainable transport, team spirit, and a bit of friendly competition</p>
 
 <p align="center">
-	<a href="https://next-pwa-template.now.sh">Live demo</a>
+  <a href="https://vickynygaard.github.io/Kortreist">Live Demo</a> • 
+  <a href="https://web.dev/measure">
+    <img alt="Lighthouse 94%" src="https://img.shields.io/badge/lighthouse-94%25-0FA36B.svg?logo=lighthouse&logoColor=white&style=flat-square" />
+  </a>
 </p>
 
-<p align="center">
-	<a href="https://web.dev/measure">
-		<img alt="100% lighthouse scores" src="https://img.shields.io/badge/lighthouse-100%25-845EF7.svg?logo=lighthouse&logoColor=white&style=flat-square" />
-	</a>
-</p>
+---
 
-## Features
+## 🚀 About the App
 
-- ✨ Fluffless PWA using Next 13
-- 🌗 Lovely night/day themes
-- 🦄 Easily removable [nice-to-haves](#use-only-what-you-need)
-- 📱 Native-like mobile experience
-- 📦 Neatly wrapped like that avocado you got for christmas
+**Green Commute** is a fast, offline-friendly Progressive Web App built with Next.js and .NET. It's designed for organizations or communities that want to **encourage eco-friendly transport habits** through **gamification, achievements, and team-based challenges**.
 
-## Getting started
+---
 
-1. [Use this template](https://github.com/mvllow/next-pwa-template/generate)
-2. Replace `public/images` with your own
-3. Enjoy ✨
+## ✨ Features
 
-## Use only what you need
+- ✅ **Register and sign in** with Azure AD B2C
+- 🌱 **Log your transport** choices (walk, bike, carpool, bus, etc.)
+- 🏆 **Earn achievements** and badges as you go
+- 👥 **Join or create a team** and compete for the top spot
+- 🧠 **Smart backend logic** with dynamic achievement tracking
+- 🖼️ Custom **avatars and team pictures**
+- 📊 **Scoreboard** with real-time team rankings
+- ⚡️ Blazing fast transitions and offline support (PWA)
+- 🎨 Beautifully styled with Tailwind CSS
 
-Fluffless doesn't mean "start with nothing". The goal of this template is to be an entry into maintainable apps.
+---
 
-**The essentials**
+## 🛠️ Tech Stack
 
-- Typescript, made easy with Next.js
-- [tailwindcss](https://github.com/tailwindlabs/tailwindcss) for utility-first styling
-- [next-pwa](https://github.com/shadowwalker/next-pwa) for offline support
+- **Frontend**: [Next.js](https://nextjs.org/), [Tailwind CSS](https://tailwindcss.com/), [next-pwa](https://github.com/shadowwalker/next-pwa)
+- **Backend**: ASP.NET Core Web API
+- **Auth**: Azure AD B2C
+- **Storage**: Azure + SQL
 
-**Nice to haves**
+---
 
-- [next-themes](https://github.com/pacocoursey/next-themes) or similar for low stress theming
+## 📦 Setup
 
-## Gallery
+```bash
+# 1. Clone the repo
+git clone https://github.com/your-org/green-commute.git
 
-### Desktop
+# 2. Install dependencies
+npm install
 
-<img width="1728" alt="Rice Bowl PWA on macOS in dark mode" src="https://github.com/mvllow/next-pwa-template/assets/1474821/889bef1b-af58-4efa-b1f3-3ea021ec9760">
-
-### Mobile
-
-<img width="360" alt="Rice Bowl PWA on iOS in light mode" src="https://github.com/mvllow/next-pwa-template/assets/1474821/1f0fa36e-23c7-4bcf-aa6e-f447559cae62" />
-
-<img width="360" alt="Rice Bowl PWA on iOS in dark mode" src="https://github.com/mvllow/next-pwa-template/assets/1474821/2fac61d0-dc29-4022-8b39-003306f80fb4" />
+# 3. Start the development server
+npm run dev

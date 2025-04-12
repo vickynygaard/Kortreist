@@ -168,11 +168,12 @@ export default function Profile() {
         <div className="w-full bg-customYellow2 p-4 rounded-2xl flex flex-col">
           {/* Profilbilde og navn */}
           <div className="flex items-center gap-4">
+            <Link href="/profile/settings">
             <img 
               src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/avatars/${overview?.user.profilePicture || "Avatar1.png"}`}
               alt="Default Profile" 
               className="w-16 h-16 rounded-full object-cover border-2 border-customViolet"
-            />
+            /></Link>
             <div className="flex flex-col">
               <p className="text-lg font-semibold break-all line-clamp-1 max-w-[20rem]">{overview?.user.nickName ?? "Bruker"}</p>
               <span className="text-sm text-gray-600 break-all line-clamp-1 max-w-[14rem]">{overview?.user.name ?? ""}</span>
