@@ -227,7 +227,7 @@ const confirmLogout = () => {
             onClick={() => setShowPointsInfo(!showPointsInfo)}
             className="w-full flex justify-between items-center p-3 bg-white rounded border border-gray-300"
           >
-            <span className="text-black text-base">Forklaring</span>
+            <span className="text-black text-base">Om Kortreist</span>
             <span className="text-gray-500">{showPointsInfo ? "▲" : "▼"}</span>
           </button>
           {showPointsInfo && (
