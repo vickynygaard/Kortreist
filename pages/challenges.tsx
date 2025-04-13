@@ -121,7 +121,7 @@ const ChallengePage: React.FC = () => {
       ))}
 
     <button 
-  className="w-32 h-10 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded shadow-lg transition-colors flex items-center justify-center"
+  className="w-32 h-10 bg-customViolet text-white font-semibold rounded shadow-lg transition-colors flex items-center justify-center"
   onClick={() => setShowChallengeInfo(prev => !prev)}
     >
       <span>Se detaljer</span>
@@ -130,7 +130,7 @@ const ChallengePage: React.FC = () => {
     {showChallengeInfo && (
   <div className="bg-customYellow2 opacity-90 text-customViolet text-base md:text-lg p-3 rounded-lg border border-customViolet w-full text-left">
     <p className="mb-1 font-semibold">Hva betyr fargene?</p>
-    <ul className="text-sm list-disc list-inside space-y-1">
+    <ul className="text-sm list-disc list-outside pl-6 space-y-1">
       <li>
         <span className="text-orange-500 font-medium">Oransje ramme</span>: Spesialutfordring - må fullføres manuelt.
       </li>

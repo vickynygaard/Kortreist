@@ -15,7 +15,7 @@ const NavItem = ({ href, icon, label }: { href: string; icon: React.ReactNode, l
         <div className="relative flex items-center justify-center h-9 w-9">
           {/* Background circle */}
           <span
-            className={`absolute w-9 h-9 bg-violet-400/40 rounded-full -z-10 transition-opacity duration-200 ${
+            className={`absolute w-10 h-10 bg-violet-400/40 rounded-full -z-10 transition-opacity duration-200 ${
               isActive ? 'opacity-100' : 'opacity-0'
             } active:opacity-100`}
           ></span>

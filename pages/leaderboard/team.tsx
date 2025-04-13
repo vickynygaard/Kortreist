@@ -60,7 +60,7 @@ const TeamLeaderboardPage = () => {
       
     {/*Overskrift*/}
     <div className='w-full text-center'>
-    <div className="font-bold text-3xl text-violet-950 pb-6">Toppliste Lag</div>
+    <div className="font-bold text-3xl text-violet-950 pb-6">Toppliste</div>
     </div>
     <LeaderboardMenu />
 
