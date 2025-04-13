@@ -73,10 +73,15 @@ function MainApp({ Component, pageProps }: MainAppProps) {
     const isHardLoading = inProgress !== "none" || userLoading;
   
     useEffect(() => {
-      if (inProgress === "none" && !isAuthenticated && router.pathname !== "/login") {
+      if (
+        inProgress === "none" &&
+        !isAuthenticated &&
+        !userLoading &&
+        router.pathname !== "/login"
+      ) {
         router.replace("/login");
       }
-    }, [isAuthenticated, inProgress, router]);
+    }, [isAuthenticated, inProgress, userLoading, router]);
   
     if (isHardLoading && showSpinner) {
       const loadingMessage = !isAuthenticated ? "Logger inn..." : "Laster inn...";

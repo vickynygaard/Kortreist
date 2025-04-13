@@ -54,10 +54,7 @@ const [error, setError] = useState<string | null>(null);
   const handleSignIn = async () => {
     setIsLoading(true);
     try {
-      await instance.loginRedirect({
-        ...loginRequest,
-        prompt: "login",
-      });
+      await instance.loginRedirect(loginRequest); 
     } catch (error) {
       console.error("Login error:", error);
     } finally {
@@ -68,10 +65,7 @@ const [error, setError] = useState<string | null>(null);
   const handleSignUp = async () => {
     setIsLoading(true);
     try {
-      await instance.loginRedirect({
-        ...signupRequest,
-        prompt: "login",
-      });
+      await instance.loginRedirect(signupRequest); 
     } catch (error) {
       console.error("Signup error:", error);
       setError("Kunne ikke opprette konto akkurat nå.");

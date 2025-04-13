@@ -69,13 +69,15 @@ export const useUserAuth = (): {
         await instance.initialize(); // Ensure MSAL is initialized
         const response = await instance.handleRedirectPromise();
         let account: AccountInfo | undefined;
-        if (response) {
-          account = instance.getAllAccounts()[0];
+        if (response?.account) {
+          instance.setActiveAccount(response.account);
         } else if (accounts.length > 0) {
-          account = accounts[0];
+          instance.setActiveAccount(accounts[0]);
         }
-        if (account) {
-          await updateUserData(account);
+        
+        const active = instance.getActiveAccount();
+        if (active) {
+          await updateUserData(active);
         }
       } catch (initError) {
         setError("MSAL initialization error: " + initError);
