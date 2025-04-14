@@ -31,13 +31,13 @@ export const useUserAuth = (): {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Function to update user data based on the account info
   const updateUserData = async (account: AccountInfo) => {
     try {
       const response = await instance.acquireTokenSilent({
         scopes: loginRequest.scopes,
         account: account,
       });
+
       const claims = response.idTokenClaims as TokenClaims;
       const data: UserData = {
         email: claims.emails?.[0] || claims.email || claims.preferred_username || "",
@@ -49,14 +49,11 @@ export const useUserAuth = (): {
         idToken: response.idToken,
         accessToken: response.accessToken,
       };
+
       setUserData(data);
     } catch (tokenError) {
       if (tokenError instanceof InteractionRequiredAuthError) {
-        try {
-          await instance.loginRedirect(loginRequest);
-        } catch (loginError) {
-          setError("Login required: " + loginError);
-        }
+        await instance.loginRedirect(loginRequest);
       } else {
         setError("Failed to acquire token: " + tokenError);
       }
@@ -66,18 +63,20 @@ export const useUserAuth = (): {
   useEffect(() => {
     const initializeAuth = async () => {
       try {
-        await instance.initialize(); // Ensure MSAL is initialized
+        await instance.initialize();
         const response = await instance.handleRedirectPromise();
-        let account: AccountInfo | undefined;
+  
         if (response?.account) {
           instance.setActiveAccount(response.account);
         } else if (accounts.length > 0) {
           instance.setActiveAccount(accounts[0]);
         }
-        
+  
         const active = instance.getActiveAccount();
         if (active) {
           await updateUserData(active);
+        } else {
+          setUserData(null);
         }
       } catch (initError) {
         setError("MSAL initialization error: " + initError);
@@ -85,9 +84,9 @@ export const useUserAuth = (): {
         setLoading(false);
       }
     };
-
+  
     initializeAuth();
-  }, [instance]);
+  }, [instance, accounts]);  
 
   return { userData, loading, error };
-}
+};
