@@ -93,7 +93,7 @@ const Dashboard = () => {
         {earnedPoints !== null && (
           <motion.div
           className="absolute top-4 left-0 right-0 mx-auto w-fit z-50 bg-yellow-100 border border-yellow-500 text-yellow-900 
-          px-6 py-3 rounded-xl shadow-md text-base font-semibold flex items-center gap-2 pointer-events-none"
+          px-6 py-3 rounded-xl shadow-md text-base font-semibold flex items-center gap-2 pointer-events-none pt-safe"
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}

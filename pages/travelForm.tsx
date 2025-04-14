@@ -127,7 +127,8 @@ export default function TravelForm() {
       );
 
       if (!response.ok) {
-        throw new Error(`Serverfeil: ${response.statusText}`);
+        const error = await response.json();
+        throw new Error(error.message || "Ukjent feil");
       }
 
       const result = await response.json();
@@ -138,8 +139,9 @@ export default function TravelForm() {
       }
 
       router.push("/");
-    } catch (error) {
+    } catch (error: any) {
         return (
+          toast.error(error.message),
           <div className="flex justify-center items-center h-screen">
             <p>Her skjedde det noe galt, prøv å laste inn på nytt</p>
           </div>
