@@ -64,43 +64,33 @@ function MainApp({ Component, pageProps }: MainAppProps) {
   
 
   const RequireAuth = ({ children }: { children: React.ReactNode }) => {
-    const isAuthenticated = useIsAuthenticated();
     const { inProgress } = useMsal();
     const router = useRouter();
-    const { loading: userLoading } = useUserAuth();
+    const { userData, loading: userLoading } = useUserAuth();
     const showSpinner = useDelayedLoading(150);
   
     const isHardLoading = inProgress !== "none" || userLoading;
   
-    useEffect(() => {
-      if (
-        inProgress === "none" &&
-        !isAuthenticated &&
-        !userLoading &&
-        router.pathname !== "/login"
-      ) {
-        router.replace("/login");
-      }
-    }, [isAuthenticated, inProgress, userLoading, router]);
-  
-    if (isHardLoading && showSpinner) {
-      const loadingMessage = !isAuthenticated ? "Logger inn..." : "Laster inn...";
-      return (
+    // Block all rendering while loading
+    if (isHardLoading) {
+      return showSpinner ? (
         <div className="flex justify-center items-center h-screen">
           <div className="flex flex-col items-center space-y-4">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-customViolet"></div>
-            <p className="text-customViolet text-lg">{loadingMessage}</p>
+            <p className="text-customViolet text-lg">Logger inn...</p>
           </div>
         </div>
-      );
+      ) : null;
     }
   
-    if (!isAuthenticated && router.pathname !== "/login") {
+    // When loading is done, check auth
+    if (!userData && router.pathname !== "/login") {
+      router.push("/login");
       return null;
     }
   
     return <>{children}</>;
-  };  
+  };
  
 // Initialize the service worker
 useEffect(() => {
