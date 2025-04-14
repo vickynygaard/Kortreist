@@ -218,6 +218,7 @@ const confirmLogout = () => {
 
         {/* Address */}
         <div className="mt-6 w-full max-w-md">
+        <label className="block text-gray-500 text-sm mb-2">Endre Adresse:</label>
           <AddressAutocomplete selectedAddress={address} setSelectedAddress={setAddress} />
         </div>
 
