@@ -91,16 +91,21 @@ const Dashboard = () => {
     <div className="flex flex-col w-full justify-between">
       <AnimatePresence>
         {earnedPoints !== null && (
-          <motion.div
-          className="absolute top-4 left-0 right-0 mx-auto w-fit z-50 bg-yellow-100 border border-yellow-500 text-yellow-900 
-          px-6 py-3 rounded-xl shadow-md text-base font-semibold flex items-center gap-2 pointer-events-none pt-safe"
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.4 }}
-        >
-          🎉 <span className="text-black">+{earnedPoints} poeng!</span>
-        </motion.div>
+          <div className="fixed top-0 left-0 right-0 z-50 w-full">
+            <div className="pt-safe flex justify-center">
+              <motion.div
+                className="w-fit bg-yellow-100 border border-yellow-500 text-yellow-900 
+                          px-6 py-3 rounded-xl shadow-md text-base font-semibold 
+                          flex items-center gap-2 pointer-events-none"
+                initial={{ opacity: 0, y: -30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4 }}
+              >
+                🎉 <span className="text-black">+{earnedPoints} poeng!</span>
+              </motion.div>
+            </div>
+          </div>
         )}
       </AnimatePresence>
       <main className="flex flex-col w-full gap-4 p-4">
