@@ -14,6 +14,16 @@
 	}
   }
 
+  .toast-safe-area {
+    padding-top: env(safe-area-inset-top);
+    z-index: 9999; 
+    position: fixed;
+    width: 100%;
+    pointer-events: none; 
+    display: flex;
+    justify-content: center;
+  }
+
 body {
 	@apply select-none bg-customYellow2 text-zinc-900 antialiased;
 

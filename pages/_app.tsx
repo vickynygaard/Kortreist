@@ -182,8 +182,10 @@ useEffect(() => {
       
       {/* Only render the Navbar if showNavbar is true */}
 			{showNavbar && <Navbar />}
-      <Toaster /> 
-
+      <Toaster
+        position="top-center"
+        containerClassName="toast-safe-area"
+      />
 		</>
 	)
 }
