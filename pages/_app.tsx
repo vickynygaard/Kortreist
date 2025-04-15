@@ -185,7 +185,7 @@ useEffect(() => {
       <Toaster
         toastOptions={{
           style: {
-            marginTop: 'calc(0rem + env(safe-area-inset-top))',
+            marginTop: 'max(0px, calc(env(safe-area-inset-top) - 0.5rem))',
           },
         }}
       />
