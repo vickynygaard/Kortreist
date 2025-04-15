@@ -184,7 +184,7 @@ useEffect(() => {
 			{showNavbar && <Navbar />}
       <Toaster
         position="top-center"
-        containerClassName="toast-safe-area"
+        containerClassName="toast-container-safe-top"
       />
 		</>
 	)
