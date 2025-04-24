@@ -22,6 +22,10 @@ interface UserProfile {
   address: string;
 }
 
+interface UserEndAdress {
+  endAddress: string;
+}
+
 export default function TravelForm() {
   const { userData } = useUserAuth();
   const router = useRouter();
@@ -42,7 +46,12 @@ export default function TravelForm() {
     const { data: userProfile, isLoading, error } = useApi<UserProfile>(
       "/api/Profile/getUser",
       userData?.accessToken,
-      { fallbackData: fallbackProfile, revalidateOnMount: true, refreshInterval: 30000, enabled: !!userData?.accessToken }
+      { fallbackData: fallbackProfile, revalidateOnMount: true, refreshInterval: 0, enabled: !!userData?.accessToken }
+    );
+    const { data: userEndAdressData, isLoading: isLoadingEndAddress, error: endAdressError } = useApi<UserEndAdress>(
+      "/api/Profile/getUserEndAddress",
+      userData?.accessToken,
+      { revalidateOnMount: true, refreshInterval: 0, enabled: !!userData?.accessToken }
     );
 
   // Save fetched profile data to localStorage
@@ -54,8 +63,10 @@ export default function TravelForm() {
 
   // Local state for address and transport selection
   const [address, setAddress] = useState("");
+  const [endAddress, setEndAddress] = useState("");
   const [selected, setSelected] = useState<{ label: string; value: string } | null>(null);
   const [addressError, setAddressError] = useState("");
+  const [endAddressError, setEndAddressError] = useState("");
   const [transportError, setTransportError] = useState("");
   const [isSaving, setIsSaving] = useState(false);
 
@@ -65,6 +76,12 @@ export default function TravelForm() {
       setAddress(userProfile.address);
     }
   }, [userProfile]);
+
+  useEffect(() => {
+    if (userEndAdressData?.endAddress) {
+      setEndAddress(userEndAdressData.endAddress);
+    }
+  }, [userEndAdressData]);
 
   // Show spinner while loading
   if (isLoading) {
@@ -121,12 +138,19 @@ export default function TravelForm() {
           },
           body: JSON.stringify({
             startingAddress: address,
+            EndAddress: endAddress,
             method: selected?.value,
           }),
         }
       );
 
       if (!response.ok) {
+        if (response.status === 428) {
+          toast.error("Du må fullføre onboarding før du kan registrere en reise.");
+          router.push("/onboarding");
+          return;
+        }
+      
         const error = await response.json();
         throw new Error(error.message || "Ukjent feil");
       }
@@ -160,6 +184,9 @@ export default function TravelForm() {
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-y-6 w-full">
         {/* Address */}
+        <p
+        className="font-semibold text-lg -mb-4"
+        >Hvor reiser du fra?</p>
         <div className="w-full">
           <AddressAutocomplete selectedAddress={address} setSelectedAddress={setAddress} />
           {addressError && <p className="text-customRed text-sm py-2">{addressError}</p>}
@@ -181,9 +208,16 @@ export default function TravelForm() {
           </div>
           {transportError && <p className="text-customRed text-sm py-2">{transportError}</p>}
         </div>
+        <p
+        className="font-semibold text-lg -mb-4"
+        >Ankomst addresse</p>
+        <div className="w-full">
+          <AddressAutocomplete selectedAddress={endAddress} setSelectedAddress={setEndAddress} />
+          {endAddressError && <p className="text-customRed text-sm py-2">{endAddressError}</p>}
+        </div>
         {/* Submit Button */}
         <div id="submit" className="w-full mt-8">
-          <PrimaryButton title="Registrer" type="submit" disabled={isSaving} />
+          <PrimaryButton title="Registrer" type="submit" disabled={isSaving || !address.trim()} />
         </div>
       </form>
     </div>

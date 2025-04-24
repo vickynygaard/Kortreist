@@ -109,13 +109,10 @@ export default function AddressAutocomplete({
           placeholder="F.eks. Storgata 1, Oslo"
           onChange={(e) => {
             setTypedAddress(e.target.value);
-            // If user types something else, we haven't confirmed a valid address
-            // so setSelectedAddress(null) or leave the old address alone until they select
-            // This depends on your desired UX.
           }}
           onFocus={() => setIsFocused(true)}
           onBlur={handleBlur}
-          className={`w-full p-3 rounded border border-gray-300 ${inputBgClass} focus:outline-none focus:ring-2 focus:ring-customViolet`}
+          className={`w-full p-3 pr-8 rounded border border-gray-300 ${inputBgClass} focus:outline-none focus:ring-2 focus:ring-customViolet`}
         />
         {typedAddress && (
           <button
