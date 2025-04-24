@@ -51,6 +51,15 @@ const Dashboard = () => {
       localStorage.setItem("indexData", JSON.stringify(user));
     }
   }, [user]);
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        window.location.reload();
+      }, 1000);   
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
   
   const showSpinner = useDelayedLoading();
 
@@ -81,8 +90,8 @@ const Dashboard = () => {
         setEarnedPoints(Number(storedPoints));
         sessionStorage.removeItem("pointsEarned");
   
-        // Auto hide after 4 seconds
-        setTimeout(() => setEarnedPoints(null), 4000);
+        // Auto hide after 3 seconds
+        setTimeout(() => setEarnedPoints(null), 3000);
       }
     }
   }, [user]);
@@ -91,7 +100,7 @@ const Dashboard = () => {
     <div className="flex flex-col w-full justify-between">
       <AnimatePresence>
         {earnedPoints !== null && (
-          <div className="fixed top-0 left-0 right-0 z-50 w-full">
+          <div className="fixed top-2 left-0 right-0 z-50 w-full">
             <div className="pt-safe flex justify-center">
               <motion.div
                 className="w-fit bg-yellow-100 border border-yellow-500 text-yellow-900 

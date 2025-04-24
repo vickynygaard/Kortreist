@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import AddressAutocomplete from "@/components/addressAutocomplete";
 import leoProfanity from "leo-profanity";
 import { validateName } from "@/services/validateName";
+import toast from "react-hot-toast";
 
 interface Company {
   companyId: number;
@@ -24,10 +25,12 @@ export default function OnboardingPage() {
   const [companies, setCompanies] = useState<Company[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(null);
+  const [selectedCompanyIdError, setSelectedCompanyIdError] = useState<string | null>(null);
   const [nickName, setNickName] = useState("");
   const [address, setAddress] = useState("");
   const [loading, setLoading] = useState(false);
   const [nickNameError, setNickNameError] = useState<string | null>(null);
+  const [addressError, setAddressError] = useState<string | null>(null);
   const router = useRouter();
 
   const handleNickNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,16 +98,37 @@ export default function OnboardingPage() {
     GetUser();
   }, [userData?.accessToken]);
 
-  const handleSubmit = async () => {
-    if (!userData?.accessToken || !selectedCompanyId || !nickName || !address) {
-      alert("Vennligst fyll ut alle felter.");
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    let hasError = false;
+
+    
+    if (nickNameError) {
+      toast.error("Vennligst sjekk kallenavnet ditt.");
       return;
+    }
+    
+    if (!selectedCompanyId) {
+      setSelectedCompanyIdError("Du må velge et selskap.");
+      hasError = true;
+    } else {
+      setSelectedCompanyIdError("");
     }
 
-    if (nickNameError) {
-      alert("Vennligst rett opp i kallenavnfeilen før du fortsetter.");
+    if (!address.trim()) {
+      setAddressError("Addressefeltet kan ikke stå tomt.");
+      hasError = true;
+    } else {
+      setAddressError("");
+    }
+    
+    if (hasError) return;
+
+    if (!userData?.accessToken || !selectedCompanyId || !nickName || !address) {
+      toast.error("Vennligst fyll ut alle feltene.");
       return;
     }
+    
 
     setLoading(true);
     try {
@@ -157,6 +181,7 @@ export default function OnboardingPage() {
             </option>
           ))}
         </select>
+        {selectedCompanyIdError && <p className="text-customRed -mt-4 text-sm py-2">{selectedCompanyIdError}</p>}
 
         <label className="block mb-2 font-medium text-gray-700">Kallenavn:</label>
         <input
@@ -172,7 +197,7 @@ export default function OnboardingPage() {
 
         <label className="block mb-2 font-medium text-gray-700">Adresse:</label>
         <AddressAutocomplete selectedAddress={address} setSelectedAddress={setAddress} />
-
+        {addressError && <p className="text-customRed -mt-2 text-sm py-2">{addressError}</p>}
         <button
           onClick={handleSubmit}
           disabled={loading || Boolean(nickNameError)}
