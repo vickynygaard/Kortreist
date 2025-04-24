@@ -115,16 +115,19 @@ export default function AddressAutocomplete({
           className={`w-full p-3 pr-8 rounded border border-gray-300 ${inputBgClass} focus:outline-none focus:ring-2 focus:ring-customViolet`}
         />
         {typedAddress && (
-          <button
-            onClick={() => {
-              setTypedAddress("");
-              setSelectedAddress("");
-              setSuggestions([]);
-            }}
-            className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
-          >
-            &times;
-          </button>
+          <div className="absolute right-2 top-2.5 w-6 h-6 flex items-center justify-center z-10">
+            <button
+              type="button"
+              onClick={() => {
+                setTypedAddress("");
+                setSelectedAddress("");
+                setSuggestions([]);
+              }}
+              className="text-gray-400 hover:text-gray-600 focus:outline-none"
+            >
+              &times;
+            </button>
+          </div>
         )}
       </div>
 
