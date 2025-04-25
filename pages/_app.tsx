@@ -4,7 +4,7 @@ import Head from 'next/head'
 import Navbar from '@/components/navbar'
 import router, { useRouter } from 'next/router' 
 import '@/styles/globals.css'
-import { loginRequest, msalConfig } from "../msalConfig";
+import { msalConfig } from "../msalConfig";
 import { PublicClientApplication } from '@azure/msal-browser'
 import { useIsAuthenticated, useMsal } from "@azure/msal-react";
 import { MsalProvider } from '@azure/msal-react'
@@ -66,34 +66,43 @@ function MainApp({ Component, pageProps }: MainAppProps) {
   const router = useRouter(); 
 	const hideNavbarRoutes = ["/login", "/onboarding"]; 
 	const showNavbar = !hideNavbarRoutes.includes(router.pathname); 
-  
+
 
   const RequireAuth = ({ children }: { children: React.ReactNode }) => {
-    const { instance, inProgress } = useMsal();
+    const { inProgress } = useMsal();
     const router = useRouter();
     const { userData, loading: userLoading } = useUserAuth();
     const showSpinner = useDelayedLoading(150);
-  
-    useEffect(() => {
-      if (
-        inProgress === "none" && !userLoading && !userData
-      ) {
-        instance.loginRedirect(loginRequest);
-      }
-    }, [instance, inProgress, userLoading, userData]);
-  
-    // Show "fake" page when loading
-    if (inProgress !== "none" || userLoading) {
-      return  (<>{children}</>);
+
+    const isHardLoading = inProgress !== "none" || userLoading;
+
+
+
+
+
+
+
+    // Block all rendering while loading
+    if (isHardLoading) {
+      return showSpinner ? (
+        <div className="flex justify-center items-center h-screen">
+          <div className="flex flex-col items-center space-y-4">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-customViolet"></div>
+            <p className="text-customViolet text-lg">Logger inn...</p>
+          </div>
+        </div>
+      ) : null;
     }
-  
-    if (!userData) {
+
+    // When loading is done, check auth
+    if (!userData && router.pathname !== "/login") {
+      router.push("/login");
       return null;
     }
-  
+
     return <>{children}</>;
   };
- 
+
 // Initialize the service worker
 useEffect(() => {
     if ("serviceWorker" in navigator) {
@@ -162,7 +171,7 @@ useEffect(() => {
         type="image/png"
       />
 		</Head>
-		
+
     <RequireAuth>
 		<ThemeProvider
 		attribute="class"
@@ -172,7 +181,7 @@ useEffect(() => {
 		>
       <Page>
         <Section>
-      
+
         <Component {...pageProps} />
 
       </Section>
@@ -181,7 +190,7 @@ useEffect(() => {
 
 		</ThemeProvider>
     </RequireAuth>
-      
+
       {/* Only render the Navbar if showNavbar is true */}
 			{showNavbar && <Navbar />}
       <Toaster
@@ -192,5 +201,4 @@ useEffect(() => {
         }}
       />
 		</>
-	)
-}
+	)}
