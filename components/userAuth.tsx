@@ -53,7 +53,7 @@ export const useUserAuth = (): {
       setUserData(data);
     } catch (tokenError) {
       if (tokenError instanceof InteractionRequiredAuthError) {
-        await instance.loginRedirect(loginRequest);
+        setUserData(null);
       } else {
         setError("Failed to acquire token: " + tokenError);
       }
