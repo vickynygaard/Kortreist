@@ -4,7 +4,7 @@ import Head from 'next/head'
 import Navbar from '@/components/navbar'
 import router, { useRouter } from 'next/router' 
 import '@/styles/globals.css'
-import { msalConfig } from "../msalConfig";
+import { loginRequest, msalConfig } from "../msalConfig";
 import { PublicClientApplication } from '@azure/msal-browser'
 import { useIsAuthenticated, useMsal } from "@azure/msal-react";
 import { MsalProvider } from '@azure/msal-react'
@@ -27,6 +27,7 @@ const msalInstance = new PublicClientApplication(msalConfig);
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const [msalReady, setMsalReady] = useState(false);
+  const showSpinner = useDelayedLoading(150);
 
   useEffect(() => {
     const initMsal = async () => {
@@ -42,7 +43,11 @@ export default function App({ Component, pageProps }: AppProps) {
   }, []);
 
   if (!msalReady) {
-    return <div className="flex justify-center items-center h-screen">Laster inn ...</div>;
+    return showSpinner ? (
+      <div className="flex justify-center items-center h-screen">
+        <CustomSpinner />
+      </div>
+    ) : null;
   }
 
   return (
@@ -64,28 +69,25 @@ function MainApp({ Component, pageProps }: MainAppProps) {
   
 
   const RequireAuth = ({ children }: { children: React.ReactNode }) => {
-    const { inProgress } = useMsal();
+    const { instance, inProgress } = useMsal();
     const router = useRouter();
     const { userData, loading: userLoading } = useUserAuth();
     const showSpinner = useDelayedLoading(150);
   
-    const isHardLoading = inProgress !== "none" || userLoading;
+    useEffect(() => {
+      if (
+        inProgress === "none" && !userLoading && !userData
+      ) {
+        instance.loginRedirect(loginRequest);
+      }
+    }, [instance, inProgress, userLoading, userData]);
   
-    // Block all rendering while loading
-    if (isHardLoading) {
-      return showSpinner ? (
-        <div className="flex justify-center items-center h-screen">
-          <div className="flex flex-col items-center space-y-4">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-customViolet"></div>
-            <p className="text-customViolet text-lg">Logger inn...</p>
-          </div>
-        </div>
-      ) : null;
+    // Show "fake" page when loading
+    if (inProgress !== "none" || userLoading) {
+      return  (<>{children}</>);
     }
   
-    // When loading is done, check auth
-    if (!userData && router.pathname !== "/login") {
-      router.push("/login");
+    if (!userData) {
       return null;
     }
   

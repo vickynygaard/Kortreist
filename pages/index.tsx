@@ -45,6 +45,9 @@ const Dashboard = () => {
     { fallbackData: fallbackUser, refreshInterval: 30000, enabled: !!userData?.accessToken }
   );
 
+  const [earnedPoints, setEarnedPoints] = useState<number | null>(null);
+  const showSpinner = useDelayedLoading();
+
   // Save fresh data to localStorage when available
   useEffect(() => {
     if (user && typeof window !== 'undefined') {
@@ -60,8 +63,21 @@ const Dashboard = () => {
       return () => clearTimeout(timer);
     }
   }, [error]);
+
+  useEffect(() => {
+    if (user && typeof window !== 'undefined') {
+      localStorage.setItem("indexData", JSON.stringify(user));
   
-  const showSpinner = useDelayedLoading();
+      const storedPoints = sessionStorage.getItem("pointsEarned");
+      if (storedPoints) {
+        setEarnedPoints(Number(storedPoints));
+        sessionStorage.removeItem("pointsEarned");
+  
+        // Auto hide after 3 seconds
+        setTimeout(() => setEarnedPoints(null), 3000);
+      }
+    }
+  }, [user]);
 
   if (isLoading && showSpinner) {
     return (
@@ -78,23 +94,6 @@ const Dashboard = () => {
       </div>
     );
   }
-
-  const [earnedPoints, setEarnedPoints] = useState<number | null>(null);
-
-  useEffect(() => {
-    if (user && typeof window !== 'undefined') {
-      localStorage.setItem("indexData", JSON.stringify(user));
-  
-      const storedPoints = sessionStorage.getItem("pointsEarned");
-      if (storedPoints) {
-        setEarnedPoints(Number(storedPoints));
-        sessionStorage.removeItem("pointsEarned");
-  
-        // Auto hide after 3 seconds
-        setTimeout(() => setEarnedPoints(null), 3000);
-      }
-    }
-  }, [user]);
   
   return (
     <div className="flex flex-col w-full justify-between">
