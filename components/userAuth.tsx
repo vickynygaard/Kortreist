@@ -53,31 +53,38 @@ export const useUserAuth = (): {
       setUserData(data);
     } catch (tokenError) {
       if (tokenError instanceof InteractionRequiredAuthError) {
-        setUserData(null);
+        console.warn("Silent token failed: interaction required");
+
       } else {
         setError("Failed to acquire token: " + tokenError);
       }
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     const initializeAuth = async () => {
       try {
-        await instance.initialize();
         const response = await instance.handleRedirectPromise();
   
         if (response?.account) {
           instance.setActiveAccount(response.account);
-        } else if (accounts.length > 0) {
-          instance.setActiveAccount(accounts[0]);
         }
   
-        const active = instance.getActiveAccount();
-        if (active) {
-          await updateUserData(active);
+        const activeAccount = instance.getActiveAccount();
+        if (activeAccount) {
+          await updateUserData(activeAccount);
         } else {
-          setUserData(null);
+          const existingAccounts = instance.getAllAccounts();
+          if (existingAccounts.length > 0) {
+            instance.setActiveAccount(existingAccounts[0]);
+            await updateUserData(existingAccounts[0]);
+          } else {
+            setUserData(null);
+            setLoading(false);
+          }
         }
+        
       } catch (initError) {
         setError("MSAL initialization error: " + initError);
       } finally {
@@ -86,7 +93,7 @@ export const useUserAuth = (): {
     };
   
     initializeAuth();
-  }, [instance, accounts]);  
-
+  }, [instance]);
+  
   return { userData, loading, error };
 };

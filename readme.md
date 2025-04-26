@@ -48,7 +48,7 @@
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/your-org/green-commute.git
+git clone https://github.com/vickynygaard/Kortreist.git
 
 # 2. Install dependencies
 npm install
