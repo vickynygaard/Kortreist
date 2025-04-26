@@ -4,7 +4,7 @@ import Head from 'next/head'
 import Navbar from '@/components/navbar'
 import router, { useRouter } from 'next/router' 
 import '@/styles/globals.css'
-import { msalConfig } from "../msalConfig";
+import { loginRequest, msalConfig } from "../msalConfig";
 import { PublicClientApplication } from '@azure/msal-browser'
 import { useIsAuthenticated, useMsal } from "@azure/msal-react";
 import { MsalProvider } from '@azure/msal-react'
@@ -21,7 +21,6 @@ import { useUserAuth } from '@/components/userAuth'
 import { initProfanityFilter } from '@/services/norwegianNonValid'
 import { useDelayedLoading } from '@/services/useDelayedLoading'
 
-
 const msalInstance = new PublicClientApplication(msalConfig);
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -35,7 +34,7 @@ export default function App({ Component, pageProps }: AppProps) {
         await msalInstance.initialize();
         setMsalReady(true);
       } catch (err) {
-        console.error("MSAL initialization failed:", err);
+        console.log("MSAL initialization failed:", err);
       }
     };
 
@@ -57,6 +56,7 @@ export default function App({ Component, pageProps }: AppProps) {
   );
 }
 
+
 type MainAppProps = {
   Component: AppProps["Component"];
   pageProps: AppProps["pageProps"];
@@ -69,21 +69,50 @@ function MainApp({ Component, pageProps }: MainAppProps) {
 
 
   const RequireAuth = ({ children }: { children: React.ReactNode }) => {
-    const { inProgress } = useMsal();
-    const router = useRouter();
+    const { inProgress, instance } = useMsal();
     const { userData, loading: userLoading } = useUserAuth();
+    const router = useRouter();
     const showSpinner = useDelayedLoading(150);
+  
+    const [attemptedSilentLogin, setAttemptedSilentLogin] = useState(false);
+  
+    const isMsalLoading = inProgress !== "none";
+    const isLoading = isMsalLoading || userLoading;
+  
+    useEffect(() => {
+      const trySilentLogin = async () => {
+        if (attemptedSilentLogin || isLoading || userData) return;
+        setAttemptedSilentLogin(true);
+  
+        try {
+          //console.log("Trying again");
+          await instance.loginRedirect({
+            ...loginRequest,
+            prompt: "none",
+          });
+        } catch (err) {
+          //console.log("Silent re-login failed:", err);
+        }
+      };
+  
+      if (!userData && !isLoading && router.pathname !== "/login") {
+        trySilentLogin();
+      }
+    }, [userData, isLoading, attemptedSilentLogin, router, instance]);
 
-    const isHardLoading = inProgress !== "none" || userLoading;
-
-
-
-
-
-
-
-    // Block all rendering while loading
-    if (isHardLoading) {
+    useEffect(() => {
+      if (!userData && !isLoading && router.pathname !== "/login") {
+        router.push("/login");
+      }
+    }, [userData, isLoading, router]);
+  
+    useEffect(() => {
+      if (!isLoading && userData && router.pathname === "/login") {
+        router.replace("/");
+      }
+    }, [userData, isLoading, router]);
+  
+    if (isLoading) {
       return showSpinner ? (
         <div className="flex justify-center items-center h-screen">
           <div className="flex flex-col items-center space-y-4">
@@ -93,15 +122,10 @@ function MainApp({ Component, pageProps }: MainAppProps) {
         </div>
       ) : null;
     }
-
-    // When loading is done, check auth
-    if (!userData && router.pathname !== "/login") {
-      router.push("/login");
-      return null;
-    }
-
+  
     return <>{children}</>;
   };
+  
 
 // Initialize the service worker
 useEffect(() => {
@@ -158,47 +182,66 @@ useEffect(() => {
       initProfanityFilter();
     }, []);
 
-	return (
-		<>
-		<Head>
-			<title>Kortreist</title>
-			<meta name="description" content="Kortreist hjelper deg å velge en grønnere reise til jobb." />
-			<link rel='manifest' href={`${process.env.NEXT_PUBLIC_BASE_PATH}/manifest.json`} />
-      <link
-        rel="preload"
-        as="image"
-        href={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/Scenery.png`}
-        type="image/png"
-      />
-		</Head>
-
-    <RequireAuth>
-		<ThemeProvider
-		attribute="class"
-		defaultTheme="light"
-		enableSystem={false} 
-		disableTransitionOnChange
-		>
-      <Page>
-        <Section>
-
-        <Component {...pageProps} />
-
-      </Section>
-      <Footer />
-      </Page>
-
-		</ThemeProvider>
-    </RequireAuth>
-
-      {/* Only render the Navbar if showNavbar is true */}
-			{showNavbar && <Navbar />}
-      <Toaster
-        toastOptions={{
-          style: {
-            marginTop: 'max(0px, calc(env(safe-area-inset-top) - 0.5rem))',
-          },
-        }}
-      />
-		</>
-	)}
+    return (
+      <>
+        <Head>
+          <title>Kortreist</title>
+          <meta
+            name="description"
+            content="Kortreist hjelper deg å velge en grønnere reise til jobb."
+          />
+          <link
+            rel="manifest"
+            href={`${process.env.NEXT_PUBLIC_BASE_PATH}/manifest.json`}
+          />
+          <link
+            rel="preload"
+            as="image"
+            href={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/Scenery.png`}
+            type="image/png"
+          />
+        </Head>
+    
+        {router.pathname === "/login" ? (
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem={false}
+            disableTransitionOnChange
+          >
+            <Page>
+              <Section>
+                <Component {...pageProps} />
+              </Section>
+              <Footer />
+            </Page>
+          </ThemeProvider>
+        ) : (
+          <RequireAuth>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="light"
+              enableSystem={false}
+              disableTransitionOnChange
+            >
+              <Page>
+                <Section>
+                  <Component {...pageProps} />
+                </Section>
+                <Footer />
+              </Page>
+            </ThemeProvider>
+          </RequireAuth>
+        )}
+    
+        {showNavbar && <Navbar />}
+        <Toaster
+          toastOptions={{
+            style: {
+              marginTop: "max(0px, calc(env(safe-area-inset-top) - 0.5rem))",
+            },
+          }}
+        />
+      </>
+    );
+  }
