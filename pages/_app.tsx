@@ -56,7 +56,6 @@ export default function App({ Component, pageProps }: AppProps) {
   );
 }
 
-
 type MainAppProps = {
   Component: AppProps["Component"];
   pageProps: AppProps["pageProps"];
@@ -73,35 +72,14 @@ function MainApp({ Component, pageProps }: MainAppProps) {
     const { userData, loading: userLoading } = useUserAuth();
     const router = useRouter();
     const showSpinner = useDelayedLoading(150);
-  
-    const [attemptedSilentLogin, setAttemptedSilentLogin] = useState(false);
-  
+    
     const isMsalLoading = inProgress !== "none";
     const isLoading = isMsalLoading || userLoading;
-  
-    useEffect(() => {
-      const trySilentLogin = async () => {
-        if (attemptedSilentLogin || isLoading || userData) return;
-        setAttemptedSilentLogin(true);
-  
-        try {
-          //console.log("Trying again");
-          await instance.loginRedirect({
-            ...loginRequest,
-            prompt: "none",
-          });
-        } catch (err) {
-          //console.log("Silent re-login failed:", err);
-        }
-      };
-  
-      if (!userData && !isLoading && router.pathname !== "/login") {
-        trySilentLogin();
-      }
-    }, [userData, isLoading, attemptedSilentLogin, router, instance]);
 
     useEffect(() => {
       if (!userData && !isLoading && router.pathname !== "/login") {
+        console.error("User not authenticated — redirecting to login");
+
         router.push("/login");
       }
     }, [userData, isLoading, router]);
