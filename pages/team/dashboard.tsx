@@ -160,7 +160,7 @@ export default function DashboardPage() {
             />
             </div>
             <p className="text-2xl font-semibold text-customViolet text-center mt-4">
-              Ukens bærekraftshelter
+              Lagets bærekraftshelter
             </p>
             <div className="mt-0 flex gap-4 overflow-x-auto px-4">
               {topMembers.map((member) => (

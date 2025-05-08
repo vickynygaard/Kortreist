@@ -138,7 +138,7 @@ export default function TravelForm() {
           },
           body: JSON.stringify({
             startingAddress: address,
-            EndAddress: endAddress,
+            //EndAddress: endAddress,
             method: selected?.value,
           }),
         }
@@ -208,13 +208,14 @@ export default function TravelForm() {
           </div>
           {transportError && <p className="text-customRed text-sm py-2">{transportError}</p>}
         </div>
-        <p
+        {/* Code for an endAddress */}
+        {/*<p
         className="font-semibold text-lg -mb-4"
         >Ankomst addresse</p>
         <div className="w-full">
           <AddressAutocomplete selectedAddress={endAddress} setSelectedAddress={setEndAddress} />
           {endAddressError && <p className="text-customRed text-sm py-2">{endAddressError}</p>}
-        </div>
+        </div>*/}
         {/* Submit Button */}
         <div id="submit" className="w-full mt-8">
           <PrimaryButton title="Registrer" type="submit" disabled={isSaving || !address.trim()} />
