@@ -113,7 +113,7 @@ const confirmLogout = () => {
 
     try {
       const response = await fetch(
-        `https://kortreistapi-h7e9d7gsb3bcgwhd.norwayeast-01.azurewebsites.net/api/Users/updateProfile`,
+        `https://kortreistbackend-fqd2g9dnf5bedxhc.norwayeast-01.azurewebsites.net/api/Users/updateProfile`,
         {
           method: "POST",
           headers: {

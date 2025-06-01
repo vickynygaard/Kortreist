@@ -45,7 +45,7 @@ export default function OnboardingPage() {
     const fetchCompanies = async () => {
       try {
         const res = await fetch(
-          "https://kortreistapi-h7e9d7gsb3bcgwhd.norwayeast-01.azurewebsites.net/api/Profile/allComp",
+          "https://kortreistbackend-fqd2g9dnf5bedxhc.norwayeast-01.azurewebsites.net/api/Profile/allComp",
           {
             headers: {
               Authorization: `Bearer ${userData.accessToken}`,
@@ -70,7 +70,7 @@ export default function OnboardingPage() {
     const GetUser = async () => {
       try {
         const response = await fetch(
-          `https://kortreistapi-h7e9d7gsb3bcgwhd.norwayeast-01.azurewebsites.net/api/Profile/getUser`,
+          `https://kortreistbackend-fqd2g9dnf5bedxhc.norwayeast-01.azurewebsites.net/api/Profile/getUser`,
           {
             headers: {
               Authorization: `Bearer ${userData.accessToken}`,
@@ -133,7 +133,7 @@ export default function OnboardingPage() {
     setLoading(true);
     try {
       const res = await fetch(
-        "https://kortreistapi-h7e9d7gsb3bcgwhd.norwayeast-01.azurewebsites.net/api/Profile/companySet",
+        "https://kortreistbackend-fqd2g9dnf5bedxhc.norwayeast-01.azurewebsites.net/api/Profile/companySet",
         {
           method: "PUT",
           headers: {

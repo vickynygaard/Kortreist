@@ -31,7 +31,7 @@ export default function JoinTeamForm({
       if (!matchedTeam) throw new Error("Fant ikke valgt lag.");
 
       const response = await fetch(
-        "https://kortreistapi-h7e9d7gsb3bcgwhd.norwayeast-01.azurewebsites.net/api/team/join",
+        "https://kortreistbackend-fqd2g9dnf5bedxhc.norwayeast-01.azurewebsites.net/api/team/join",
         {
           method: "PUT",
           headers: {

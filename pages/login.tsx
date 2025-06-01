@@ -23,8 +23,9 @@ const [error, setError] = useState<string | null>(null);
   
       setUpserting(true);
       try {
+        console.log("Access token", userData.accessToken);
         const response = await fetch(
-          `https://kortreistapi-h7e9d7gsb3bcgwhd.norwayeast-01.azurewebsites.net/api/Users/upsert`,
+          `https://kortreistbackend-fqd2g9dnf5bedxhc.norwayeast-01.azurewebsites.net/api/Users/upsert`,
           {
             method: "POST",
             headers: {
